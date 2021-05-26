@@ -1,19 +1,10 @@
 <div id="titleAndIntro">
-  <h1 [innerHTML]="t('The Data Imperative Game')"></h1>
+  <h1 [innerHTML]="t('The Agile Quest Game')"></h1>
 
-  <div [innerHTML]="t('Congratulations! You are hired as a consultant to help your local bicycle shop. Do you have what it takes to make their business thrive?')"></div>
+  <div [innerHTML]="t('Welcome to the corner office! You are the newly appointed CEO of Acme Bank Ltd., a venerable institution on the cusp of starting its second half-century. Alas, things are about to get stormy…')"></div>
   
   <button routerLink="game" 
           [innerHTML]="t('Start game')"></button>
-</div>
-
-<div id="bookPromo"
-     (click)="bookPromoClick($event)">
-  <img src="assets/images/book.png"
-       [alt]="t('The Data Imperative book')"
-       class="book" />
-  <h2 [innerHTML]="t('Get the Book Now')"></h2>
-  <div [innerHTML]="t('BOOK_DESC')"></div>
 </div>
 
 <div id="authors" 

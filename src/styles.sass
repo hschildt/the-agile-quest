@@ -2,7 +2,7 @@
 
 @import '~normalize.css'
 @import 'variables.scss'
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&family=Oswald:wght@700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@500;900&display=swap')
 
 /* BASICS */
 
@@ -13,11 +13,11 @@
   font-size: 13px
 
 body
+  background-color: $color-primaryBg
   margin: 0
   padding: 0
   min-height: 100vh
   min-width:  100vw
-  background: url(assets/images/game-bg.jpg) center/cover fixed, $color-secondary
 
 /* TYPOGRAPHY */
 
@@ -35,7 +35,6 @@ h2,
 h3,
 h4,
 h5
-  font-family: $fontFamily-accent
   font-weight: $fontWeight-L
   margin: $margin-M 0rem
   &:first-child
@@ -44,6 +43,13 @@ h5
     margin-bottom: 0rem
 
 /* INTERACTIVE ELEMENTS */
+
+
+a:link, 
+a:visited, 
+a:hover, 
+a:active
+  color: $color-primary
 
 // See also mixins in variables scss for different button styles
 button
@@ -63,6 +69,8 @@ button
   &:disabled
     cursor: not-allowed
     opacity: $opacity-disabled
-  &:hover:enabled
-    background-color: color.change($color-onPrimary, $alpha: $alpha-buttonBg)
+  &:hover:not(:disabled)
+    border-color: $color-accent
+    color: $color-accent
+    // background-color: color.change($color-primary, $alpha: $alpha-buttonBg)
   
