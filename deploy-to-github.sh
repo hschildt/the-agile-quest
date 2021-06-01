@@ -9,5 +9,6 @@ ng build --output-path docs --base-href /the-agile-quest/
 cp docs/index.html docs/404.html
 git add .
 git commit -m "Deploy to GH pages"
-git push --set-upstream origin gh-pages
+# git push --set-upstream origin gh-pages
+git push
 git switch master
