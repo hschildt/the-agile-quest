@@ -1,8 +1,18 @@
 @use 'sass:color'
+@use '~@angular/material' as mat
 
 @import '~normalize.css'
 @import 'variables.scss'
 @import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@500;900&display=swap')
+
+/* MATERIAL */
+
+// Core imports, import only once
+@include mat.core($app-typography)
+
+// Include theme styles for Angular Material components.
+@include mat.core-theme($app-theme)
+@include mat.progress-spinner-theme($app-theme)
 
 /* BASICS */
 
@@ -42,8 +52,14 @@ h5
   &:last-child
     margin-bottom: 0rem
 
-/* INTERACTIVE ELEMENTS */
+label
+  @include allCaps
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
 
+
+/* INTERACTIVE ELEMENTS */
 
 a:link, 
 a:visited, 
@@ -53,9 +69,10 @@ a:active
 
 // See also mixins in variables scss for different button styles
 button
+  @include allCaps
   display: block
   color: inherit
-  background-color: transparent
+  background-color: $color-primaryBg
   font-weight: $fontWeight-L
   min-height: 4rem
   padding: $margin-S $margin-L
@@ -67,10 +84,19 @@ button
   transition: all $animationTiming-M
   cursor: pointer
   &:disabled
+    border-color: $color-secondary
     cursor: not-allowed
-    opacity: $opacity-disabled
+    color: $color-secondary
   &:hover:not(:disabled)
     border-color: $color-accent
     color: $color-accent
     // background-color: color.change($color-primary, $alpha: $alpha-buttonBg)
   
+/* MATERIAL COMPONENT OVERRIDES */
+
+// Setting the primary palette doesn't seem to work
+.mat-progress-spinner circle,
+.mat-spinner circle
+  stroke-width: 5%
+  // stroke: $color-primary !important
+

@@ -1,0 +1,85 @@
+@import 'variables.scss'
+
+$border: $border-M
+
+:host
+  display: inline-block
+  height: 24rem
+  margin: 0 $margin-S
+  position: relative
+  width: min(16rem, 30vw)
+
+.card
+  background-color: $color-primaryBg
+  border-radius: $margin-M
+  display: flex
+  flex-flow: column nowrap
+  justify-content: stretch
+  height: 100%
+  width: 100%
+  // Check bottom padding to fit button
+  padding: $margin-M $margin-S 1.65rem $margin-S
+  position: absolute
+  transform-style: preserve-3d
+
+.content
+  border: $border
+  border-radius: $margin-S
+  height: 100%
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+  padding: $margin-S
+  position: relative
+  text-align: center
+
+.back
+  color: $color-primaryBg
+
+  .content
+    background-color: $color-primary
+    font-style: italic
+
+label
+  margin: 0
+  position: absolute
+  top: $margin-S
+  left: 0
+  right: 0
+  text-align: center
+  white-space: normal
+
+  .titleText
+    background-color: $color-primaryBg
+    padding: 0px $margin-S
+
+h3
+  @include allCaps
+  border-bottom: $border-S
+  border-bottom-color: $color-primaryBg
+  font-size: $fontSize-S
+  font-style: italic
+  font-weight: $fontWeight-M
+  text-align: center
+
+.bottomButton
+  @include allCaps
+  background-color: $color-primaryBg
+  border-radius: 50%
+  font-size: $fontSize-XS
+  max-height: 3.5rem
+  min-height: 3.5rem
+  overflow: hidden
+  padding: $margin-M
+  text-overflow: ellipsis
+  white-space: nowrap
+  width: 10rem
+  position: absolute
+  bottom: 0px
+  left: calc(50% - 5rem)
+
+.locked
+  .bottomButton
+    background-color: $color-primary
+    color: $color-primaryBg

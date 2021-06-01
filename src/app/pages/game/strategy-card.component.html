@@ -1,0 +1,40 @@
+<section *ngIf="!flipped"
+         class="card front"
+         [class.disabled]="disabled"
+         [class.locked]="locked"
+         @frontFlip>
+
+  <div class="content">
+    <div class="description"
+         [innerHTML]="t(description)"></div>
+  </div>
+  
+  <label>
+    <span class="titleText"
+          [innerHTML]="t(title)"></span>
+  </label>
+
+  <button type="button"
+          class="bottomButton"
+          [disabled]="disabled"
+          (click)="toggleLocked()"
+          [innerHTML]="t(locked ? buttonLabelLocked : buttonLabel)">
+  </button>
+  
+
+</section>
+
+<section *ngIf="flipped"
+         class="card back"
+         @backFlip>
+
+  <div class="content">
+    <h3>
+      <span class="titleText"
+            [innerHTML]="t(titleBack)"></span>
+    </h3>
+    <div class="description"
+        [innerHTML]="t(descriptionBack)"></div>
+  </div>
+
+</section>

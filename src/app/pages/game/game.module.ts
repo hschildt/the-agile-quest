@@ -3,23 +3,30 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { GameComponent } from './game.component';
-import { NumberTrackerComponent } from './number-tracker.component';
-import { ResultChartComponent } from './result-chart.component';
+import { RibbonComponent } from './ribbon.component';
+import { StrategyCardComponent } from './strategy-card.component';
+import { ValueGaugeComponent } from './value-gauge.component';
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   exports: [
     GameComponent,
   ],
   declarations: [
     GameComponent,
-    NumberTrackerComponent,
-    ResultChartComponent
+    RibbonComponent,
+    StrategyCardComponent,
+    ValueGaugeComponent
   ],
 })
 export class GameModule {}

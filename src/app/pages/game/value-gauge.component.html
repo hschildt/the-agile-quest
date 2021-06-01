@@ -1,0 +1,37 @@
+<div class="container"
+     [class.bar]="isBar"
+     [class.dot]="isDot">
+
+  <div class="content">
+    <div *ngIf="previousValue != null"
+         class="previousValue"
+         [style.left]="previousValueLeft"></div>
+    <div *ngIf="isBar"
+         class="valueBar"
+         [style.width]="valueBarWidth"></div>
+    <!-- <div *ngIf="isBar"
+         class="valueBar valueChange"
+         [class.negative]="valueChange &lt; 0"
+         [style.left]="previousValueBarLeft"
+         [style.width]="valueChangeWidth"></div>
+    <div *ngIf="isDot"
+         class="valueDot previousValue"
+         [style.left]="previousValueDotLeft"></div> -->
+    <div *ngIf="isDot"
+         class="valueDot"
+         [style.left]="valueDotLeft"></div>
+  </div>
+
+  <label *ngIf="titleTop"
+         class="titleTop">
+    <span class="titleText"
+          [innerHTML]="t(titleTop)"></span>
+  </label>
+
+  <label *ngIf="titleBottom"
+         class="titleBottom">
+    <span class="titleText"
+          [innerHTML]="t(titleBottom)"></span>
+  </label>
+
+</div>

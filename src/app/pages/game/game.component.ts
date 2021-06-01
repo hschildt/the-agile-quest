@@ -1,60 +1,61 @@
-import { Component, 
-         OnDestroy,
-         OnInit } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
-import { ActivatedRoute,
-         NavigationEnd,
-         Router } from '@angular/router';
-import { trigger,
-         style,
-         animate,
-         transition } from '@angular/animations';
+import { 
+  Component, 
+  OnDestroy,
+  OnInit 
+} from '@angular/core';
+import { 
+  ActivatedRoute,
+  NavigationEnd,
+  Router 
+} from '@angular/router';
+import { 
+  trigger,
+  state,
+  style,
+  animate,
+  transition 
+} from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
-import { ANIMATION_DURATION_MS,
-         ANIMATION_TIMING,
-         ANIMATION_TIMING_DELAYED,
-         Investment,
-         InvestmentCategory,
-         InvestmentCombo,
-         InvestmentId,
-         InvestmentNode,
-         InvestmentRoot,
-         LocalizedString,
-         NullInvestment,
-         NULL_INVESTMENT_ID,
-         SharedService } from '../../shared';
-
+import { 
+  ANIMATION_DURATION_MS,
+  ANIMATION_EASING,
+  ANIMATION_TIMING,
+  ANIMATION_TIMING_DELAYED,
+  PERSPECTIVE,
+  Indicator,
+  LocalizedString,
+  Ribbon,
+  Scenario,
+  Settings,
+  SharedService,
+  Strategy,
+  Texts
+} from '../../shared';
 import { ResultChartData } from './result-chart.component';
 
-
-/* 
- * Because of the different way Angular CLI handles urls in .ts and .css files
- * we need to keep these images in the global assets folder, whilst the images
- * referenced in the sass file are kept in a local one, duh!
- */ 
-const AVATAR_IMAGES = {
-  '-1': 'assets/images/avatar-worried.png',
-   '0': 'assets/images/avatar-neutral.png',
-   '1': 'assets/images/avatar-happy.png',
-   '2': 'assets/images/avatar-extatic.png',
-};
 const DATA_KEY_VERSION = 'v';
-const DATA_KEY_ONBOARDED = 'o';
-const DATA_KEY_PURCHASES = 'p';
 const DATA_KEY_SHOWREPORT = 'r';
 const DATA_SEPARATOR = ',';
+const DATA_KEY_STRATEGIES = 's';
 const ROUND_BASE = 1;
-const ROUNDS_LEFT_BG = '#ffffff4d'; // To prevent sanitization, ie. 'rgba(255,255,255,0.3)',
-const PIPE_FLOW_SCALE = 100; // The pipe flow value's multiplier (from [0,1])
 
-enum ShowableTopic {
-  Investment,
-  Advice,
-  ResetConfirmation,
-  Onboarding
+const ANIMATION_DURATION_PREVIOUS_CARDS_MS = 450;
+const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_MS}ms ${ANIMATION_EASING}`;
+
+const ROUND_START_SCHEDULE_MS: {[event: string]: number} = {
+  hidePreviousStrategies: 225,
+  initIndicators: 700
 }
+ROUND_START_SCHEDULE_MS.showPreviousStrategies = 
+  ROUND_START_SCHEDULE_MS.hidePreviousStrategies + ANIMATION_DURATION_PREVIOUS_CARDS_MS;
+ROUND_START_SCHEDULE_MS.hideScenario  = 
+  ROUND_START_SCHEDULE_MS.showPreviousStrategies + ANIMATION_DURATION_PREVIOUS_CARDS_MS - 125;
+ROUND_START_SCHEDULE_MS.showScenario  = 
+  ROUND_START_SCHEDULE_MS.hideScenario + ANIMATION_DURATION_PREVIOUS_CARDS_MS;
+ROUND_START_SCHEDULE_MS.showLoadStrategies  = 
+  ROUND_START_SCHEDULE_MS.showScenario + 2000;
+ROUND_START_SCHEDULE_MS.fadeOutIndicators = ROUND_START_SCHEDULE_MS.showLoadStrategies;
 
 /*
  * For convenience
@@ -70,9 +71,6 @@ function clamp(num: number, min: number = null, max: number = null): number {
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.sass'],
-  host: {
-    "(click)": "hideOthers()"
-  },
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -94,44 +92,97 @@ function clamp(num: number, min: number = null, max: number = null): number {
         })),
       ]),
     ]),
-    trigger('switchGrowInOut', [
+    trigger('currentCards', [
       transition(':enter', [
         style({
-          height: 0,
-          overflow: 'hidden',
+          opacity: 0,
+          transform: 'translateY(60vh)'
         }),
         // We add a delay to allow for the :leave animation to finish first
-        animate(ANIMATION_TIMING_DELAYED, style({
-          height: '*',
-          overflow: 'unset',
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
+          opacity: 1,
+          transform: 'none'
+        })),
+      ])
+    ]),
+    trigger('previousCards', [
+      transition(':enter', [
+        style({
+          opacity: 1,
+          transform: 'none'
+        }),
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
+          opacity: 0.3,
+          transform: 'translateY(-2.5rem) scale(0.9)',
         })),
       ]),
       transition(':leave', [
         style({
-          height: '*',
-          overflow: 'hidden',
+          opacity: 0.3,
+          transform: 'translateY(-2.5rem) scale(0.9)',
         }),
-        animate(ANIMATION_TIMING, style({
-          height: 0,
-          overflow: 'hidden',
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
+          opacity: 0.0,
+          transform: 'translateY(-5rem) scale(0.8)',
+        })),
+      ]),
+    ]),
+    trigger('previousCardsFade', [
+      state('faded', style({
+        opacity: 0.15
+      })),
+      state('normal', style({
+        opacity: 0.3
+      })),
+      transition('normal <=> faded', [
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
+      ])
+    ]),
+    trigger('scenario', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: `${PERSPECTIVE} translate3d(0px, -25vh, 500px)`
+        }),
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
+          opacity: 1,
+          transform: `${PERSPECTIVE}`,
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          transform: `${PERSPECTIVE}`,
+        }),
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
+          opacity: 0,
+          transform: `${PERSPECTIVE} translate3d(0px, 15vh, -400px)`,
         })),
       ]),
     ]),
   ],
 })
 export class GameComponent implements OnDestroy, OnInit {
-  // Options (TODO allow setting dynamically)
-  public options = {
-    hideOnPurchase: true,
-    autoShowOnlyChild: true,
-    purchaseDelay: ANIMATION_DURATION_MS, // Delay between pushing the purchase button and the action taking place
+
+  bottomDialog: {
+    text: string,
+    confirm: () => void
   };
-  public adviceHidden: boolean = false;
-  public investmentCombos: Array<InvestmentCombo>;
-  public investmentRoot: InvestmentRoot;
-  public showReport: boolean = false;
-  public showStartOverConfirmation: boolean;
-  private _preloaded = new Array<any>();
+  inFeedbackPhase: boolean = false;
+  performanceIndicators: Indicator[] = [];
+  organisationalAttributes: Indicator[] = [];
+  playedScenarios: Scenario[] = [];
+  playedStrategies: Strategy[] = [];
+  previousStrategyCards: Strategy[] = [];
+  ribbons: Ribbon[] = [];
+  roundStarting: boolean = false;
+  showLoadStrategyCardsDialog: boolean = false;
+  showPreviousStrategyCards: boolean = false;
+  showReport: boolean = false;
+  showScenario: boolean = false;
+  showStrategyCards: boolean = false;
+  strategyCards: Strategy[] = [];
+
   private _subscriptions = new Array<Subscription>();
 
   constructor(
@@ -139,8 +190,6 @@ export class GameComponent implements OnDestroy, OnInit {
     private router:    Router,
     private shared:    SharedService
   ) {
-    this.investmentRoot = this.shared.investments;
-    this.investmentCombos = this.shared.investmentCombos;
     this.resetState();
   }
 
@@ -153,192 +202,275 @@ export class GameComponent implements OnDestroy, OnInit {
         filter(evt => evt instanceof NavigationEnd)
       ).subscribe(() => this.readParams())
     );
-    // Preload images
-    for (let url in AVATAR_IMAGES) {
-      const img = new Image();
-      img.src = AVATAR_IMAGES[url];
-      this._preloaded.push(img);
-    }
   }
 
   ngOnDestroy(): void {
     this._subscriptions.forEach(s => s.unsubscribe());
   }
 
+
+  /**************************************
+   * GETTERS                            *
+   **************************************/
+
+  /*
+   * Note that round is ROUND_BASE-based (= 1)
+   */
+  get round(): number {
+    return this.rawRound + ROUND_BASE;
+  }
+
+  get lastRound(): number {
+    return this.shared.settings.rounds;
+  }
+
+  /*
+   * The absolute round without ROUND_BASE
+   */
+  get rawRound(): number {
+    return this.playedStrategies.length;
+  }
+
+  get isFirstRound(): boolean {
+    return this.rawRound === 0;
+  }
+  
+  get roundsLeft(): number {
+    return this.shared.settings.rounds - this.rawRound;
+  }
+
+  get roundsUsedPercentage(): number {
+    return (this.rawRound + 1) / this.shared.settings.rounds * 100;
+  }
+
+  get gameOver(): boolean {
+    return (this.roundsLeft <= 0 || !this.scenario.strategies || this.scenario.strategies.length === 0)
+           && !this.showReport;
+  }
+
+  get latestStrategy(): Strategy {
+    if (this.playedStrategies.length === 0)
+      return null;
+    return this.playedStrategies[this.playedStrategies.length - 1];
+  }
+
+  get previousScenario(): Scenario {
+    return this.playedScenarios.length > 1 ? 
+           this.playedScenarios[this.playedScenarios.length - 2] :
+           null;
+  }
+
+
+  get scenario(): Scenario {
+    return this.playedScenarios[this.playedScenarios.length - 1];
+  }
+
+  /*
+   * Get the top position of the ribbon at the given index
+   */
+  getRibbonTop(index: number): string {
+    if (this.ribbons.length === 0)
+      return '0%';
+    // NB. Match last measurement to ribbon height
+    return `calc(${index} / ${this.ribbons.length} * (100% - 11.6979592rem))`;
+  }
+
+
+  /**************************************
+   * VALUE INITIALISATION               *
+   **************************************/
+
+  startRound(): void {
+
+    this.resetState();
+    
+    // Init different data
+    this.initScenarios();
+    this.initRibbons();
+
+    // This sets a class of the same name, which highlights indicators
+    this.roundStarting = true;
+
+    // Coordinate entry, exit and update of differenet elements
+    setTimeout(() => this.initIndicators(), ROUND_START_SCHEDULE_MS.initIndicators);
+    setTimeout(() => this.showPreviousStrategyCards = false, ROUND_START_SCHEDULE_MS.hidePreviousStrategies);
+    setTimeout(() => this.initPreviousStrategyCards(), ROUND_START_SCHEDULE_MS.showPreviousStrategies);
+    setTimeout(() => this.showScenario = false, ROUND_START_SCHEDULE_MS.hideScenario);
+    setTimeout(() => this.showScenario = true, ROUND_START_SCHEDULE_MS.showScenario);
+    setTimeout(() => this.showLoadStrategyCardsDialog = true, ROUND_START_SCHEDULE_MS.showLoadStrategies);
+    setTimeout(() => this.roundStarting = false, ROUND_START_SCHEDULE_MS.fadeOutIndicators);
+
+  }
+
+  resetState(): void {
+    this.bottomDialog = undefined;
+    this.inFeedbackPhase = false;
+    this.roundStarting = false;
+    this.showLoadStrategyCardsDialog = false;
+    this.showScenario = false;
+    this.showReport = false;
+
+    // Set the correct flipped/locked states for strategies
+    for (const sid in this.shared.strategies) {
+      const s = this.shared.strategies[sid];
+      if (!this.playedStrategies.includes(s)) {
+        s.locked = false;
+        s.flipped = false;
+      } else {
+        s.locked = true;
+        s.flipped = true;
+      }
+    }
+  }
+
+  initScenarios(): void {
+    const scenarios = [this.shared.firstScenario];
+    this.playedStrategies.map(s => 
+      scenarios.push(this.shared.scenarios[s.scenario])
+    );
+    this.playedScenarios = scenarios;
+  }
+
+  initIndicators(): void {
+
+    for (const iid in this.shared.indicators) {
+
+      // Calc values based on the effects of all played scenarios and strategies
+      const indicator = this.shared.indicators[iid];
+
+      let value = indicator.initialValue ?? 0,
+          previousValue = indicator.initialValue ?? 0;
+      
+      this.playedScenarios.forEach((s, i) => {
+        const effect = s.effects?.[iid] ?? 0;
+        value += effect;
+        if (i < this.playedScenarios.length - 1)
+          previousValue += effect;
+      });
+      this.playedStrategies.forEach((s, i) => {
+        const effect = s.effects?.[iid] ?? 0;
+        value += effect;
+        if (i < this.playedStrategies.length - 1)
+          previousValue += effect;
+      });
+
+      indicator.value = value;
+      indicator.previousValue = previousValue;
+    }
+
+    this.performanceIndicators = Object.values(this.shared.indicators).filter(i => i.type === 'performance');
+    this.organisationalAttributes = Object.values(this.shared.indicators).filter(i => i.type === 'organisation');
+  }
+
+  initRibbons(): void {
+    const ribbons = [];
+    this.playedStrategies
+      .filter(s => s.ribbons?.length > 0)
+      .forEach(s => s.ribbons.forEach(r => 
+        ribbons.push(this.shared.ribbons[r])  
+      ));
+    this.ribbons = ribbons;
+  }
+
+  initPreviousStrategyCards(): void {
+    this.previousStrategyCards = (this.previousScenario?.strategies ?? []).map(s => this.shared.strategies[s]);
+    this.showPreviousStrategyCards = true;
+    this.showStrategyCards = false;
+  }
+
+  initStrategyCards(): void {
+    this.strategyCards = (this.scenario.strategies ?? []).map(s => this.shared.strategies[s]);
+    this.showLoadStrategyCardsDialog = false;
+    this.showStrategyCards = true;
+  }
+
   /**************************************
    * USER ACTIONS                       *
    **************************************/
 
-  public categoryClick(category: InvestmentCategory, event: Event = null): void {
-    if (category.needsOnboarding) {
-      this.hideOthers(ShowableTopic.Onboarding);
-      this.startOnboarding(category, event);
-    }
-    // Disable background click if this investment is active,
-    // otherwise bg click is okay
-    if (event && category.active)
-      event.stopPropagation();
-  }
-
-  public startOnboarding(category: InvestmentCategory, event: Event = null): void {
-    if (category.onboardingAvailable) {
-      this.hideOthers(ShowableTopic.Onboarding);
-      category.activateOnboarding();
-    }
-    // To disable background click
-    if (event)
-      event.stopPropagation();
-  }
-
-  public closeOnboarding(category: InvestmentCategory, event?: Event): void {
-    this.hideOthers();
-    category.completeOnboarding();
-    // This is disabled as it makes boxes close and dialogs disappear in unwanted ways.
-    // The drawback is that the onboarding status is only saved after a round is completed.
-    // this.updateUrl();
-    // To disable background click
-    if (event)
-      event.stopPropagation();
-  }
-
-  /*
-   * Open a subcategory or an investment
-   */
-  public show(node: InvestmentNode, event?: Event): void {
-    // If we are showing and investment with only one child, propagate showing to that
-    if (this.options.autoShowOnlyChild && node instanceof InvestmentCategory && node.children.length === 1) {
-      return this.show(node.children[0], event);
-    } else {
-      // Set this one as active
-      node.active = true;
-    }
-    this.hideOthers(ShowableTopic.Investment);
-    // To disable background click
-    if (event)
-      event.stopPropagation();
-  }
-
-  /*
-   * Delayed purchase action so that we have time for the click animation to show
-   * See .investment button:active in the sass file
-   */
-  public purchaseClick(investment?: Investment, event?: Event): void {
-    setTimeout(() => this.purchase(investment, event), this.options.purchaseDelay);
-  }
-
-  /*
-   * Purchase an investment or pass a round if no investment is specfied.
-   */
-  public purchase(investment?: Investment, event?: Event): void {
-    if (this.options.hideOnPurchase)
-      this.hideOthers();
-    if (investment) {
-      investment.purchase(this.round);
-    } else {
-      this.investmentRoot.pass(this.round);
-    }
+  goToPreviousRound(event?: Event): void {
+    this.playedStrategies.pop();
     this.updateUrl();
-    this.startRound();
-    // To disable background click
-    if (event)
-      event.stopPropagation();
+  }
+
+
+  loadStrategyCards(): void {
+    setTimeout(() => this.initStrategyCards(), ANIMATION_DURATION_MS);
   }
 
   /*
-   * Delayed pass action so that we have time for the click animation to show
+   * Selecting a strategy goes in three steps:
+   * 1. Lock the card => onCardLocked
+   * 2. Confirm => showStrategyFeedback
+   * 3. Go to next round => executeStrategy => startRound
    */
-  public passClick(event?: Event): void {
-    this.purchaseClick(null, event);
+  onCardLocked(strategy: Strategy): void {
+
+    if (this.inFeedbackPhase)
+      return;
+
+    if (!strategy.locked) {
+      // Only one strategy can be locked at the same time
+      this.strategyCards.forEach(s => s.locked = false);
+      strategy.locked = true;
+
+      this.bottomDialog = {
+        text: this.t('Execute selected strategy'),
+        confirm: () => this.showStrategyFeedback(strategy)
+      };
+
+    } else {
+      strategy.locked = false;
+      this.bottomDialog = undefined;
+    }
+     
   }
 
-  public pass(event?: Event): void {
-    this.purchase(null, event);
+  showStrategyFeedback(strategy: Strategy): void {
+    strategy.flipped = true;
+    // This disabled further selection of strategies
+    this.inFeedbackPhase = true;
+    this.bottomDialog = {
+      text: this.t('Start next round'),
+      confirm: () => this.executeStrategy(strategy)
+    };
   }
 
-  public resetClick(event?: Event): void {
-    this.hideOthers(ShowableTopic.ResetConfirmation);
-    this.showStartOverConfirmation = true;
-    // To disable background click
-    if (event)
-      event.stopPropagation();
+  executeStrategy(strategy: Strategy): void {
+    this.playedStrategies.push(strategy);
+    this.updateUrl();
   }
 
-  public cancelReset(event?: Event): void {
-    this.showStartOverConfirmation = false;
-    // To disable background click
-    if (event)
-      event.stopPropagation();
+  modalClick(event?: Event): void {
+    this.startOver(event);
   }
 
-  public startOverClick(event?: Event): void {
-    this.hideOthers(ShowableTopic.ResetConfirmation);
-    setTimeout(() => this.startOver(event), this.options.purchaseDelay);
-  }
-
-  public startOver(event?: Event): void {
+  startOver(event?: Event): void {
     // We are just navigating to the title screen
     this.router.navigate(['/']);
-    // this.hideOthers();
-    // this.resetState();
-    // this.updateUrl();
-    // this.startRound();
     // To disable background click
-    if (event)
-      event.stopPropagation();
+    event?.stopPropagation();
   }
 
-  public toggleAdvice(event?: Event): void {
-    this.setAdviceHidden(null, event);
-  }
+  // public resetClick(event?: Event): void {
+  //   this.hideOthers(ShowableTopic.ResetConfirmation);
+  //   this.showStartOverConfirmation = true;
+  //   // To disable background click
+  //   if (event)
+  //     event.stopPropagation();
+  // }
 
-  public setAdviceHidden(hide: boolean = true, event?: Event): void {
-    this.hideOthers(ShowableTopic.Advice);
-    // hide = null means toggle
-    this.adviceHidden = hide === null ? !this.adviceHidden : hide;
-    // To disable background click
-    if (event)
-      event.stopPropagation();
-  }
+  // public cancelReset(event?: Event): void {
+  //   this.showStartOverConfirmation = false;
+  //   // To disable background click
+  //   if (event)
+  //     event.stopPropagation();
+  // }
 
-  /*
-   * Hide a subcategory or an investment and all it's descendants
-   * If not argument given, all are hidden
-   */
-  public hide(node: InvestmentNode = this.investmentRoot): void {
-    node.active = false;
-  }
-
-  /*
-   * Call this with all clicks so we only show one thing at a time
-   */
-  public hideOthers(show: ShowableTopic = null): void {
-    if (show !== ShowableTopic.Investment)
-      this.hide();
-    if (show !== ShowableTopic.Advice)
-      this.adviceHidden = true;
-    if (show !== ShowableTopic.ResetConfirmation)
-      this.showStartOverConfirmation = false;
-    // if (show !== ShowableTopic.Onboarding)
-    // nothing special with this one
-    // this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
-    //                             .forEach(c => (c as InvestmentCategory).completeOnboarding());
-  }
-
-  /*
-   * Handle click on the modal overlay
-   * We only have one function for this and it is to show the report
-   */
-  public modalClick(event?: Event): void {
-    this.showReport = true;
-    this.updateUrl();
-    // To disable background click
-    if (event)
-      event.stopPropagation();
-  }
-
-  public catchClick(event: Event): void {
-    event.stopPropagation();
-  }
+  // public startOverClick(event?: Event): void {
+  //   this.hideOthers(ShowableTopic.ResetConfirmation);
+  //   setTimeout(() => this.startOver(event), this.options.purchaseDelay);
+  // }
 
   /**************************************
    * URL PARAMS                         *
@@ -348,212 +480,37 @@ export class GameComponent implements OnDestroy, OnInit {
     // We use router to save the game data between sessions
     this.router.navigate([{
       [DATA_KEY_VERSION]:    this.shared.settings.version,
-      [DATA_KEY_ONBOARDED]:  this._encodeIds(this.investmentRoot.categories.filter(c => c.isOnboarded).map(c => c.id)),
-      [DATA_KEY_PURCHASES]:  this._encodeIds(this.purchasesAndPassedRounds.map(p => p.id)),
+      [DATA_KEY_STRATEGIES]: this._encodeIds(this.playedStrategies),
       [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0,
     }]);
   }
 
   public readParams(): void {
-    // Reset first
-    this.resetState();
     // Only load purchases from route data if the application versions match
     // Otherwise reset the state to handle the going back to an url without params
     if (this.route.snapshot.params?.[DATA_KEY_VERSION] && 
-      this.route.snapshot.params[DATA_KEY_VERSION] == this.shared.settings.version) {
-      if (this.route.snapshot.params[DATA_KEY_PURCHASES]) {
-        const purchases = this._decodeIds(this.route.snapshot.params[DATA_KEY_PURCHASES]);
-        for (let i = 0; i < purchases.length; i++) {
-          const round = i + ROUND_BASE;
-          if (purchases[i] === NULL_INVESTMENT_ID) {
-            this.investmentRoot.pass(round);
-          } else {
-            this.getInvestment(purchases[i]).purchase(round);
-          }
-        }
-      }
-      if (this.route.snapshot.params[DATA_KEY_ONBOARDED]) {
-        let ids = this._decodeIds(this.route.snapshot.params[DATA_KEY_ONBOARDED]);
-        this.investmentRoot.categories.filter(c => ids.includes(c.id))
-                                      .forEach(c => c.completeOnboarding());
-      }
+        this.route.snapshot.params[DATA_KEY_VERSION] == this.shared.settings.version) {
+
+      if (this.route.snapshot.params[DATA_KEY_STRATEGIES])
+        this.playedStrategies = this._decodeIds(this.route.snapshot.params[DATA_KEY_STRATEGIES]);
+      else
+        this.playedStrategies = [];
+
       if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
-          this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1) {
+          this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1)
         this.showReport = true;
-      }
+      else
+        this.showReport = false;
     }
     // This resets the screen
     this.startRound();
   }
 
-  private _encodeIds(list: Array<InvestmentId>): string {
-    return list.join(DATA_SEPARATOR);
+  private _encodeIds(list: Strategy[]): string {
+    return list.map(s => s.id).join(DATA_SEPARATOR);
   }
-  private _decodeIds(text: string): Array<InvestmentId> {
-    return text.split(DATA_SEPARATOR).map(s => parseInt(s));
-  }
-
-  public startRound(): void {
-    this.adviceHidden = false;
-    this.showStartOverConfirmation = false;
-  }
-
-  public resetState(resetOnboarding: boolean = false): void {
-    this.investmentRoot.reset(resetOnboarding);
-    this.showReport = false;
-  }
-
-  /**************************************
-   * GETTERS                            *
-   **************************************/
-
-  public get investmentCategories(): Array<InvestmentCategory> {
-    return this.investmentRoot.children as Array<InvestmentCategory>;
-  }
-
-  public get balance(): number {
-    // After the final round, we add the monthly returns once to match the result chart's view
-    return this.getBalance(this.purchasesAndPassedRounds) + (this.roundsLeft === 0 ? this.returns : 0);
-  }
-
-  public get spentBalance(): number {
-    return this.getSpentBalance(this.purchasesAndPassedRounds);
-  }
-
-  /*
-   * Note that round is ROUND_BASE-based (= 1)
-   */
-  public get round(): number {
-    return this.rawRound + ROUND_BASE;
-  }
-
-  /*
-   * The absolute round without ROUND_BASE
-   */
-  public get rawRound(): number {
-    return this.purchasesAndPassedRounds.length;
-  }
-
-  public get isFirstRound(): boolean {
-    return this.rawRound === 0;
-  }
-  
-  public get roundsLeft(): number {
-    return this.shared.settings.rounds - this.rawRound;
-  }
-
-  public get roundsUsedPercentage(): string {
-    return this.rawRound / this.shared.settings.rounds * 100 + '%';
-  }
-
-  public get roundsLeftStyle(): string {
-    // This does not work due to a bug so we have to convert rgbas to #-values, see options
-    // return this.sanitizer.bypassSecurityTrustStyle(`background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${this.options.roundsLeftBg});`);
-    return `background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${ROUNDS_LEFT_BG});`;
-  }
-
-  public get returns(): number {
-    return this.getTotalReturns(this.purchasesAndPassedRounds);
-  }
-
-  public get purchases(): Array<Investment> {
-    return this.investmentRoot.purchases;
-  }
-
-  /*
-   * Passed rounds are a special subclass of Investment
-   */
-  public get purchasesAndPassedRounds(): Array<Investment> {
-    return this.investmentRoot.purchasesAndPassedRounds;
-  }
-
-  public get canPurchaseSomething(): boolean {
-    return this.investmentRoot.investments.filter(i => !i.purchased && this.canPurchase(i)).length > 0;
-  }
-
-  /*
-   * Get the owner's feedback as sentiment number, sentiment image url, advice message
-   * and a possible warning.
-   * A sentiment of -1 means worried; 0, neutral; 1, happy; and 2, extatic.
-   */
-  public get feedback(): {sentiment: number, advice: string, warning: string | null, imageUrl: string} {
-    let sentiment: number = 0;
-    let advice: string = "";
-    let warning: string = "";
-
-    // 1. Overriding cases
-    if (this.round === ROUND_BASE) {
-      // First round
-      sentiment = 1;
-      advice += this.t("Hi! I’m happy to be working with such an expert! Here you see all the investment categories available. Let’s start by seeing what options they contain.");
-    } else if (this.roundsLeft === 0) {
-      // Last round
-      // TODO Add final sentiment
-      advice += this.t("This is it! Let’s see how our investments worked out.");
-      warning += this.t("Click anywhere to see report.");
-    } else {
-
-      // 2. Messages that are always prepended if applicable
-      if (this.roundsLeft === 12) {
-        advice += this.t("One more year to go!") + " ";
-      } else if (this.roundsLeft === 6) {
-        sentiment -= 1;
-        advice += this.t("Only six months to go on the project!") + " ";
-      } 
-
-      // 3. Combos
-      const newCmb =  this.getNewlyCompletedCombos().sort((a, b) => b.returns - a.returns);
-      const nearCmb = this.getNearlyCompletedCombos();
-      if (newCmb.length > 0) {
-        sentiment += newCmb.length * this.shared.settings.sentimentOptions.comboCompletionBonus;
-        // Use the first available combo description
-        let description: any;
-        for (let i = 0; i < newCmb.length; i++) {
-          if (newCmb[i].description) {
-            description = newCmb[i].description;
-            break;
-          }
-        }
-        advice += this.t(description ?? "Wow! That investment really seems to pay off!") + " ";
-      } else if (nearCmb.length > 0) {
-        advice += this.t("It seems we are not utilising these investments as well as we could: ") +
-                  nearCmb[0].investments.map(id => this.getInvestment(id))
-                                        .filter(i => i.purchased)
-                                        .map(i => this.t(i.title))
-                                        .join(", ") + ". ";
-      }
-
-      // 4. Returns
-      const returnsChange = this.returns - this.getTotalReturns(this.purchasesAndPassedRounds.slice(0, -1));
-      if (returnsChange < this.shared.settings.sentimentOptions.neutralReturnsRange[0]) {
-        sentiment -= 1;
-      } else if (returnsChange > this.shared.settings.sentimentOptions.neutralReturnsRange[1]) {
-        sentiment += 1;
-      }
-
-      // 5. Warnings
-      if (!this.canPurchaseSomething) {
-        sentiment -= 1;
-        warning += this.t("Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.");
-      }
-    }
-
-    // Clamp sentiment
-    sentiment = Math.round(clamp(sentiment, -1, 2));
-
-	  return {
-      sentiment: sentiment,
-      advice:    advice == "" ? null : advice,
-      warning:   warning == "" ? null : warning,
-      imageUrl:  AVATAR_IMAGES[sentiment] ?? null
-    }
-  }
-
-  /*
-   * Whether to show the modal overlay
-   */
-  public get showModal(): boolean {
-    return this.roundsLeft <= 0 && !this.showReport;
+  private _decodeIds(text: string): Strategy[] {
+    return text.split(DATA_SEPARATOR).map(s => this.shared.strategies[s]);
   }
 
   /**************************************
@@ -568,146 +525,28 @@ export class GameComponent implements OnDestroy, OnInit {
     return this.shared.getText(text);
   }
 
-  /**************************************
-   * INVESTMENTS, COMBOS AND CATEGORIES *
-   **************************************/
+  // /*
+  //  * Get data for the resultChart component to use
+  //  */
+  // public get resultChartData(): ResultChartData {
+  //   throw new Error("Not implemented");
+  //   const data = new Array<any>();
+  //   const purchases = this.purchasesAndPassedRounds;
 
-  /*
-   * Get total balance based on made purchases
-   */
-  public getBalance(purchases: Array<Investment>): number {
-    return this.shared.settings.balance - this.getSpentBalance(purchases) + this.getAccumulatedReturns(purchases);
-  }
-
-  /*
-   * Get balance used on investments based on made purchases
-   */
-  public getSpentBalance(purchases: Array<Investment>): number {
-    // We include passed rounds here, as we might defined a cost for passing a round
-    return sum(purchases.map(p => p.price));
-  }
-
-  /*
-   * Check if a subcategory has any of its investments open
-   */
-  public hasActiveInvestments(investment: InvestmentCategory): boolean {
-    return investment.investments.filter(i => i.active).length > 0;
-  }
-
-  public canPurchase(investment: Investment): boolean {
-    return investment.price <= this.balance;
-  }
-
-  public getInvestment(id: InvestmentId): Investment {
-    let res = this.investmentRoot.investments.filter(i => i.id == id);
-    if (res.length < 1)
-      throw new Error(`Could not find Investment with id '${id}'.`);
-    return res[0];
-  }
-
-  /*
-   * Get total accumulated returns based on purchases
-   * Calculated by iteratively summing each rounds returns
-   */
-  public getAccumulatedReturns(purchases: Array<Investment>): number {
-    // NB. This code is duplicated in resultChartData() for efficiency
-    let total = 0;
-    if (purchases.length > 0) {
-      for (let i = 0; i < purchases.length; i++) {
-        total += this.getTotalReturns(purchases.slice(0, i));
-      }
-    }
-    return total;
-  }
-
-  /*
-   * Calculate returns generated by the purchases
-   */
-  public getTotalReturns(purchases: Array<Investment>): number {
-    return this.getInvestmentReturns(purchases) + this.getComboReturns(purchases);
-  }
-
-  public getInvestmentReturns(purchases: Array<Investment>): number {
-    return sum(purchases.map(p => p.returns || 0));
-  }
-
-  public getComboReturns(purchases: Array<Investment>): number {
-    return sum(this.investmentCombos.map(c => c.apply(purchases)));
-  }
-
-  public getCompletedCombos(purchases: Array<Investment>): Array<InvestmentCombo> {
-    return this.investmentCombos.filter(c => c.countMissing(purchases) === 0);
-  }
-  
-  /*
-   * Get combos completed by the last purchase
-   */
-  public getNewlyCompletedCombos(): Array<InvestmentCombo> {
-    if (this.purchasesAndPassedRounds.length < 1)
-      return [];
-    const combosBefore = this.getCompletedCombos(this.purchasesAndPassedRounds.slice(0, -1));
-    return this.getCompletedCombos(this.purchasesAndPassedRounds)
-               .filter(c => !combosBefore.includes(c));
-  }
-
-  /*
-   * Get combos that can be completed by purchasing one more investment in descending order of returns
-   */
-  public getNearlyCompletedCombos(): Array<InvestmentCombo> {
-    return this.investmentCombos.filter(c => c.countMissing(this.purchases) === 1)
-                                .sort((a, b) => b.returns - a.returns);
-  }
-
-  /**************************************
-   * PIPE FLOW                          *
-   **************************************/
-
-  /*
-   * Get the flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) for a dataPipe
-   */
-  public getPipeFlow(index: number): number {
-    if (index > this.investmentRoot.children.length - 1)
-      throw new Error(`Index ${index} for getPipeFlow out of range.`);
-    // TODO Implement proper behaviour
-    let baseValue: number = index === 0 ? PIPE_FLOW_SCALE : this.getPipeFlow(index - 1);
-    let inv = (this.investmentRoot.children[index] as InvestmentCategory).investments;
-    return baseValue * inv.filter(i => i.purchased).length / (inv.length ?? 1);
-  }
-
-  /*
-   * Get the reverse flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) 
-   * of the total flow for a dataPipe i.e. the proportion of data that is not utilized by the next block
-   */
-  public getReversePipeFlow(index: number): number {
-    return this.getPipeFlow(index) == 0 ? 0 : 
-           (1 - this.getPipeFlow(index + 1) / this.getPipeFlow(index)) * PIPE_FLOW_SCALE;
-  }
-
-  /**************************************
-   * REPORT                             *
-   **************************************/
-
-  /*
-   * Get data for the resultChart component to use
-   */
-  public get resultChartData(): ResultChartData {
-    const data = new Array<any>();
-    const purchases = this.purchasesAndPassedRounds;
-
-    // NB. This code is partly copied from getAccumulatedReturns
-    let balance = this.shared.settings.balance;
-    for (let i = 0; i <= purchases.length; i++) {
-      const returns = this.getTotalReturns(purchases.slice(0, i));
-      balance += returns;
-      balance -= i === 0 ? 0 : purchases[i - 1].price;
-      data.push({
-        round:      i + ROUND_BASE,
-        balance:    balance,
-        returns:    returns,
-        investment: this.t(i === 0 ? 'Start' : (purchases[i - 1] instanceof NullInvestment ? 'Pass' : purchases[i - 1].title))
-      });
-    }
-    return data;
-  }
+  //   // NB. This code is partly copied from getAccumulatedReturns
+  //   let balance = this.shared.settings.balance;
+  //   for (let i = 0; i <= purchases.length; i++) {
+  //     const returns = this.getTotalReturns(purchases.slice(0, i));
+  //     balance += returns;
+  //     balance -= i === 0 ? 0 : purchases[i - 1].price;
+  //     data.push({
+  //       round:      i + ROUND_BASE,
+  //       balance:    balance,
+  //       returns:    returns,
+  //       investment: this.t(i === 0 ? 'Start' : (purchases[i - 1] instanceof NullInvestment ? 'Pass' : purchases[i - 1].title))
+  //     });
+  //   }
+  //   return data;
+  // }
 
 }

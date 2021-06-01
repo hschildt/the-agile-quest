@@ -1,214 +1,134 @@
 <div id="grid"
+     [class.roundStarting]="roundStarting"
      @fadeInOut>
 
-  <div id="balance"
-       class="status">
-    <span class="title"
-          [innerHTML]="t('Balance')"></span>
-    <span class="value"><app-number-tracker [end]="balance"
-                                            [skipTracking]="isFirstRound"></app-number-tracker></span>
-  </div>
+  <section id="performanceIndicators">
 
-  <div id="round"
-       class="status"
-       [style]="roundsLeftStyle">
-    <span class="title" 
-          [innerHTML]="t('Months remaining')"></span>
-    <span class="value">{{ roundsLeft }}</span>
-  </div>
+    <app-value-gauge *ngFor="let indicator of performanceIndicators"
+                     type="bar"
+                     [value]="indicator.value"
+                     [previousValue]="indicator.previousValue"
+                     [titleBottom]="indicator.titleBottom"
+                     [titleTop]="indicator.titleTop"
+                     [min]="indicator.minValue"
+                     [max]="indicator.maxValue"
+                     [matTooltip]="t(indicator.toolTip)"></app-value-gauge>
 
-  <div id="returns"
-       class="status">
-    <span class="title" 
-          [innerHTML]="t('Returns/month')"></span>
-    <span class="value"><app-number-tracker [end]="returns"
-                                            [skipTracking]="isFirstRound"
-                                            stepSize="51"></app-number-tracker></span>
-  </div>
+  </section>
 
-  <div id="purchases"
-       class="status">
-    <span class="title" 
-          [innerHTML]="t('Investments')"></span>
-    <span class="value"><app-number-tracker [end]="spentBalance"
-                                            [skipTracking]="isFirstRound"></app-number-tracker></span>
-  </div>
+  <section *ngIf="showPreviousStrategyCards"
+           id="previousStrategyCards"
+           (click)="goToPreviousRound($event)"
+           @previousCards
+           [@previousCardsFade]="showLoadStrategyCardsDialog ? 'faded' : 'normal'">
 
-  <ng-container *ngIf="!showReport">
+    <app-strategy-card *ngFor="let card of previousStrategyCards"
+                       [title]="card.title"
+                       [description]="card.description"
+                       [descriptionBack]="card.feedback"
+                       [flipped]="card.flipped"
+                       [locked]="card.locked"
+                       [disabled]="true"
+                       (cardLocked)="onCardLocked(card)"></app-strategy-card>
 
-    <img *ngIf="feedback.imageUrl"
-          id="avatar"
-          [src]="feedback.imageUrl"
-          (click)="toggleAdvice($event)"
-          class="sentiment-{{ feedback.sentiment }}"
-          [class.hasAdvice]="feedback.advice"
-          @fadeInOut />
+  </section>
 
-    <div *ngIf="feedback.advice && !adviceHidden"
-        id="advice"
-        (click)="toggleAdvice($event)"
-        class="sentiment-{{ feedback.sentiment }}"
-        @fadeInOut>
-      <div [innerHtml]="feedback.advice"></div><!-- Note that advice is already localized -->
-      <div *ngIf="feedback.warning"
-          class="warning"
-          [innerHtml]="feedback.warning"><!-- Note that warning is already localized -->
-      </div>
-    </div>
+  <section *ngIf="showStrategyCards"
+           id="strategyCards"
+           @currentCards>
 
-    <ng-container *ngFor="let category of investmentCategories; index as i">
+    <app-strategy-card *ngFor="let card of strategyCards"
+                       [title]="card.title"
+                       [description]="card.description"
+                       [descriptionBack]="card.feedback"
+                       [flipped]="card.flipped"
+                       [locked]="card.locked"
+                       [disabled]="inFeedbackPhase"
+                       (cardLocked)="onCardLocked(card)"></app-strategy-card>
 
-      <div (click)="categoryClick(category, $event)"
-           class="category category--{{ i }}"
-           [class.needsOnboarding]="category.needsOnboarding"
+  </section>
+
+  <section *ngIf="!showStrategyCards && showLoadStrategyCardsDialog"
+           id="loadStrategyCardsDialog"
            @fadeInOut>
-        <h3 [innerHTML]="t(category.title)"></h3>
-        <div *ngIf="!category.needsOnboarding && category.onboardingAvailable"
-            (click)="startOnboarding(category, $event)"
-            class="infoButton" 
-            [innerHTML]="t('i')"></div>
-        <div *ngIf="!category.needsOnboarding"
-             class="content">
-          <div *ngIf="!category.onboardingActive"
-               class="children"
-               @switchGrowInOut>
 
-              <button *ngFor="let subcategory of category.children"
-                      (click)="show(subcategory, $event)"
-                      [class.active]="subcategory.active"
-                      type="button">
-                <span class="title" 
-                      [innerHTML]="t(subcategory.title)"></span>
-                <div class="investmentMarkers">
-                  <a *ngFor="let investment of subcategory.children"
-                    (click)="show(investment, $event)"
-                    [class.purchased]="investment.purchased"
-                    [class.active]="investment.active"
-                    [title]="t(investment.title)"></a></div>
-              </button>
+    <button *ngIf="!gameOver"
+            type="button"
+            (click)="loadStrategyCards()"
+            [innerHTML]="t('Show Available Strategies')">
+    </button>
 
-          </div>
-          <div *ngIf="category.onboardingActive"
-               class="description"
-               @switchGrowInOut>
-            <div [innerHTML]="t(category.description)"></div>
-            <button (click)="closeOnboarding(category, $event)"
-                    type="button" 
-                    [innerHTML]="t('Start investing')"></button>
-          </div>
-        </div>
+    <button *ngIf="gameOver"
+            type="button"
+            (click)="startOver()"
+            [innerHTML]="t('Start a New Game')">
+    </button>
+
+  </section>
+
+  <section id="scenario">
+
+    <div id="roundIndicator">
+      <mat-progress-spinner color="white"
+                            mode="determinate"
+                            [value]="roundsUsedPercentage">
+      </mat-progress-spinner>
+      <div class="roundText">
+        <span class="roundText-current">{{ round }}</span>
+        <span class="roundText-slash">/</span>
+        <span class="roundText-last">{{ lastRound }}</span>
       </div>
-
-      <!-- The data pipe -->
-      <div *ngIf="i < 3"
-          class="dataPipe dataPipe--{{ i }}">
-        <div *ngIf="getPipeFlow(i) > 0"
-            [style.height]="getPipeFlow(i) + '%'"
-            class="flow">
-          <div *ngIf="getReversePipeFlow(i) < 100"
-              [style.height]="100 - getReversePipeFlow(i) + '%'"
-              class="forward"></div>
-          <div *ngIf="getReversePipeFlow(i) > 0"
-              [style.height]="getReversePipeFlow(i) + '%'"
-              class="reverse"></div>
-        </div>
-      </div>
-
-      <!-- We need to loop again for these as we cannot enclose the subcategory elements within their parents
-          because all elements placed in the grid need to be direct children of the grid container. -->
-      <ng-container *ngIf="category.active">
-        <ng-container *ngFor="let subcategory of category.children">
-          <div *ngIf="subcategory.active"
-               (click)="catchClick($event)"
-               class="subcategory subcategory--of-{{ i }}"
-               [class.hasActive]="hasActiveInvestments(subcategory)"
-               @fadeInOut>
-            <button *ngFor="let investment of subcategory.children"
-                    (click)="show(investment, $event)"
-                    [class.purchased]="investment.purchased"
-                    [class.active]="investment.active"
-                    type="button" 
-                    [innerHTML]="t(investment.title)"></button>
-          </div>
-
-          <!-- Ditto for investment elements -->
-          <ng-container *ngIf="subcategory.active">
-            <ng-container *ngFor="let investment of subcategory.children">
-
-              <div *ngIf="investment.active"
-                  (click)="catchClick($event)"
-                  class="investment investment--of-{{ i }}"
-                  [class.purchased]="investment.purchased"
-                  @fadeInOut>
-                <div class="outlineWrapper">
-                  <h5 [innerHTML]="t(investment.longTitle || investment.title)"></h5>
-                  <div class="description" 
-                       [innerHTML]="t(investment.description)"></div>
-                  <button *ngIf="!investment.purchased"
-                          #purchaseButton
-                          (click)="purchaseClick(investment, $event)"
-                          [disabled]="!canPurchase(investment)"
-                          type="button" 
-                          innerHTML="{{ t('Invest') }} {{ investment.price | currency:null:'symbol':'1.0' }}"></button>
-                  <button *ngIf="investment.purchased"
-                          disabled="true"
-                          type="button"
-                          class="purchased" 
-                          [innerHTML]="t('Purchased')"></button>
-                  <div *ngIf="!investment.purchased && !canPurchase(investment)"
-                       class="warning" 
-                       [innerHTML]="t('You don’t have enough funds!')"></div>
-                </div>
-              </div>
-
-            </ng-container>
-          </ng-container><!-- /let investment of subcategory.children -->
-
-        </ng-container>
-      </ng-container><!-- /let subcategory of category.children -->
-
-    </ng-container><!-- /let category of investmentCategories -->
-
-    <button *ngIf="!showStartOverConfirmation"
-            id="reset"
-            (click)="resetClick($event)"
-            [disabled]="round == 1"
-            @fadeInOut 
-            [innerHTML]="t('Start over')"></button>
-
-    <div *ngIf="showStartOverConfirmation"
-         id="resetConfirmation"
-         @fadeInOut>
-      <span class="info" 
-            [innerHTML]="t('Are you sure you want to start over?')"></span>
-      <button (click)="cancelReset($event)"
-              class="cancel" 
-              [innerHTML]="t('Cancel')"></button>
-      <button (click)="startOverClick($event)"
-              class="ok" 
-              [innerHTML]="t('Yes')"></button>
     </div>
 
-    <button id="pass"
-            (click)="passClick($event)"
-            [class.highlighted]="!canPurchaseSomething" 
-            [innerHTML]="t('Wait for one month')"></button>
+    <div *ngIf="showScenario"
+         id="scenarioContent"
+         @scenario>
 
-  </ng-container>
+      <h1 [innerHTML]="t(scenario.title)"></h1>
+      
+      <div class="description"
+          [innerHTML]="t(scenario.description)"></div>
 
-  <div *ngIf="showReport"
-       id="report"
-       @fadeInOut>
-    <h1 [innerHTML]="t('Final report')"></h1>
-    <button class="reset"
-            (click)="startOverClick($event)" 
-            [innerHTML]="t('Start over')"></button>
-    <app-result-chart [chartData]="resultChartData"
-                      [returnsLabel]="t('Monthly returns')"></app-result-chart>
-  </div>
-  
+    </div>
+
+  </section>
+
+  <section id="organisationalAttributes">
+
+    <app-value-gauge *ngFor="let indicator of organisationalAttributes"
+                     type="dot"
+                     [value]="indicator.value"
+                     [previousValue]="indicator.previousValue"
+                     [titleBottom]="indicator.titleBottom"
+                     [titleTop]="indicator.titleTop"
+                     [min]="indicator.minValue"
+                     [max]="indicator.maxValue"
+                     [matTooltip]="t(indicator.toolTip)"></app-value-gauge>
+
+  </section>
+
+  <section id="ribbons">
+
+    <app-ribbon *ngFor="let ribbon of ribbons; index as i"
+                [title]="ribbon.title"
+                [matTooltip]="t(ribbon.description)"
+                [style.top]="getRibbonTop(i)"></app-ribbon>
+
+  </section>
+
+  <section *ngIf="bottomDialog"
+           id="bottomDialog"
+           @fadeInOut>
+
+    <button type="button"
+            (click)="bottomDialog.confirm()"
+            [innerHTML]="t(bottomDialog.text)">
+    </button>
+
+  </section>
+
 </div>
 
-<div *ngIf="showModal"
+<!-- <div *ngIf="gameOver"
      (click)="modalClick($event)"
-     class="modal"></div>
+     class="modal"></div> -->

@@ -1,28 +1,33 @@
-import { EventEmitter,
-         Inject,
-         Injectable,
-         LOCALE_ID,
-         SecurityContext } from '@angular/core';
+import { 
+  EventEmitter,
+  Inject,
+  Injectable,
+  LOCALE_ID 
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer,
-         SafeHtml } from '@angular/platform-browser';
-import { BehaviorSubject,
-         forkJoin } from 'rxjs';
+import { 
+  BehaviorSubject,
+  forkJoin 
+} from 'rxjs';
 import { map } from 'rxjs/operators';
+import { 
+  Indicator,
+  LocalizedString,
+  Ribbon,
+  Scenario,
+  Settings,
+  Strategy,
+  Texts 
+} from './shared.types';
 
-import { LocalizedString,
-         Settings,
-         Texts } from './shared.types';
-import { Investment, 
-         InvestmentCategory, 
-         InvestmentCombo, 
-         InvestmentRoot } from './investment.types';
 
 export const ANIMATION_DURATION_MS: number = 225;
 export const ANIMATION_DURATION: string = ANIMATION_DURATION_MS + 'ms';
-export const ANIMATION_TIMING: string = `${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
-export const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
+export const ANIMATION_EASING: string = 'cubic-bezier(0.4, 0, 0.2, 1)'
+export const ANIMATION_TIMING: string = `${ANIMATION_DURATION} ${ANIMATION_EASING}`;
+export const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} ${ANIMATION_EASING}`;
 export const DEFAULT_LOCALE = 'en-US';
+export const PERSPECTIVE: string = 'perspective(1000px)';
 const SETTINGS_URL = 'assets/data/settings.json';
 const TEXTS_URL = 'assets/data/texts.json';
 
@@ -30,26 +35,23 @@ const TEXTS_URL = 'assets/data/texts.json';
   providedIn: 'root'
 })
 export class SharedService {
-  public investments: InvestmentRoot;
-  public investmentCombos: Array<InvestmentCombo>;
-  public ready = new BehaviorSubject<boolean>(false);
-  public error = new EventEmitter<string>();
-  public settings: {
+
+  error = new EventEmitter<string>();
+  firstScenario: Scenario;
+  indicators: {[id: string]: Indicator} = {};
+  ready = new BehaviorSubject<boolean>(false);
+  ribbons: {[id: string]: Ribbon} = {};
+  scenarios: {[id: string]: Scenario} = {};
+  settings: {
     version: number,
-    balance: number,
     rounds: number,
-    bookUrl: string,
-    sentimentOptions: {
-      neutralReturnsRange: [number, number],
-      comboCompletionBonus: number,
-    },
   };
-  public texts: Texts;
+  strategies: {[id: string]: Strategy} = {};
+  texts: Texts;
 
   constructor(
     private http: HttpClient,
-    @Inject(LOCALE_ID) public locale: string,
-    private sanitizer: DomSanitizer,
+    @Inject(LOCALE_ID) public locale: string
   ) {
     this.loadData();
   }
@@ -77,56 +79,24 @@ export class SharedService {
   public processSettings(settings: Settings): void {
     this.settings = {
       version: settings.version,
-      balance: settings.balance,
-      rounds:  settings.rounds,
-      bookUrl: settings.bookUrl,
-      sentimentOptions: settings.sentimentOptions
+      rounds:  settings.rounds
     };
-    this.investments = this.processInvestmentsJson(settings.investments);
-    this.investmentCombos = this.processInvestmentCombosJson(settings.investmentCombos);
+
+    for (const list of ['indicators', 'ribbons', 'scenarios', 'strategies'])
+      this[list] = this.processJsonList(settings[list]);
+
+    this.firstScenario = settings.scenarios[0];
   }
 
   /*
-   * Create proper objects from settings.json
+   * Create proper objects from settings.json sublists
    */
-  public processInvestmentsJson(data: Array<any>): InvestmentRoot {
-    const root = new InvestmentRoot();
-    data.forEach(c => {
-      let catNode = new InvestmentCategory(
-        c.id,
-        c.title,
-        root,
-        c.description,
-        c.onboardingStatus
-      );
-      c.children?.forEach(s => {
-        let subNode = new InvestmentCategory(
-          s.id,
-          s.title,
-          catNode
-        );
-        s.children.forEach(i => {
-          let invNode = new Investment(
-            i.id,
-            i.title,
-            subNode,
-            i.description,
-            i.price,
-            i.returns,
-            i.longTitle
-          );
-        });
-      })
-    });
-    return root;
-  }
-
-  public processInvestmentCombosJson(data: Array<any>): Array<InvestmentCombo> {
-    return data.map(c => new InvestmentCombo(
-      c.investments,
-      c.description,
-      c.returns
-    ));
+  public processJsonList(data: Array<any>): {[id: string]: any} {
+    const dict: {[id: string]: any} = {};
+    data.forEach(d => 
+      dict[d.id] = d
+    );
+    return dict;
   }
 
   /*
@@ -137,13 +107,12 @@ export class SharedService {
    * sanitized by Angular but basic formatting and links are allowed, at least.
    */
   public getText(text: string | LocalizedString): string {
-    if (text == null) {
+    if (text == null)
       return "";
-    } else if (typeof text === "string") {
+    else if (typeof text === "string")
       return this.texts[text]?.[this.locale] ?? text;
-    } else {
+    else
       return text[this.locale] ?? text[DEFAULT_LOCALE];
-    }
   }
 
 }

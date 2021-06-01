@@ -1,0 +1,94 @@
+@import 'variables.scss'
+
+
+$border: $border-M
+
+:host
+  display: block
+
+.container
+  display: flex
+  flex-flow: column nowrap
+  justify-content: stretch
+  height: 100%
+  padding: $margin-S 0px
+  position: relative
+
+.content
+  border: $border
+  height: 100%
+  // display: flex
+  // flex-flow: column nowrap
+  // justify-content: center
+  // align-items: flex-start
+  position: relative
+
+.bar
+  .content
+    border-left-style: none
+    border-right-style: none
+
+.dot
+  .content::before
+    border-top: $border
+    content: ''
+    display: block
+    left: 0
+    position: absolute
+    top: calc(50% - #{$borderWidth-M} / 2)
+    width: 100%
+
+
+.previousValue
+  background-color: $color-secondary
+  height: 2rem
+  width: $borderWidth-M
+  position: absolute
+  top: calc(50% - 1rem)
+  transform: translateX(-50%)
+  transition: all $animationDuration-M
+
+.valueBar
+  background-color: $color-primary
+  height: 1rem
+  position: absolute
+  top: calc(50% - 0.5rem)
+  transition: all $animationTimingWithDelay-XL
+
+// .valueBar.valueChange
+//   background-color: $color-primary
+//   transition: all none
+
+//   &.negative
+//     background-color: $color-secondary
+
+.valueDot
+  background-color: $color-primary
+  height: 1.2rem
+  width: 1.2rem
+  border-radius: 0.6rem
+  position: absolute
+  top: calc(50% - 0.6rem)
+  transform: translateX(-50%)
+  transition: all $animationTimingWithDelay-XL
+
+// .valueDot.previousValue
+//   background-color: $color-secondary
+//   transition: all none
+
+.titleTop,
+.titleBottom
+  position: absolute
+  left: 0
+  right: 0
+  text-align: center
+
+  .titleText
+    background-color: $color-primaryBg
+    padding: 0px $margin-S
+
+.titleTop
+  top: 0px
+
+.titleBottom
+  bottom: 0px

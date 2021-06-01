@@ -1,7 +1,7 @@
-import { Component,
-         OnInit } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
-
+import {
+  Component,
+  OnInit 
+} from '@angular/core';
 import { SharedService } from '../../shared';
 
 @Component({
@@ -20,11 +20,5 @@ export class TitleScreenComponent implements OnInit {
 
   public t(text: string): string {
     return this.shared.getText(text);
-  }
-
-  public bookPromoClick(event: Event): void {
-    window.open(this.shared.settings.bookUrl, "_blank");
-    if (event)
-      event.stopPropagation();
   }
 }
