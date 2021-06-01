@@ -112,7 +112,8 @@
     <app-ribbon *ngFor="let ribbon of ribbons; index as i"
                 [title]="ribbon.title"
                 [matTooltip]="t(ribbon.description)"
-                [style.top]="getRibbonTop(i)"></app-ribbon>
+                [style.top]="getRibbonTop(i)"
+                @ribbon></app-ribbon>
 
   </section>
 

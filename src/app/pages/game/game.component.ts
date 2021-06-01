@@ -138,6 +138,26 @@ function clamp(num: number, min: number = null, max: number = null): number {
         animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
       ])
     ]),
+    trigger('ribbon', [
+      transition(':enter', [
+        style({
+          transform: 'scale(0)'
+        }),
+        // We add a delay to allow for the :leave animation to finish first
+        animate(ANIMATION_TIMING, style({
+          transform: 'scale(1)'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          transform: 'scale(1)'
+        }),
+        // We add a delay to allow for the :leave animation to finish first
+        animate(ANIMATION_TIMING, style({
+          transform: 'scale(0)'
+        })),
+      ])
+    ]),
     trigger('scenario', [
       transition(':enter', [
         style({
