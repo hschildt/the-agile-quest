@@ -1,12 +1,11 @@
-<section *ngIf="!flipped"
-         class="card front"
+<section class="card front"
          [class.disabled]="disabled"
          [class.locked]="locked"
-         @frontFlip>
+         [@flip]="frontFlipTrigger">
 
   <div class="content">
     <div class="description"
-         [innerHTML]="t(description)"></div>
+        [innerHTML]="t(description)"></div>
   </div>
   
   <label>
@@ -24,9 +23,8 @@
 
 </section>
 
-<section *ngIf="flipped"
-         class="card back"
-         @backFlip>
+<section class="card back"
+         [@flip]="backFlipTrigger">
 
   <div class="content">
     <h3>

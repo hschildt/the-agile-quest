@@ -22,6 +22,7 @@ button:focus
 #grid
   display: grid
   padding: $margin-XL
+  position: relative
   min-height: 100vh
   max-height: 100vh
   width: 100%
@@ -87,16 +88,26 @@ button:focus
       .roundText-last
         vertical-align: -6px
 
+#topDialog
+  grid-area: mid / col-2 / main / col-6
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+  padding: $margin-S
+  position: relative
+  z-index: $zIndex-9
+
 #strategyCards,
 #previousStrategyCards,
-#loadStrategyCardsDialog
+#middleDialog
   grid-area: main / col-1 / bottom / right-edge
   display: flex
   flex-flow: row nowrap
   align-items: center
   justify-content: center
   padding-bottom: $margin-M
-  position: relative
+  transform-origin: top center
   z-index: $zIndex-5
 
 #strategyCards
@@ -111,16 +122,12 @@ button:focus
   cursor: pointer
   // See animations in component
   opacity: 0.3
-  transform: translateY(-2.5rem) scale(0.9)
-  transform-origin: top center
   z-index: $zIndex-1
-  transition: opacity $animationTiming-M
 
   *
     pointer-events: none
 
-#loadStrategyCardsDialog
-
+#middleDialog
   button
     margin: 0
     max-width: 20rem
@@ -158,7 +165,7 @@ button:focus
   &:hover
     opacity: 1.0
 
-.roundStarting
+.showIndicators
   #performanceIndicators,
   #organisationalAttributes,
   #ribbons
@@ -175,6 +182,8 @@ button:focus
   position: relative
   z-index: $zIndex-9
 
+#bottomDialog,
+#topDialog
   button
     margin: 0
     max-width: 20rem

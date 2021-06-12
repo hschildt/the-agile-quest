@@ -27,12 +27,17 @@ import {
   LocalizedString,
   Ribbon,
   Scenario,
-  Settings,
   SharedService,
   Strategy,
-  Texts
 } from '../../shared';
 import { ResultChartData } from './result-chart.component';
+
+
+// See startRound()
+type AnimationDirection = 'backward' | 'forward';
+type AnimationState = 'current-enter' | 'current' | 'current-noTransition' | 'previous' | 'previous-noTransition' | 'previous-leave';
+type QueueStep = number | (() => void);
+type Queue = QueueStep[];
 
 const DATA_KEY_VERSION = 'v';
 const DATA_KEY_SHOWREPORT = 'r';
@@ -43,28 +48,27 @@ const ROUND_BASE = 1;
 const ANIMATION_DURATION_PREVIOUS_CARDS_MS = 450;
 const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_MS}ms ${ANIMATION_EASING}`;
 
-const ROUND_START_SCHEDULE_MS: {[event: string]: number} = {
-  hidePreviousStrategies: 225,
-  initIndicators: 700
-}
-ROUND_START_SCHEDULE_MS.showPreviousStrategies = 
-  ROUND_START_SCHEDULE_MS.hidePreviousStrategies + ANIMATION_DURATION_PREVIOUS_CARDS_MS;
-ROUND_START_SCHEDULE_MS.hideScenario  = 
-  ROUND_START_SCHEDULE_MS.showPreviousStrategies + ANIMATION_DURATION_PREVIOUS_CARDS_MS - 125;
-ROUND_START_SCHEDULE_MS.showScenario  = 
-  ROUND_START_SCHEDULE_MS.hideScenario + ANIMATION_DURATION_PREVIOUS_CARDS_MS;
-ROUND_START_SCHEDULE_MS.showLoadStrategies  = 
-  ROUND_START_SCHEDULE_MS.showScenario + 2000;
-ROUND_START_SCHEDULE_MS.fadeOutIndicators = ROUND_START_SCHEDULE_MS.showLoadStrategies;
-
 /*
  * For convenience
  */
-function sum(arr: Array<number>): number {
+const sum = function sum(arr: Array<number>): number {
   return arr.reduce((a, b) => a + b, 0);
 }
-function clamp(num: number, min: number = null, max: number = null): number {
+const clamp = function clamp(num: number, min: number = null, max: number = null): number {
   return num <= min ? min : num >= max ? max : num;
+}
+const processQueue = function processQueue(queue: Queue) {
+  if (queue.length < 1)
+    return;
+
+  const step = queue.shift();
+
+  if (typeof step === 'number') {
+    setTimeout(() => processQueue(queue), step);
+  } else {
+    step();
+    processQueue(queue);
+  }
 }
 
 @Component({
@@ -92,39 +96,56 @@ function clamp(num: number, min: number = null, max: number = null): number {
         })),
       ]),
     ]),
-    trigger('currentCards', [
-      transition(':enter', [
+    trigger('strategyCards', [
+      state('current-enter',
         style({
           opacity: 0,
           transform: 'translateY(60vh)'
         }),
-        // We add a delay to allow for the :leave animation to finish first
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
-          opacity: 1,
-          transform: 'none'
-        })),
-      ])
-    ]),
-    trigger('previousCards', [
-      transition(':enter', [
+      ),
+      state('current, current-noTransition',
         style({
           opacity: 1,
           transform: 'none'
         }),
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
-          opacity: 0.3,
-          transform: 'translateY(-2.5rem) scale(0.9)',
-        })),
-      ]),
-      transition(':leave', [
+      ),
+      state('previous, previous-noTransition',
         style({
           opacity: 0.3,
           transform: 'translateY(-2.5rem) scale(0.9)',
-        }),
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
+        })
+      ),
+      state('previous-leave',
+        style({
           opacity: 0.0,
           transform: 'translateY(-5rem) scale(0.8)',
-        })),
+        })
+      ),
+      transition('current-enter <=> current, current <=> previous, previous <=> previous-leave', [
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
+      ]),
+    ]),
+    trigger('previousCards', [
+      state('current',
+        style({
+          opacity: 0.3,
+          transform: 'translateY(-2.5rem) scale(0.9)',
+        })
+      ),
+      state('previous',
+        style({
+          opacity: 0.0,
+          transform: 'translateY(-5rem) scale(0.8)',
+        })
+      ),
+      state('next',
+        style({
+          opacity: 0.0,
+          transform: 'translateY(-2.5rem) scale(0.9)',
+        })
+      ),
+      transition('current <=> previous', [
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
       ]),
     ]),
     trigger('previousCardsFade', [
@@ -159,49 +180,57 @@ function clamp(num: number, min: number = null, max: number = null): number {
       ])
     ]),
     trigger('scenario', [
-      transition(':enter', [
+      state('current',
+        style({
+          opacity: 1,
+          transform: `${PERSPECTIVE}`,
+        })
+      ),
+      state('previous',
+        style({
+          opacity: 0,
+          transform: `${PERSPECTIVE} translate3d(0px, 15vh, -400px)`,
+        })
+      ),
+      state('current-enter',
         style({
           opacity: 0,
           transform: `${PERSPECTIVE} translate3d(0px, -25vh, 500px)`
-        }),
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
-          opacity: 1,
-          transform: `${PERSPECTIVE}`,
-        })),
-      ]),
-      transition(':leave', [
-        style({
-          opacity: 1,
-          transform: `${PERSPECTIVE}`,
-        }),
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS, style({
-          opacity: 0,
-          transform: `${PERSPECTIVE} translate3d(0px, 15vh, -400px)`,
-        })),
+        })
+      ),
+      transition('current <=> *', [
+        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
       ]),
     ]),
   ],
 })
 export class GameComponent implements OnDestroy, OnInit {
 
+  animationDirection: AnimationDirection = 'forward';
   bottomDialog: {
     text: string,
     confirm: () => void
   };
+  currentCardsTrigger: AnimationState = 'current-enter';
+  enableGoToPrevious: boolean = false;
   inFeedbackPhase: boolean = false;
   performanceIndicators: Indicator[] = [];
   organisationalAttributes: Indicator[] = [];
   playedScenarios: Scenario[] = [];
   playedStrategies: Strategy[] = [];
+  previousCardsTrigger: AnimationState = 'current-enter';
   previousStrategyCards: Strategy[] = [];
   ribbons: Ribbon[] = [];
   roundStarting: boolean = false;
-  showLoadStrategyCardsDialog: boolean = false;
-  showPreviousStrategyCards: boolean = false;
+  scenarioTrigger: AnimationState = 'current-enter';
+  showGameOverDialog: boolean = false;
   showReport: boolean = false;
   showScenario: boolean = false;
-  showStrategyCards: boolean = false;
   strategyCards: Strategy[] = [];
+  topDialog: {
+    text: string,
+    confirm: () => void
+  };
 
   private _subscriptions = new Array<Subscription>();
 
@@ -211,6 +240,8 @@ export class GameComponent implements OnDestroy, OnInit {
     private shared:    SharedService
   ) {
     this.resetState();
+    this.performanceIndicators = Object.values(this.shared.indicators).filter(i => i.type === 'performance');
+    this.organisationalAttributes = Object.values(this.shared.indicators).filter(i => i.type === 'organisation');
   }
 
   ngOnInit(): void {
@@ -300,46 +331,104 @@ export class GameComponent implements OnDestroy, OnInit {
    * VALUE INITIALISATION               *
    **************************************/
 
+  /*
+   * Perform a number of steps at the start of the round with 
+   * delays in between them.
+   */
   startRound(): void {
 
-    this.resetState();
+    let queue: Queue;
+
+    console.log(this.animationDirection);
     
-    // Init different data
-    this.initScenarios();
-    this.initRibbons();
+    if (this.animationDirection === 'backward')
+      queue = [
+        () => this.resetState(),
+        // This sets a class of the same name, which highlights indicators
+        () => this.roundStarting = true,
+        225,
+        () => this.currentCardsTrigger = 'current-enter',
+        () => this.previousCardsTrigger = 'current',
+        () => this.scenarioTrigger = 'current-enter',
+        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        () => this.initScenarios(),
+        () => this.scenarioTrigger = 'previous',
+        100,
+        () => this.scenarioTrigger = 'current',
+        () => this.initIndicators(),
+        () => this.initRibbons(),
+        () => {
+          this.initPreviousStrategyCards();
+          this.initStrategyCards();
+          this.previousCardsTrigger = 'previous-leave';
+          this.currentCardsTrigger = 'current-noTransition';
+        },
+        225,
+        () => this.previousCardsTrigger = 'previous',
+        1000,
+        () => this.roundStarting = false
+      ];
+    else
+      queue = [
+        // NB. This unflips the card just played, so we must wait for that
+        () => this.resetState(),
+        3 * ANIMATION_DURATION_MS,
+        // This sets a class of the same name, which highlights indicators
+        () => this.roundStarting = true,
+        () => this.currentCardsTrigger = 'previous',
+        () => this.previousCardsTrigger = 'previous-leave',
+        () => this.scenarioTrigger = 'previous',
+        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        () => {
+          this.initScenarios();
+          this.scenarioTrigger = 'current-enter';
+        },
+        () => this.scenarioTrigger = 'current',
+        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        () => this.initIndicators(),
+        () => this.initRibbons(),
+        1500,
+        () => {
+          if (this.gameOver)
+            this.showGameOverDialog = true;
+          else {
+            this.initPreviousStrategyCards();
+            this.initStrategyCards();
+            this.previousCardsTrigger = 'previous-noTransition';
+            this.currentCardsTrigger = 'current-enter';
+          }
+        },
+        225,
+        () => {
+          if (!this.gameOver)
+            this.currentCardsTrigger = 'current';
+        },
+        1000,
+        () => this.roundStarting = false
+      ];
 
-    // This sets a class of the same name, which highlights indicators
-    this.roundStarting = true;
-
-    // Coordinate entry, exit and update of differenet elements
-    setTimeout(() => this.initIndicators(), ROUND_START_SCHEDULE_MS.initIndicators);
-    setTimeout(() => this.showPreviousStrategyCards = false, ROUND_START_SCHEDULE_MS.hidePreviousStrategies);
-    setTimeout(() => this.initPreviousStrategyCards(), ROUND_START_SCHEDULE_MS.showPreviousStrategies);
-    setTimeout(() => this.showScenario = false, ROUND_START_SCHEDULE_MS.hideScenario);
-    setTimeout(() => this.showScenario = true, ROUND_START_SCHEDULE_MS.showScenario);
-    setTimeout(() => this.showLoadStrategyCardsDialog = true, ROUND_START_SCHEDULE_MS.showLoadStrategies);
-    setTimeout(() => this.roundStarting = false, ROUND_START_SCHEDULE_MS.fadeOutIndicators);
+    processQueue(queue);
 
   }
 
   resetState(): void {
     this.bottomDialog = undefined;
+    this.enableGoToPrevious = false;
     this.inFeedbackPhase = false;
     this.roundStarting = false;
-    this.showLoadStrategyCardsDialog = false;
+    this.showGameOverDialog = false;
     this.showScenario = false;
     this.showReport = false;
+    this.topDialog = undefined;
 
     // Set the correct flipped/locked states for strategies
     for (const sid in this.shared.strategies) {
       const s = this.shared.strategies[sid];
-      if (!this.playedStrategies.includes(s)) {
-        s.locked = false;
-        s.flipped = false;
-      } else {
-        s.locked = true;
-        s.flipped = true;
-      }
+      s.locked = s.flipped = false;
+      // if (!this.playedStrategies.includes(s))
+      //   s.locked = s.flipped = false;
+      // else
+      //   s.locked = s.flipped = true;
     }
   }
 
@@ -377,9 +466,6 @@ export class GameComponent implements OnDestroy, OnInit {
       indicator.value = value;
       indicator.previousValue = previousValue;
     }
-
-    this.performanceIndicators = Object.values(this.shared.indicators).filter(i => i.type === 'performance');
-    this.organisationalAttributes = Object.values(this.shared.indicators).filter(i => i.type === 'organisation');
   }
 
   initRibbons(): void {
@@ -394,14 +480,11 @@ export class GameComponent implements OnDestroy, OnInit {
 
   initPreviousStrategyCards(): void {
     this.previousStrategyCards = (this.previousScenario?.strategies ?? []).map(s => this.shared.strategies[s]);
-    this.showPreviousStrategyCards = true;
-    this.showStrategyCards = false;
   }
 
   initStrategyCards(): void {
     this.strategyCards = (this.scenario.strategies ?? []).map(s => this.shared.strategies[s]);
-    this.showLoadStrategyCardsDialog = false;
-    this.showStrategyCards = true;
+    this.enableGoToPrevious = true;
   }
 
   /**************************************
@@ -409,8 +492,12 @@ export class GameComponent implements OnDestroy, OnInit {
    **************************************/
 
   goToPreviousRound(event?: Event): void {
-    this.playedStrategies.pop();
-    this.updateUrl();
+    // Prevent clicks when we are still waiting for this round's strategies
+    if (!this.enableGoToPrevious)
+      return;
+
+    // True here means we go back
+    this.updateUrl(true);
   }
 
 
@@ -447,17 +534,32 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   showStrategyFeedback(strategy: Strategy): void {
-    strategy.flipped = true;
-    // This disabled further selection of strategies
-    this.inFeedbackPhase = true;
-    this.bottomDialog = {
-      text: this.t('Start next round'),
-      confirm: () => this.executeStrategy(strategy)
-    };
+
+    const queue: Queue = [
+      () => {
+        strategy.flipped = true;
+        // This disables further selection of strategies
+        this.inFeedbackPhase = true;
+        this.bottomDialog = undefined;
+        this.playedStrategies.push(strategy);
+        // Update indicators (nb. the next scenario doesn't affect these yet)
+      },
+      225,
+      () => this.initIndicators(),
+      775,
+      () => this.scenarioTrigger = 'previous',
+      1000,
+      () => this.topDialog = {
+        text: this.t('Start next round'),
+        confirm: () => this.executeStrategy(strategy)
+      }
+    ];
+
+    processQueue(queue);
+
   }
 
   executeStrategy(strategy: Strategy): void {
-    this.playedStrategies.push(strategy);
     this.updateUrl();
   }
 
@@ -472,35 +574,17 @@ export class GameComponent implements OnDestroy, OnInit {
     event?.stopPropagation();
   }
 
-  // public resetClick(event?: Event): void {
-  //   this.hideOthers(ShowableTopic.ResetConfirmation);
-  //   this.showStartOverConfirmation = true;
-  //   // To disable background click
-  //   if (event)
-  //     event.stopPropagation();
-  // }
-
-  // public cancelReset(event?: Event): void {
-  //   this.showStartOverConfirmation = false;
-  //   // To disable background click
-  //   if (event)
-  //     event.stopPropagation();
-  // }
-
-  // public startOverClick(event?: Event): void {
-  //   this.hideOthers(ShowableTopic.ResetConfirmation);
-  //   setTimeout(() => this.startOver(event), this.options.purchaseDelay);
-  // }
-
   /**************************************
    * URL PARAMS                         *
    **************************************/
 
-  public updateUrl(): void {
+  public updateUrl(goBack: boolean = false): void {
     // We use router to save the game data between sessions
     this.router.navigate([{
       [DATA_KEY_VERSION]:    this.shared.settings.version,
-      [DATA_KEY_STRATEGIES]: this._encodeIds(this.playedStrategies),
+      [DATA_KEY_STRATEGIES]: this._encodeIds(goBack && this.playedStrategies.length > 0 ? 
+                                             this.playedStrategies.slice(0, -1) : 
+                                             this.playedStrategies),
       [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0,
     }]);
   }
@@ -511,11 +595,18 @@ export class GameComponent implements OnDestroy, OnInit {
     if (this.route.snapshot.params?.[DATA_KEY_VERSION] && 
         this.route.snapshot.params[DATA_KEY_VERSION] == this.shared.settings.version) {
 
+      // Save current round here, so we can check which direction to animate to
+      const currentRound = this.round;
+
       if (this.route.snapshot.params[DATA_KEY_STRATEGIES])
         this.playedStrategies = this._decodeIds(this.route.snapshot.params[DATA_KEY_STRATEGIES]);
       else
         this.playedStrategies = [];
 
+      // NB. This only counts the round number, so if we were to edit the url
+      // manually, we would get an inconsistent transition
+      this.animationDirection = this.round < currentRound ? 'backward' : 'forward';
+      
       if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
           this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1)
         this.showReport = true;

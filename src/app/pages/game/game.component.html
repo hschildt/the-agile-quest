@@ -1,5 +1,5 @@
 <div id="grid"
-     [class.roundStarting]="roundStarting"
+     [class.showIndicators]="roundStarting || inFeedbackPhase"
      @fadeInOut>
 
   <section id="performanceIndicators">
@@ -16,11 +16,11 @@
 
   </section>
 
-  <section *ngIf="showPreviousStrategyCards"
-           id="previousStrategyCards"
+  <section id="previousStrategyCards"
            (click)="goToPreviousRound($event)"
-           @previousCards
-           [@previousCardsFade]="showLoadStrategyCardsDialog ? 'faded' : 'normal'">
+           [@strategyCards]="previousCardsTrigger">
+
+    <!-- @previousCardsFade]="showLoadStrategyCardsDialog ? 'faded' : 'normal'" -->
 
     <app-strategy-card *ngFor="let card of previousStrategyCards"
                        [title]="card.title"
@@ -33,9 +33,8 @@
 
   </section>
 
-  <section *ngIf="showStrategyCards"
-           id="strategyCards"
-           @currentCards>
+  <section id="strategyCards"
+           [@strategyCards]="currentCardsTrigger">
 
     <app-strategy-card *ngFor="let card of strategyCards"
                        [title]="card.title"
@@ -48,7 +47,18 @@
 
   </section>
 
-  <section *ngIf="!showStrategyCards && showLoadStrategyCardsDialog"
+  <section *ngIf="showGameOverDialog"
+           id="middleDialog"
+           @fadeInOut>
+
+    <button type="button"
+            (click)="startOver()"
+            [innerHTML]="t('Start a New Game')">
+    </button>
+
+  </section>
+
+  <!-- <section *ngIf="showLoadStrategyCardsDialog"
            id="loadStrategyCardsDialog"
            @fadeInOut>
 
@@ -64,7 +74,7 @@
             [innerHTML]="t('Start a New Game')">
     </button>
 
-  </section>
+  </section> -->
 
   <section id="scenario">
 
@@ -80,16 +90,26 @@
       </div>
     </div>
 
-    <div *ngIf="showScenario"
-         id="scenarioContent"
-         @scenario>
+    <div id="scenarioContent"
+         [@scenario]="scenarioTrigger">
 
-      <h1 [innerHTML]="t(scenario.title)"></h1>
+      <h1 [innerHTML]="t(scenario?.title)"></h1>
       
       <div class="description"
-          [innerHTML]="t(scenario.description)"></div>
+          [innerHTML]="t(scenario?.description)"></div>
 
     </div>
+
+  </section>
+
+  <section *ngIf="topDialog"
+           id="topDialog"
+           @fadeInOut>
+
+    <button type="button"
+            (click)="topDialog.confirm()"
+            [innerHTML]="t(topDialog.text)">
+    </button>
 
   </section>
 
