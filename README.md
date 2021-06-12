@@ -22,7 +22,7 @@ See: https://angular.io/guide/deployment#deploy-to-github-pages
 
 1. Build the project using the Angular CLI with:
 
-`ng build --prod --output-path docs --base-href /the-agile-quest/`
+`ng build --configuration production --output-path docs --base-href /the-agile-quest/`
 
 2. When the build is complete, make a copy of `docs/index.html` and name it `docs/404.html`:
 
