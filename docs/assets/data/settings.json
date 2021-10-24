@@ -526,6 +526,7 @@
         "en-US": "The replacement of routine human work with automated processes."
       }
     },
+    /*
     {
       "id": "p6",
       "type": "performance",
@@ -541,7 +542,7 @@
       "toolTip": {
         "en-US": "The profitability of the company."
       }
-    },
+    },*/
     {
       "id": "o1",
       "type": "organisation",
