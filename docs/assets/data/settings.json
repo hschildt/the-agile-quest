@@ -537,6 +537,22 @@
       }
     },
     {
+      "id": "p6",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Financial"
+      },
+      "titleBottom": {
+        "en-US": "Performance"
+      },
+      "toolTip": {
+        "en-US": "The profitability of the company."
+      }
+    },
+    {
       "id": "o1",
       "type": "organisation",
       "initialValue": -2,
