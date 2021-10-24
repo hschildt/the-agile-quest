@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "rounds": 8,
+  "rounds": 10,
   "scenarios": [
     {
       "id": "1",
@@ -8,12 +8,13 @@
         "en-US": "Profitability issues"
       },
       "description": {
-        "en-US": "Our operating profit at the bank has decreased steadily over time and we are now a whole 5% below our main competitors. This is clearly a concern for our board, who have asked us to come up with a plan to address this situation. We need to either our customer representatives to sell more and our back office staff to process work faster, or we need to find places to cut costs.</br>Here are some alternatives that our board would approve. What should we do?"
+        "en-US": "Our operating profit at the bank has decreased steadily over time and we are now a whole 5 percentage points below our main competitors. This is clearly a concern for our board, who have asked us to come up with a plan to address this situation. We need to either our customer representatives to sell more and our back office staff to process work faster, or we need to find places to cut costs.</br>Here are some alternatives that our board would approve. What should we do?"
       },
       "strategies": [
-        1,
-        2,
-        3
+        11,
+        12,
+        13,
+        14
       ],
       "effects": {
         "p6": -2
@@ -22,15 +23,15 @@
     {
       "id": "2",
       "title": {
-        "en-US": "Do we get our customers?"
+        "en-US": "We don't seem to understand our customers"
       },
       "description": {
         "en-US": "Our competitors are getting a lot of traction for their new apps, while our customers seem to ignore our new services. One board member noted that our technology development unit seems too disconnected from our customers and the everyday issues our customer representatives deal with. Another board member suggested that our new services may be focusing on the customers’ current problems rather than their fundamental needs. Whatever the reasons are, it appears we are not as customer centric as we should be. </br>Maybe we should try one of these approaches?"
       },
       "strategies": [
-        4,
-        5,
-        6
+        21,
+        22,
+        23
       ],
       "effects": {
         "p5": -1,
@@ -40,15 +41,15 @@
     {
       "id": "3",
       "title": {
-        "en-US": "Our innovations lack impact"
+        "en-US": "The board wants an agile transformation"
       },
       "description": {
         "en-US": "Our research and development efforts have led to a number of promising new services, but the current organization doesn’t seem to facilitate innovation. In fact, there seems to be a complete lack of alignment in realizing the new services and getting our customers to use them. Part of the problem is ignorance—our organization is not aware of the new services and the customer needs they address. Finally, our customer-facing employees are more interested in maintaining old relationships than pushing out our new services. "
       },
       "strategies": [
-        7,
-        8,
-        9
+        31,
+        32,
+        33
       ],
       "effects": {
         "p2": -1,
@@ -58,15 +59,16 @@
     {
       "id": "4",
       "title": {
-        "en-US": "Internal politics"
+        "en-US": "The scope of the change"
       },
       "description": {
         "en-US": "The adoption of the agile structure has led to increase in political conflicts. Many former leaders have trouble adapting to a more collegial and non-hierarchical decision making practices. Individiuals are using their social networks and status to steamroll their own ideas through."
       },
       "strategies": [
-        10,
-        11,
-        12
+        41,
+        42,
+        43,
+        44
       ],
       "effects": {
         "o3": 1,
@@ -77,15 +79,15 @@
     {
       "id": "5",
       "title": {
-        "en-US": "Lack of strategic direction"
+        "en-US": "Rethinking organizational architecture?"
       },
       "description": {
         "en-US": "The multi-functional R&D teams are great at coming up with customer-oriented solutions, but their work seems to be all over the place. The services are partially overlapping and they do not really complement one other. The company seems to be losing its direction."
       },
       "strategies": [
-        13,
-        14,
-        15
+        51,
+        52,
+        53
       ],
       "effects": {
         "p3": -2
@@ -94,14 +96,17 @@
     {
       "id": "6",
       "title": {
-        "en-US": "Duplicate work"
+        "en-US": "Middle-management resistance"
       },
       "description": {
         "en-US": "Employees love the ability of their teams to make a real difference, and our customer feedback has increased. Not all is going well though. Our people are working insane hours and many leaders report a sense of impending burn-out. It seems that the teams are doing a lot of duplicate work, solving problems that have already been solved by other teams. How could we help coordinate work better?"
       },
       "strategies": [
-        16,
-        17
+        61,
+        62,
+        63,
+        64,
+        65
       ],
       "effects": {
         "p1": -2
@@ -110,18 +115,81 @@
     {
       "id": "7",
       "title": {
+        "en-US": "Passivity and hidden hierarchies"
+      },
+      "description": {
+        "en-US": "The transformation process is well on the way, but there seem to be a few hiccups. First, employees in some teams do not seem to know what to do exactly and they are waiting for instructions.<p>After talking with some employees, we believe that former managers are still very influential. Former subordinates are waiting to be instructed by their former managers on what to do beyong the team boundaries."
+      },
++      "strategies": [
+        71,
+        72,
+        73
+      ],
+      "effects": {}
+    },
+    {
+      "id": "8",
+      "title": {
+        "en-US": "Lack of alignment and duplicate work"
+      },
+      "description": {
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+      },
+      "strategies": [
+        81,
+        82,
+        83
+      ],
+      "effects": {}
+    },
+    {
+      "id": "9",
+      "title": {
+        "en-US": "Inefficiencies and duplicate work"
+      },
+      "description": {
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+      },
+      "strategies": [
+        91,
+        92,
+        93,
+        94
+      ],
+      "effects": {}
+    },
+    {
+      "id": "10",
+      "title": {
+        "en-US": "Limited opportunities for career progression"
+      },
+      "description": {
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+      },
+      "strategies": [
+        101,
+        102,
+        103
+      ],
+      "effects": {}
+    },
+    {
+      "id": "11",
+      "title": {
         "en-US": "Good job!"
       },
       "description": {
         "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
       },
-      "strategies": [],
+      "strategies": [
+      ],
       "effects": {}
     }
   ],
+
   "strategies": [
     {
-      "id": "1",
+      "id": "11",
       "title": {
         "en-US": "Automate the back office"
       },
@@ -140,7 +208,7 @@
       ]
     },
     {
-      "id": "2",
+      "id": "12",
       "title": {
         "en-US": "Emphasize self-service channels"
       },
@@ -155,7 +223,7 @@
       "ribbons": []
     },
     {
-      "id": "3",
+      "id": "13",
       "title": {
         "en-US": "Strengthen incentives"
       },
@@ -171,7 +239,7 @@
       "ribbons": []
     },
     {
-      "id": "4",
+      "id": "14",
       "title": {
         "en-US": "Prototyping"
       },
@@ -184,8 +252,9 @@
       },
       "ribbons": []
     },
+
     {
-      "id": "5",
+      "id": "21",
       "title": {
         "en-US": "Cross-functional teams"
       },
@@ -201,7 +270,7 @@
       ]
     },
     {
-      "id": "6",
+      "id": "22",
       "title": {
         "en-US": "Extensive user research"
       },
@@ -215,7 +284,7 @@
       "ribbons": []
     },
     {
-      "id": "7",
+      "id": "23",
       "title": {
         "en-US": "Agile enterprise"
       },
@@ -230,8 +299,9 @@
         3
       ]
     },
+
     {
-      "id": "8",
+      "id": "31",
       "title": {
         "en-US": "A new R&D division"
       },
@@ -245,7 +315,7 @@
       "ribbons": []
     },
     {
-      "id": "9",
+      "id": "32",
       "title": {
         "en-US": "Projects!"
       },
@@ -259,7 +329,7 @@
       "ribbons": []
     },
     {
-      "id": "10",
+      "id": "33",
       "title": {
         "en-US": "Clear the resistance"
       },
@@ -272,8 +342,9 @@
       },
       "ribbons": []
     },
+
     {
-      "id": "11",
+      "id": "41",
       "title": {
         "en-US": "Adjust incentives"
       },
@@ -287,7 +358,7 @@
       "ribbons": []
     },
     {
-      "id": "12",
+      "id": "42",
       "title": {
         "en-US": "Radical transparency"
       },
@@ -303,7 +374,7 @@
       ]
     },
     {
-      "id": "13",
+      "id": "43",
       "title": {
         "en-US": "A strategic vision"
       },
@@ -317,7 +388,7 @@
       "ribbons": []
     },
     {
-      "id": "14",
+      "id": "44",
       "title": {
         "en-US": "Fixed service architecture"
       },
@@ -330,8 +401,9 @@
       },
       "ribbons": []
     },
+
     {
-      "id": "15",
+      "id": "51",
       "title": {
         "en-US": "Monthly staff meetings"
       },
@@ -389,7 +461,7 @@
         "en-US": "Routine Work"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "Employee ability to perform routine work in minimal time and maximum effect."
       }
     },
     {
@@ -401,9 +473,9 @@
       "titleTop": {
         "en-US": "Adaptability"
       },
-      "titleBottom": null,
+      "titleBottom": "and innovation",
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The ability of the organization to identify and react to new opportunities and changing customer needs."
       }
     },
     {
@@ -419,7 +491,7 @@
         "en-US": "and Alignment"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The organization is able to coordinate activities and innovation across unit boundaries."
       }
     },
     {
@@ -432,10 +504,10 @@
         "en-US": "Employee"
       },
       "titleBottom": {
-        "en-US": "Involvement"
+        "en-US": "Engagement"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "Employee initiative and involvement in the business."
       }
     },
     {
@@ -445,13 +517,13 @@
       "minValue": 0,
       "maxValue": 10,
       "titleTop": {
-        "en-US": "Customer"
+        "en-US": "Automation"
       },
       "titleBottom": {
-        "en-US": "Orientation"
+        "en-US": "of processes"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The replacement of routine human work with automated processes."
       }
     },
     {
@@ -467,45 +539,45 @@
         "en-US": "Performance"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The profitability of the company."
       }
     },
     {
       "id": "o1",
       "type": "organisation",
-      "initialValue": 0,
+      "initialValue": -2,
       "minValue": -5,
       "maxValue": 5,
       "titleTop": {
-        "en-US": "Source of"
+        "en-US": "Intrinsic"
       },
       "titleBottom": {
         "en-US": "Motivation"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "Employee motivation in absence of explicit rewards and bonuses."
       }
     },
     {
       "id": "o2",
       "type": "organisation",
-      "initialValue": 0,
+      "initialValue": -2,
       "minValue": -5,
       "maxValue": 5,
       "titleTop": {
-        "en-US": "Locus of"
+        "en-US": "Decentralized"
       },
       "titleBottom": {
-        "en-US": "Decision-Making"
+        "en-US": "Decision-making"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The extent to which employees can make decisions without permission from higher-level managers."
       }
     },
     {
       "id": "o3",
       "type": "organisation",
-      "initialValue": 0,
+      "initialValue": -1,
       "minValue": -5,
       "maxValue": 5,
       "titleTop": {
@@ -515,23 +587,23 @@
         "en-US": "(Conflict)"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The degree of conflict in the organiation."
       }
     },
     {
       "id": "o4",
       "type": "organisation",
-      "initialValue": 0,
+      "initialValue": 2,
       "minValue": -5,
       "maxValue": 5,
       "titleTop": {
-        "en-US": "Sources of"
+        "en-US": "Formal"
       },
       "titleBottom": {
         "en-US": "Authority"
       },
       "toolTip": {
-        "en-US": "Lorem ipsum dolorem ipso facto unta ops. Lorem ipsum dolorem ipso facto unta ops."
+        "en-US": "The extent to which authority is based on formal position (rather than expertise, networks, or situated negoations)."
       }
     }
   ],
