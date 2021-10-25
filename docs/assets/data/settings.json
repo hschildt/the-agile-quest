@@ -206,11 +206,14 @@
       "description": {
         "en-US": "Some of our back office employees are close to retirement age and we could invest in new software systems to automate some of the more routine human work taking place there. "
       },
+      "descriptionBack": {
+        "en-US": "Automation helps cut costs and free managers' time to engage with new customer needs."
+      },
       "scenario": "2",
       "effects": {
         "p6": 2,
         "p4": 1,
-        "o1": -2,
+        "o1": -1,
         "o2": 2
       },
       "ribbons": [
