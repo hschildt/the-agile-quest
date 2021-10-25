@@ -41,7 +41,11 @@
     {
       "id": "3",
       "title": {
+<<<<<<< HEAD
         "en-US": "The board is asking for an agile transformation"
+=======
+        "en-US": "The board wants an agile transformation"
+>>>>>>> f3fff37cce35e99a7a7e6670794308f74ac55805
       },
       "description": {
         "en-US": "Our research and development efforts have led to a number of promising new services, but the current organization doesn’t seem to facilitate innovation. In fact, there seems to be a complete lack of alignment in realizing the new services and getting our customers to use them. Part of the problem is ignorance—our organization is not aware of the new services and the customer needs they address. Finally, our customer-facing employees are more interested in maintaining old relationships than pushing out our new services. "
@@ -133,10 +137,17 @@
     {
       "id": "8",
       "title": {
+<<<<<<< HEAD
         "en-US": "Lack of alignment across teams"
       },
       "description": {
         "en-US": "The autonomous teams seem to be a bit too innovative for some of our customers. In effect, there is a broader lack of alignment across teams.<p>Concretely, our new services seem to lack consistency. For example, the usability experience and pricing strategies are quite different across services."
+=======
+        "en-US": "Lack of alignment and duplicate work"
+      },
+      "description": {
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+>>>>>>> f3fff37cce35e99a7a7e6670794308f74ac55805
       },
       "strategies": [
         81,
@@ -153,7 +164,11 @@
         "en-US": "Inefficiencies and duplicate work"
       },
       "description": {
+<<<<<<< HEAD
         "en-US": "Our team-based structure seems to lead to a lot of duplicate work. Teams waste a lot of time developing and testing software functionality that has already been created by one or more other teams. This seems to be a problem of inadequate informatio sharing."
+=======
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+>>>>>>> f3fff37cce35e99a7a7e6670794308f74ac55805
       },
       "strategies": [
         91,
@@ -171,7 +186,11 @@
         "en-US": "Limited opportunities for career progression"
       },
       "description": {
+<<<<<<< HEAD
         "en-US": "The flat organizational structure means that there are far fewer opportunities for clear career advancement. Some of our most ambitious talent are dismayed by the poor prospects of getting on a managerial career ladder.<p>Already, some of our employees have quit their jobs and taken up offers to run departments at competing banks."
+=======
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+>>>>>>> f3fff37cce35e99a7a7e6670794308f74ac55805
       },
       "strategies": [
         101,
@@ -213,9 +232,15 @@
       "scenario": "2",
       "effects": {
         "p6": 2,
+<<<<<<< HEAD
         "p5": 2,
         "p2": -1,
         "o3": -1
+=======
+        "p4": 1,
+        "o1": -1,
+        "o2": 2
+>>>>>>> f3fff37cce35e99a7a7e6670794308f74ac55805
       },
       "ribbons": [
         2
