@@ -449,7 +449,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
       let value = indicator.initialValue ?? 0,
           previousValue = indicator.initialValue ?? 0;
-      
+      console.log("indicator before init: "+indicator);
       this.playedScenarios.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
@@ -462,9 +462,9 @@ export class GameComponent implements OnDestroy, OnInit {
         if (i < this.playedStrategies.length - 1)
           previousValue += effect;
       });
-
       indicator.value = value;
       indicator.previousValue = previousValue;
+      console.log("indicator after initIndicators(): "+indicator);
     }
   }
 
