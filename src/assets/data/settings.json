@@ -53,8 +53,8 @@
       ],
       "effects": {
         "p2": -1,
-        "p3": -2,
-        "p4": -2
+        "p3": -1,
+        "p4": -1
       }
     },
     {
@@ -72,8 +72,8 @@
         44
       ],
       "effects": {
-        "o3": 1,
-        "p1": -2,
+        "o3": 2,
+        "p3": -1,
         "p4": -1
       }
     },
@@ -110,7 +110,11 @@
         65
       ],
       "effects": {
-        "p1": -2
+        "p3": -2,
+        "p4": -1,
+        "p6": -1,
+        "o1": -1,
+        "o3": 2
       }
     },
     {
@@ -127,7 +131,9 @@
         73
       ],
       "effects": {
-        "p1": -2
+        "p3": -1,
+        "p4": -2,
+        "o1": -2
       }
     },
     {
@@ -144,7 +150,8 @@
         83
       ],
       "effects": {
-        "p1": -2
+        "p3": -1,
+        "p6": -1
       }
     },
     {
@@ -162,7 +169,9 @@
         94
       ],
       "effects": {
-        "p1": -2
+        "p1": -1,
+        "p6": -1,
+        "p3": -1
       }
     },
     {
@@ -179,7 +188,9 @@
         103
       ],
       "effects": {
-        "p1": -2
+        "p4": -2,
+        "p6": -1,
+        "o1": -1
       }
     },
     {
@@ -207,7 +218,7 @@
       "description": {
         "en-US": "Some of our back office employees are close to retirement age and we could invest in new software systems to automate some of the more routine human work taking place there. "
       },
-      "descriptionBack": {
+      "feedback": {
         "en-US": "Automation helps cut costs and free managers' time to engage with new customer needs."
       },
       "scenario": "2",
@@ -229,11 +240,14 @@
       "description": {
         "en-US": "We could reduce the number of customer representatives by expanding the functionality of our website and mobile applications, encouraging customers to carry out some of the tasks themselves that are now conducted by our employees. "
       },
+      "feedback": {
+        "en-US": "Increasing shift towards self-service channels creates cost savings and allow us to automate some customer processes. This also facilitates centralized control of customer-facing services."
+      },
       "scenario": "2",
       "effects": {
         "p6": 1,
         "p5": 1,
-        "o1": -1
+        "o2": -1
       },
       "ribbons": []
     },
@@ -244,6 +258,9 @@
       },
       "description": {
         "en-US": "Our current pay has a very limited performance-based component. By shifting towards more performance-oriented pay scheme, especially for customer representatives, we can motivate our employees to sell more and thereby increase our income. This should also boost our operating profit. "
+      },
+      "feedback": {
+        "en-US": "Strong incentives improve the efficiency of customer service operations and adds to our profits. Strong extrinsic rewards drive out some of the instrinsic motivation, but overall we get more out of the workers."
       },
       "scenario": "2",
       "effects": {
@@ -262,6 +279,9 @@
       "description": {
         "en-US": "One alternative would be to provide additional training to our customer representatives to cross-sell more services to customers. Although this would not cut down our costs, it would add to our revenues and profits."
       },
+      "feedback": {
+        "en-US": "Investing into our workforce improves their productivity and engagement."
+      },
       "scenario": "2",
       "effects": {
         "p2": 1,
@@ -274,17 +294,23 @@
     {
       "id": "21",
       "title": {
-        "en-US": "Iterative service development with prototyping"
+        "en-US": "Prototyping and iterative service design"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could train our marketing and technology teams in contemporary service design methods. By developing and testing prototypes of new services, we could better identify and meet customer needs."
+      },
+      "feedback": {
+        "en-US": "Service design methods are great at identifying customer needs and formulating new services. Unfortunately, they often lead to prototypes that are difficult to implement within the existing organizational structures.<p>From strategic perspective, the flip side of customer-centric service design methods is that they often ignore the organization's core strengths."
       },
       "scenario": "3",
       "effects": {
-        "p2": 1
+        "p2": 1,
+        "p4": 1,
+        "o1": 1,
+        "o2": 1,
+        "o4": -1
       },
       "ribbons": [
-        1
       ]
     },
     {
@@ -293,35 +319,44 @@
         "en-US": "Cross functional teams"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can set up task-forces involving experts from various functions and departments to develop and launch customer-oriented new services. This puts an extra burden on the units, but with the right choice of task force members, we could inprove coordination and implement services that are actually attuned to customers."
+      },
+      "feedback": {
+        "en-US": "Task forces are great at developing social ties across existing silos. Yet, task forces are fairly slow approach to innovate and they can easily get bogged down in political conflictsé. Besides fighting with each other, well-meaning task force members commonly face resistance from their own home units."
       },
       "scenario": "3",
       "effects": {
-        "p2": 1
+        "p1": -1,
+        "p2": 1,
+        "p3": 2,
+        "p4": 1,
+        "o3": 1,
+        "o4": -1
       },
       "ribbons": []
     },
     {
       "id": "23",
       "title": {
-        "en-US": "Cross functional teams"
+        "en-US": "Market research"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Market research conducted through online surveys and focus group interviews would give us a better understanding of our customer needs."
+      },      
+      "feedback": {
+        "en-US": "Market research has become a somewhat outdated basis for product innovation. It is easy and seldom disruptive way to probe the needs and opinions of different customer groups, but it does little to facilitate the collaboration required for the development and implementation of innovative services."
       },
       "scenario": "3",
       "effects": {
-        "p2": 1
+        "p2": 1  
       },
-      "ribbons": [
-        3
-      ]
+      "ribbons": [ ]
     },
 
     {
       "id": "31",
       "title": {
-        "en-US": "A new R&D division"
+        "en-US": "Agile practices and culture"
       },
       "description": {
         "en-US": "Placeholder"
@@ -335,7 +370,7 @@
     {
       "id": "32",
       "title": {
-        "en-US": "Projects!"
+        "en-US": "We need a strategic vision"
       },
       "description": {
         "en-US": "Placeholder"
@@ -349,7 +384,7 @@
     {
       "id": "33",
       "title": {
-        "en-US": "Clear the resistance"
+        "en-US": "Big bang transformation into agile"
       },
       "description": {
         "en-US": "Placeholder"
@@ -364,7 +399,7 @@
     {
       "id": "41",
       "title": {
-        "en-US": "Adjust incentives"
+        "en-US": "Enterprise-wide transformation"
       },
       "description": {
         "en-US": "Placeholder"
@@ -378,7 +413,7 @@
     {
       "id": "42",
       "title": {
-        "en-US": "Radical transparency"
+        "en-US": "All but the most critical functions"
       },
       "description": {
         "en-US": "Placeholder"
@@ -394,7 +429,7 @@
     {
       "id": "43",
       "title": {
-        "en-US": "A strategic vision"
+        "en-US": "Start with just R&D"
       },
       "description": {
         "en-US": "Placeholder"
@@ -408,7 +443,7 @@
     {
       "id": "44",
       "title": {
-        "en-US": "Fixed service architecture"
+        "en-US": "Agile at consumer banking"
       },
       "description": {
         "en-US": "Placeholder"
@@ -423,7 +458,7 @@
     {
       "id": "51",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Build on the existing structures and services"
       },
       "description": {
         "en-US": "Placeholder"
@@ -437,7 +472,7 @@
     {
       "id": "52",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Match team structure to information systems"
       },
       "description": {
         "en-US": "Placeholder"
@@ -453,7 +488,7 @@
     {
       "id": "53",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Focus on aggressive outsourching"
       },
       "description": {
         "en-US": "Placeholder"
@@ -468,7 +503,7 @@
     {
       "id": "61",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Cut down the middle management"
       },
       "description": {
         "en-US": "Placeholder"
@@ -482,7 +517,7 @@
     {
       "id": "62",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Selective promotions"
       },
       "description": {
         "en-US": "Placeholder"
@@ -498,7 +533,7 @@
     {
       "id": "63",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Leverage the top management team"
       },
       "description": {
         "en-US": "Placeholder"
@@ -512,7 +547,7 @@
     {
       "id": "64",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Leverage digital tools"
       },
       "description": {
         "en-US": "Placeholder"
