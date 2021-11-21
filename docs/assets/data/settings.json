@@ -120,10 +120,10 @@
     {
       "id": "7",
       "title": {
-        "en-US": "Passivity and hidden hierarchies"
+        "en-US": "Lack of initiative"
       },
       "description": {
-        "en-US": "The transformation process is well on the way, but there seem to be a few hiccups. First, employees in some teams do not seem to know what to do exactly and they are waiting for instructions.<p>After talking with some employees, we believe that former managers are still very influential. Former subordinates are waiting to be instructed by their former managers on what to do beyong the team boundaries."
+        "en-US": "The transformation process is well on the way, but there seem to be a few hiccups. First, employees in some teams do not seem to know what to do exactly and they are waiting for instructions.<p>After talking with some employees, they seem to lack initiative and wait to be instructed by their former managers or fellow team members."
       },
       "strategies": [
         71,
@@ -556,30 +556,14 @@
       },
       "ribbons": []
     },
-    {
-      "id": "65",
-      "title": {
-        "en-US": "Digital tools"
-      },
-      "description": {
-        "en-US": "Placeholder"
-      },
-      "scenario": "7",
-      "effects": {
-        "p2": 1
-      },
-      "ribbons": [
-        4
-      ]
-    },
 
     {
       "id": "71",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Agile coaches"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could hire agile coaches to help our employees adapt to the new team-centric ways of working."
       },
       "scenario": "8",
       "effects": {
@@ -590,10 +574,10 @@
     {
       "id": "72",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Job rotation"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could help employees find teams that work on projects that interest them. This way our employees might become more engaged."
       },
       "scenario": "8",
       "effects": {
@@ -604,27 +588,25 @@
     {
       "id": "73",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Incentive structures"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We might offer stronger incentives, including stock options, for our employees to make them think and act more like owners."
       },
       "scenario": "8",
       "effects": {
         "p2": 1
       },
-      "ribbons": [
-        4
-      ]
+      "ribbons": [   ]
     },
 
     {
       "id": "81",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "A clear enterprise architecture"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "The top management team should sit down and create an overarching strategic plan regarding how we will operate. A top-down design of an operating model can help align activities and reduce conflict."
       },
       "scenario": "9",
       "effects": {
@@ -635,10 +617,13 @@
     {
       "id": "82",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Monthly staff review meetings"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Regular staff meetings and demo days are a good practice for drawing attention to interdependencies and resolving conflicts. These meetings involve all squads presenting their plans and demonstrating their accomplishments."
+      },
+      "feedback": {
+        "en-US": "This is a very common approach in agile entreprises. These meetings do take quite a bit of time, but they can create alignment and sense of common purpose without introducing back a lot of hierarchy or politics."
       },
       "scenario": "9",
       "effects": {
@@ -649,10 +634,13 @@
     {
       "id": "83",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Eliminate interdependencies through automation"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Overall modularization of business processes with software interfaces means that distinct teams can pursue their projects without the need to align activities. Only some of the interdependencies can be addressed in this way, however."
+      },
+      "feedback": {
+        "en-US": "This is a common approach in all agile entreprises. If different parts of the organization are allowed to evolve in their distinct directions, the customer experience can feel fragmented. By reducing need for teams to interact, knowledge sharing might suffer and it might harm our ability to develop innovations that span different teams."
       },
       "scenario": "9",
       "effects": {
@@ -666,10 +654,10 @@
     {
       "id": "91",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Establish functional chapters"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Many agile organizations have chapters, formal structures organized around expertise areas. The heads of each chapter, such as databases or javascript establish common ways of working."
       },
       "scenario": "10",
       "effects": {
@@ -680,10 +668,10 @@
     {
       "id": "92",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Share best practices on a wiki"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Set up a company Wiki to share best practices and team choices on voluntary basis."
       },
       "scenario": "10",
       "effects": {
@@ -694,10 +682,10 @@
     {
       "id": "93",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Establish standards"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could ask our technical leaders to develop guidelines and standards for the most common technology areas. This would help cut down overlapping work."
       },
       "scenario": "10",
       "effects": {
@@ -710,10 +698,10 @@
     {
       "id": "94",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Tweak the organizational design to modularize shared tasks."
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can try to identify common tasks across different teams, such as software testing or sending email to customers. This way teams do not need to address these same tasks."
       },
       "scenario": "10",
       "effects": {
@@ -725,10 +713,10 @@
     {
       "id": "101",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Pay them more"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Without opportunities for promotion, we could try to motivate employees by increasing the pay for our best talents. Simple!?"
       },
       "scenario": "11",
       "effects": {
@@ -739,10 +727,10 @@
     {
       "id": "102",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Venturing unit"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could provide employees an opportunity to lead new venture teams outside the regular organizaitonal strutures, providing them opportunities to acquire new skills and performance-related bonuses."
       },
       "scenario": "11",
       "effects": {
@@ -755,10 +743,10 @@
     {
       "id": "103",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Let them eat cake"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Running a non-hierarchical organization means giving up on people who want a leadership position in a hierarchy. Some may leave, others will adapt and stay."
       },
       "scenario": "11",
       "effects": {
