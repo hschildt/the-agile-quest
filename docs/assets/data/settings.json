@@ -63,7 +63,7 @@
         "en-US": "The scope of the change"
       },
       "description": {
-        "en-US": "The adoption of the agile structure has led to increase in political conflicts. Many former leaders have trouble adapting to a more collegial and non-hierarchical decision making practices. Individiuals are using their social networks and status to steamroll their own ideas through."
+        "en-US": "The board of the company is pushing us to carry out a bigger structural change, adopting a team-based structure. Now we have to decide on the scope of the change."
       },
       "strategies": [
         41,
@@ -83,7 +83,7 @@
         "en-US": "Rethinking organizational architecture?"
       },
       "description": {
-        "en-US": "The multi-functional R&D teams are great at coming up with customer-oriented solutions, but their work seems to be all over the place. The services are partially overlapping and they do not really complement one other. The company seems to be losing its direction."
+        "en-US": "Moving from a hierarchical to teams-based organization involves deciding how to group all of our employees into these new squads and how to group squads into tribes. The board wants to hear what our approach to this is?"
       },
       "strategies": [
         51,
@@ -100,14 +100,13 @@
         "en-US": "Middle-management resistance"
       },
       "description": {
-        "en-US": "Employees love the ability of their teams to make a real difference, and our customer feedback has increased. Not all is going well though. Our people are working insane hours and many leaders report a sense of impending burn-out. It seems that the teams are doing a lot of duplicate work, solving problems that have already been solved by other teams. How could we help coordinate work better?"
+        "en-US": "The changes have cut down the number of middle managers. While some were promoted to tribe leaders, others are squad leaders or members. This shift towards a non-hierarchical structure did not go down so well with everyone. Many are trying to hold onto their prior power and playing political games."
       },
       "strategies": [
         61,
         62,
         63,
-        64,
-        65
+        64
       ],
       "effects": {
         "p3": -2,
@@ -357,7 +356,7 @@
         "en-US": "Agile practices and culture"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could start by training our employees into agile methods, where they use short sprints to take the new innovations to customers. The new iterative processes might shake people out of their old habits."
       },
       "scenario": "4",
       "effects": {
@@ -371,7 +370,7 @@
         "en-US": "We need a strategic vision"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "The top management should articulate a clear vision of digital transformation and start a process to transition into a more agile and team-based processes."
       },
       "scenario": "4",
       "effects": {
@@ -385,7 +384,7 @@
         "en-US": "Big bang transformation into agile"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "This option involves doing away with our established hierarchical structures and reassigning employees into multifunctional teams. This certainly looks scary!"
       },
       "scenario": "4",
       "effects": {
@@ -400,7 +399,7 @@
         "en-US": "Enterprise-wide transformation"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "This is the big bang approach to a big bang transformation! We shall implement the change through all our business units at once."
       },
       "scenario": "5",
       "effects": {
@@ -414,14 +413,13 @@
         "en-US": "All but the most critical functions"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Let's go for a corporate-wide transformation, but protect our most crucial functions from disruptions. Risk management, financial market operations, and legal teams should work the old way."
       },
       "scenario": "5",
       "effects": {
         "p2": 1
       },
       "ribbons": [
-        5
       ]
     },
     {
@@ -430,7 +428,7 @@
         "en-US": "Start with just R&D"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can combine our old technology development and marketing units into an agile research and development organization with cross-disciplinary teams. The customer-facing business units with profit and loss responsibilities can operate as before."
       },
       "scenario": "5",
       "effects": {
@@ -444,7 +442,7 @@
         "en-US": "Agile at consumer banking"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can implement the change at first in the consumer banking unit and then follow up with the rest later. This is where we are likely to get the biggest gains anyhow."
       },
       "scenario": "5",
       "effects": {
@@ -459,7 +457,7 @@
         "en-US": "Build on the existing structures and services"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We should organize the tribes around our existing business units and then create teams reaponsible for the services we provide to customers."
       },
       "scenario": "6",
       "effects": {
@@ -473,7 +471,7 @@
         "en-US": "Match team structure to information systems"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Structure follows strategy? Rather, organization follows technology! Try to create squads corresponding to an ideal software architecture for our banking operations and customer-facing services."
       },
       "scenario": "6",
       "effects": {
@@ -489,7 +487,7 @@
         "en-US": "Focus on aggressive outsourching"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can take the existing structure as a starting point, but first figure out what activities could be outsourced. We will go for a minimalist organization."
       },
       "scenario": "6",
       "effects": {
@@ -504,7 +502,7 @@
         "en-US": "Cut down the middle management"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We don't need to employ all these former middle managers. If they cannot fit into an expert role in squads or adopt a less hierarchical leadership approach, we should let them go."
       },
       "scenario": "7",
       "effects": {
@@ -518,7 +516,7 @@
         "en-US": "Selective promotions"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We need to push through the cultural change towards a more collaborative and less authoritarian leadership culture. The best way to do this is to promote good team players to tribe and squad leadership."
       },
       "scenario": "7",
       "effects": {
@@ -534,7 +532,7 @@
         "en-US": "Leverage the top management team"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "This requires cultural change, and it is best achieved through top management intervention. By modeling behaviors and solving problems on the ground, our top leaders can help spread new norms and values."
       },
       "scenario": "7",
       "effects": {
@@ -548,7 +546,7 @@
         "en-US": "Leverage digital tools"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can reduce the leverage of middle managers by pushing more of the management tasks into cloud services. Open access to KPIs, tasks, and outcomes can induce radical transparency that limits middle manager ability to play politics."
       },
       "scenario": "7",
       "effects": {
