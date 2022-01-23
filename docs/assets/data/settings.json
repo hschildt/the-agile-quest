@@ -358,6 +358,9 @@
       "description": {
         "en-US": "We could start by training our employees into agile methods, where they use short sprints to take the new innovations to customers. The new iterative processes might shake people out of their old habits."
       },
+      "feedback": {
+        "en-US": "Agile methods are a great starting point for bottom-up change. Their impact is limited by the established structures that prevent engineers from taking control of the projects. On their own, the practices mainly improve new development projects but provide less impact on process innovation."
+      },
       "scenario": "4",
       "effects": {
         "p2": 1
@@ -372,6 +375,9 @@
       "description": {
         "en-US": "The top management should articulate a clear vision of digital transformation and start a process to transition into a more agile and team-based processes."
       },
+      "feedback": {
+        "en-US": "The biggest barrier to any large-scale change is organizational inertia and the first step in every radical change project is to articulate why the changes are needed and how they will be carried out. A vision doesn't do much by itself, but this is a good start."
+      },
       "scenario": "4",
       "effects": {
         "p2": 1
@@ -385,6 +391,9 @@
       },
       "description": {
         "en-US": "This option involves doing away with our established hierarchical structures and reassigning employees into multifunctional teams. This certainly looks scary!"
+      },
+      "feedback": {
+        "en-US": "A big-bang transformation can be disruptive and even a traumatizing experience for an organization. However, some organizations have pulled this off and clearly it will send a signal that you are serious about this."
       },
       "scenario": "4",
       "effects": {
@@ -401,6 +410,9 @@
       "description": {
         "en-US": "This is the big bang approach to a big bang transformation! We shall implement the change through all our business units at once."
       },
+      "feedback": {
+        "en-US": "A study by McKinsey suggests that an enterprise-wide transition is likely to be more successful than a timid one. Agile enterprise is all about instilling a new culture and breaking down barriers, and the corporation is a natural scope for these changes."
+      },
       "scenario": "5",
       "effects": {
         "p2": 1
@@ -414,6 +426,9 @@
       },
       "description": {
         "en-US": "Let's go for a corporate-wide transformation, but protect our most crucial functions from disruptions. Risk management, financial market operations, and legal teams should work the old way."
+      },
+      "feedback": {
+        "en-US": "We are a bank after all, it makes a lot of sense to retain caution when it comes to legal obligations. Creating a core process organization that runs in a hierarchical fashion will surely not hold us back."
       },
       "scenario": "5",
       "effects": {
@@ -430,6 +445,9 @@
       "description": {
         "en-US": "We can combine our old technology development and marketing units into an agile research and development organization with cross-disciplinary teams. The customer-facing business units with profit and loss responsibilities can operate as before."
       },
+      "feedback": {
+        "en-US": "Many large companies have run their R&D units in agile way for ages, and it provides clear but limited benefits. We won't be breaking down organizatinal barriers or reinventing our core processes. But we will be able to launch new services more quickly."
+      },
       "scenario": "5",
       "effects": {
         "p2": 1
@@ -443,6 +461,9 @@
       },
       "description": {
         "en-US": "We can implement the change at first in the consumer banking unit and then follow up with the rest later. This is where we are likely to get the biggest gains anyhow."
+      },
+      "feedback": {
+        "en-US": "This is a sensible way to learn more about running agile, but according to McKinsey this type of limited transformation provides the lowest benefits."
       },
       "scenario": "5",
       "effects": {
