@@ -44,6 +44,9 @@ See: https://angular.io/guide/deployment#deploy-to-github-pages
 
 4. Make sure Github is configured to [publish from the docs folder](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch).
 
+For convenience, all of the above combined are:
+
+`ng build --configuration production --output-path docs --base-href /the-agile-quest/ && cp docs/index.html docs/404.html && git add . && git commit -a -m "Deploy on Github pages" && git push`
 
 ## Authors
 
