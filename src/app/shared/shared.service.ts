@@ -2,14 +2,24 @@ import {
   EventEmitter,
   Inject,
   Injectable,
-  LOCALE_ID 
+  LOCALE_ID,
+  OnDestroy
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { 
+  ActivatedRoute,
+  NavigationEnd,
+  Router 
+} from '@angular/router';
+import { 
   BehaviorSubject,
-  forkJoin 
+  forkJoin ,
+  Subscription
 } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { 
+  filter,
+  map 
+} from 'rxjs/operators';
 import { 
   Indicator,
   LocalizedString,
@@ -26,6 +36,7 @@ export const ANIMATION_DURATION: string = ANIMATION_DURATION_MS + 'ms';
 export const ANIMATION_EASING: string = 'cubic-bezier(0.4, 0, 0.2, 1)'
 export const ANIMATION_TIMING: string = `${ANIMATION_DURATION} ${ANIMATION_EASING}`;
 export const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} ${ANIMATION_EASING}`;
+export const DATA_KEY_LOCALE = 'lang';
 export const DEFAULT_LOCALE = 'en-US';
 export const PERSPECTIVE: string = 'perspective(1000px)';
 const SETTINGS_URL = 'assets/data/settings.json';
@@ -34,11 +45,12 @@ const TEXTS_URL = 'assets/data/texts.json';
 @Injectable({
   providedIn: 'root'
 })
-export class SharedService {
+export class SharedService implements OnDestroy{
 
   error = new EventEmitter<string>();
   firstScenario: Scenario;
   indicators: {[id: string]: Indicator} = {};
+  locale: string = '';
   ready = new BehaviorSubject<boolean>(false);
   ribbons: {[id: string]: Ribbon} = {};
   scenarios: {[id: string]: Scenario} = {};
@@ -49,11 +61,31 @@ export class SharedService {
   strategies: {[id: string]: Strategy} = {};
   texts: Texts;
 
+  private _subscriptions = new Array<Subscription>();
+
   constructor(
     private http: HttpClient,
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) systemLocale: string,
+    private route:     ActivatedRoute,
+    private router:    Router
   ) {
+    this.locale = systemLocale;
+    this.readLocale();
     this.loadData();
+    this._subscriptions.push(
+      this.router.events.pipe(
+        filter(evt => evt instanceof NavigationEnd)
+      ).subscribe((evt) => this.readLocale(evt))
+    );
+  }
+
+  public ngOnDestroy(): void {
+    this._subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  public readLocale(evt?): void {
+    if (this.route.snapshot.queryParams?.[DATA_KEY_LOCALE])
+      this.locale = this.route.snapshot.queryParams[DATA_KEY_LOCALE];
   }
 
   public loadData(): void {
@@ -107,12 +139,18 @@ export class SharedService {
    * sanitized by Angular but basic formatting and links are allowed, at least.
    */
   public getText(text: string | LocalizedString): string {
-    if (text == null)
+    let localized: LocalizedString;
+    if (text == null) {
       return "";
-    else if (typeof text === "string")
-      return this.texts[text]?.[this.locale] ?? text;
-    else
-      return text[this.locale] ?? text[DEFAULT_LOCALE];
+    } else if (typeof text === "string") {
+      if (text in this.texts)
+        localized = this.texts[text];
+      else
+        return text;
+    } else {
+      localized = text;
+    }
+    return localized[this.locale] ?? localized[DEFAULT_LOCALE];
   }
 
 }

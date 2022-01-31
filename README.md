@@ -3,6 +3,7 @@
 
 Play the game at https://kaljarv.github.io/the-agile-quest/.
 
+
 ## Editing settings and texts
 
 The settings and text strings are collected in two json files found in `/src/assets/data/`.
@@ -15,6 +16,11 @@ Once changed, override these files in the `docs/assets/data` folder.
 
 For the structure of `settings.json`, see `src/app/shared/shared.types.ts` and the json file itself.
  
+
+## Localization
+
+Make sure that all items in `texts.json` and `settings.json` have texts for the target locale. Then just add the locale as a query param to the url in the form `?lang=fi-FI`.
+
 
 ## Deploying on Github pages
 

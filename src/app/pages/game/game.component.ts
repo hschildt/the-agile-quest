@@ -339,7 +339,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
     let queue: Queue;
 
-    console.log(this.animationDirection);
+    // console.log(this.animationDirection);
     
     if (this.animationDirection === 'backward')
       queue = [
@@ -585,7 +585,7 @@ export class GameComponent implements OnDestroy, OnInit {
       [DATA_KEY_STRATEGIES]: this._encodeIds(goBack && this.playedStrategies.length > 0 ? 
                                              this.playedStrategies.slice(0, -1) : 
                                              this.playedStrategies),
-      [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0,
+      [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0
     }]);
   }
 
