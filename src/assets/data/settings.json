@@ -63,7 +63,7 @@
         "en-US": "The scope of the change"
       },
       "description": {
-        "en-US": "The adoption of the agile structure has led to increase in political conflicts. Many former leaders have trouble adapting to a more collegial and non-hierarchical decision making practices. Individiuals are using their social networks and status to steamroll their own ideas through."
+        "en-US": "The board of the company is pushing us to carry out a bigger structural change, adopting a team-based structure. Now we have to decide on the scope of the change."
       },
       "strategies": [
         41,
@@ -83,7 +83,7 @@
         "en-US": "Rethinking organizational architecture?"
       },
       "description": {
-        "en-US": "The multi-functional R&D teams are great at coming up with customer-oriented solutions, but their work seems to be all over the place. The services are partially overlapping and they do not really complement one other. The company seems to be losing its direction."
+        "en-US": "Moving from a hierarchical to teams-based organization involves deciding how to group all of our employees into these new squads and how to group squads into tribes. The board wants to hear what our approach to this is?"
       },
       "strategies": [
         51,
@@ -100,14 +100,13 @@
         "en-US": "Middle-management resistance"
       },
       "description": {
-        "en-US": "Employees love the ability of their teams to make a real difference, and our customer feedback has increased. Not all is going well though. Our people are working insane hours and many leaders report a sense of impending burn-out. It seems that the teams are doing a lot of duplicate work, solving problems that have already been solved by other teams. How could we help coordinate work better?"
+        "en-US": "The changes have cut down the number of middle managers. While some were promoted to tribe leaders, others are squad leaders or members. This shift towards a non-hierarchical structure did not go down so well with everyone. Many are trying to hold onto their prior power and playing political games."
       },
       "strategies": [
         61,
         62,
         63,
-        64,
-        65
+        64
       ],
       "effects": {
         "p3": -2,
@@ -120,10 +119,10 @@
     {
       "id": "7",
       "title": {
-        "en-US": "Passivity and hidden hierarchies"
+        "en-US": "Lack of initiative"
       },
       "description": {
-        "en-US": "The transformation process is well on the way, but there seem to be a few hiccups. First, employees in some teams do not seem to know what to do exactly and they are waiting for instructions.<p>After talking with some employees, we believe that former managers are still very influential. Former subordinates are waiting to be instructed by their former managers on what to do beyong the team boundaries."
+        "en-US": "The transformation process is well on the way, but there seem to be a few hiccups. First, employees in some teams do not seem to know what to do exactly and they are waiting for instructions.<p>After talking with some employees, they seem to lack initiative and wait to be instructed by their former managers or fellow team members."
       },
       "strategies": [
         71,
@@ -357,7 +356,10 @@
         "en-US": "Agile practices and culture"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could start by training our employees into agile methods, where they use short sprints to take the new innovations to customers. The new iterative processes might shake people out of their old habits."
+      },
+      "feedback": {
+        "en-US": "Agile methods are a great starting point for bottom-up change. Their impact is limited by the established structures that prevent engineers from taking control of the projects. On their own, the practices mainly improve new development projects but provide less impact on process innovation."
       },
       "scenario": "4",
       "effects": {
@@ -371,7 +373,10 @@
         "en-US": "We need a strategic vision"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "The top management should articulate a clear vision of digital transformation and start a process to transition into a more agile and team-based processes."
+      },
+      "feedback": {
+        "en-US": "The biggest barrier to any large-scale change is organizational inertia and the first step in every radical change project is to articulate why the changes are needed and how they will be carried out. A vision doesn't do much by itself, but this is a good start."
       },
       "scenario": "4",
       "effects": {
@@ -385,7 +390,10 @@
         "en-US": "Big bang transformation into agile"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "This option involves doing away with our established hierarchical structures and reassigning employees into multifunctional teams. This certainly looks scary!"
+      },
+      "feedback": {
+        "en-US": "A big-bang transformation can be disruptive and even a traumatizing experience for an organization. However, some organizations have pulled this off and clearly it will send a signal that you are serious about this."
       },
       "scenario": "4",
       "effects": {
@@ -400,7 +408,10 @@
         "en-US": "Enterprise-wide transformation"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "This is the big bang approach to a big bang transformation! We shall implement the change through all our business units at once."
+      },
+      "feedback": {
+        "en-US": "A study by McKinsey suggests that an enterprise-wide transition is likely to be more successful than a timid one. Agile enterprise is all about instilling a new culture and breaking down barriers, and the corporation is a natural scope for these changes."
       },
       "scenario": "5",
       "effects": {
@@ -414,14 +425,16 @@
         "en-US": "All but the most critical functions"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Let's go for a corporate-wide transformation, but protect our most crucial functions from disruptions. Risk management, financial market operations, and legal teams should work the old way."
+      },
+      "feedback": {
+        "en-US": "We are a bank after all, it makes a lot of sense to retain caution when it comes to legal obligations. Creating a core process organization that runs in a hierarchical fashion will surely not hold us back."
       },
       "scenario": "5",
       "effects": {
         "p2": 1
       },
       "ribbons": [
-        5
       ]
     },
     {
@@ -430,7 +443,10 @@
         "en-US": "Start with just R&D"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can combine our old technology development and marketing units into an agile research and development organization with cross-disciplinary teams. The customer-facing business units with profit and loss responsibilities can operate as before."
+      },
+      "feedback": {
+        "en-US": "Many large companies have run their R&D units in agile way for ages, and it provides clear but limited benefits. We won't be breaking down organizatinal barriers or reinventing our core processes. But we will be able to launch new services more quickly."
       },
       "scenario": "5",
       "effects": {
@@ -444,7 +460,10 @@
         "en-US": "Agile at consumer banking"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can implement the change at first in the consumer banking unit and then follow up with the rest later. This is where we are likely to get the biggest gains anyhow."
+      },
+      "feedback": {
+        "en-US": "This is a sensible way to learn more about running agile, but according to McKinsey this type of limited transformation provides the lowest benefits."
       },
       "scenario": "5",
       "effects": {
@@ -459,7 +478,7 @@
         "en-US": "Build on the existing structures and services"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We should organize the tribes around our existing business units and then create teams reaponsible for the services we provide to customers."
       },
       "scenario": "6",
       "effects": {
@@ -473,7 +492,7 @@
         "en-US": "Match team structure to information systems"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Structure follows strategy? Rather, organization follows technology! Try to create squads corresponding to an ideal software architecture for our banking operations and customer-facing services."
       },
       "scenario": "6",
       "effects": {
@@ -489,7 +508,7 @@
         "en-US": "Focus on aggressive outsourching"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can take the existing structure as a starting point, but first figure out what activities could be outsourced. We will go for a minimalist organization."
       },
       "scenario": "6",
       "effects": {
@@ -504,7 +523,7 @@
         "en-US": "Cut down the middle management"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We don't need to employ all these former middle managers. If they cannot fit into an expert role in squads or adopt a less hierarchical leadership approach, we should let them go."
       },
       "scenario": "7",
       "effects": {
@@ -518,7 +537,7 @@
         "en-US": "Selective promotions"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We need to push through the cultural change towards a more collaborative and less authoritarian leadership culture. The best way to do this is to promote good team players to tribe and squad leadership."
       },
       "scenario": "7",
       "effects": {
@@ -534,7 +553,7 @@
         "en-US": "Leverage the top management team"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "This requires cultural change, and it is best achieved through top management intervention. By modeling behaviors and solving problems on the ground, our top leaders can help spread new norms and values."
       },
       "scenario": "7",
       "effects": {
@@ -548,7 +567,7 @@
         "en-US": "Leverage digital tools"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can reduce the leverage of middle managers by pushing more of the management tasks into cloud services. Open access to KPIs, tasks, and outcomes can induce radical transparency that limits middle manager ability to play politics."
       },
       "scenario": "7",
       "effects": {
@@ -556,30 +575,14 @@
       },
       "ribbons": []
     },
-    {
-      "id": "65",
-      "title": {
-        "en-US": "Digital tools"
-      },
-      "description": {
-        "en-US": "Placeholder"
-      },
-      "scenario": "7",
-      "effects": {
-        "p2": 1
-      },
-      "ribbons": [
-        4
-      ]
-    },
 
     {
       "id": "71",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Agile coaches"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could hire agile coaches to help our employees adapt to the new team-centric ways of working."
       },
       "scenario": "8",
       "effects": {
@@ -590,10 +593,10 @@
     {
       "id": "72",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Job rotation"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could help employees find teams that work on projects that interest them. This way our employees might become more engaged."
       },
       "scenario": "8",
       "effects": {
@@ -604,27 +607,25 @@
     {
       "id": "73",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Incentive structures"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We might offer stronger incentives, including stock options, for our employees to make them think and act more like owners."
       },
       "scenario": "8",
       "effects": {
         "p2": 1
       },
-      "ribbons": [
-        4
-      ]
+      "ribbons": [   ]
     },
 
     {
       "id": "81",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "A clear enterprise architecture"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "The top management team should sit down and create an overarching strategic plan regarding how we will operate. A top-down design of an operating model can help align activities and reduce conflict."
       },
       "scenario": "9",
       "effects": {
@@ -635,10 +636,13 @@
     {
       "id": "82",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Monthly staff review meetings"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Regular staff meetings and demo days are a good practice for drawing attention to interdependencies and resolving conflicts. These meetings involve all squads presenting their plans and demonstrating their accomplishments."
+      },
+      "feedback": {
+        "en-US": "This is a very common approach in agile entreprises. These meetings do take quite a bit of time, but they can create alignment and sense of common purpose without introducing back a lot of hierarchy or politics."
       },
       "scenario": "9",
       "effects": {
@@ -649,10 +653,13 @@
     {
       "id": "83",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Eliminate interdependencies through automation"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Overall modularization of business processes with software interfaces means that distinct teams can pursue their projects without the need to align activities. Only some of the interdependencies can be addressed in this way, however."
+      },
+      "feedback": {
+        "en-US": "This is a common approach in all agile entreprises. If different parts of the organization are allowed to evolve in their distinct directions, the customer experience can feel fragmented. By reducing need for teams to interact, knowledge sharing might suffer and it might harm our ability to develop innovations that span different teams."
       },
       "scenario": "9",
       "effects": {
@@ -666,10 +673,10 @@
     {
       "id": "91",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Establish functional chapters"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Many agile organizations have chapters, formal structures organized around expertise areas. The heads of each chapter, such as databases or javascript establish common ways of working."
       },
       "scenario": "10",
       "effects": {
@@ -680,10 +687,10 @@
     {
       "id": "92",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Share best practices on a wiki"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Set up a company Wiki to share best practices and team choices on voluntary basis."
       },
       "scenario": "10",
       "effects": {
@@ -694,10 +701,10 @@
     {
       "id": "93",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Establish standards"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could ask our technical leaders to develop guidelines and standards for the most common technology areas. This would help cut down overlapping work."
       },
       "scenario": "10",
       "effects": {
@@ -710,10 +717,10 @@
     {
       "id": "94",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Tweak the organizational design to modularize shared tasks."
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We can try to identify common tasks across different teams, such as software testing or sending email to customers. This way teams do not need to address these same tasks."
       },
       "scenario": "10",
       "effects": {
@@ -725,10 +732,10 @@
     {
       "id": "101",
       "title": {
-        "en-US": "Monthly staff meetings"
+        "en-US": "Pay them more"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Without opportunities for promotion, we could try to motivate employees by increasing the pay for our best talents. Simple!?"
       },
       "scenario": "11",
       "effects": {
@@ -739,10 +746,10 @@
     {
       "id": "102",
       "title": {
-        "en-US": "Digital tools"
+        "en-US": "Venturing unit"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "We could provide employees an opportunity to lead new venture teams outside the regular organizaitonal strutures, providing them opportunities to acquire new skills and performance-related bonuses."
       },
       "scenario": "11",
       "effects": {
@@ -755,10 +762,10 @@
     {
       "id": "103",
       "title": {
-        "en-US": "Infrastructure teams"
+        "en-US": "Let them eat cake"
       },
       "description": {
-        "en-US": "Placeholder"
+        "en-US": "Running a non-hierarchical organization means giving up on people who want a leadership position in a hierarchy. Some may leave, others will adapt and stay."
       },
       "scenario": "11",
       "effects": {
