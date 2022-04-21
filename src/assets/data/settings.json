@@ -34,8 +34,8 @@
         23
       ],
       "effects": {
-        "p2": -2,
-        "p6": -2
+        "p4": -1,
+        "p6": -1
       }
     },
     {
@@ -54,7 +54,7 @@
       "effects": {
         "p2": -1,
         "p3": -1,
-        "p4": -1
+        "p6": -1
       }
     },
     {
@@ -63,7 +63,7 @@
         "en-US": "The scope of the change"
       },
       "description": {
-        "en-US": "The board of the company is pushing us to carry out a bigger structural change, adopting a team-based structure. Now we have to decide on the scope of the change."
+        "en-US": "The board of the company is pushing us to carry out a bigger structural change, adopting a team-based structure. It is up to you to decide on the scope of the change."
       },
       "strategies": [
         41,
@@ -72,9 +72,6 @@
         44
       ],
       "effects": {
-        "o3": 2,
-        "p3": -1,
-        "p4": -1
       }
     },
     {
@@ -109,11 +106,8 @@
         64
       ],
       "effects": {
-        "p3": -2,
-        "p4": -1,
-        "p6": -1,
-        "o1": -1,
-        "o3": 2
+        "p1": -1,
+        "p2": -1
       }
     },
     {
@@ -130,9 +124,7 @@
         73
       ],
       "effects": {
-        "p3": -1,
-        "p4": -2,
-        "o1": -2
+        "p4": -1
       }
     },
     {
@@ -149,7 +141,7 @@
         83
       ],
       "effects": {
-        "p3": -1,
+
         "p6": -1
       }
     },
@@ -159,7 +151,7 @@
         "en-US": "Inefficiencies and duplicate work"
       },
       "description": {
-        "en-US": "Our team-based structure seems to lead to a lot of duplicate work. Teams waste a lot of time developing and testing software functionality that has already been created by one or more other teams. This seems to be a problem of inadequate informatio sharing."
+        "en-US": "Our team-based structure seems to lead to a lot of duplicate work. Teams waste a lot of time developing and testing software functionality that has already been created by one or more other teams. This seems to be a problem of inadequate information sharing."
       },
       "strategies": [
         91,
@@ -187,9 +179,7 @@
         103
       ],
       "effects": {
-        "p4": -2,
-        "p6": -1,
-        "o1": -1
+        "p4": -1
       }
     },
     {
@@ -203,7 +193,7 @@
       "strategies": [
       ],
       "effects": {
-        "p1": -2
+        "p6": 1
       }
     }
   ],
@@ -222,12 +212,11 @@
       },
       "scenario": "2",
       "effects": {
-        "p6": 2,
-        "p5": 2,
-        "p2": -1,
-        "o3": -1
+        "p6": 1,
+        "p5": 1,
+        "p3": 1
       },
-      "ribbons": [  ]
+      "ribbons": [ "2" ]
     },
     {
       "id": "12",
@@ -480,6 +469,9 @@
       "description": {
         "en-US": "We should organize the tribes around our existing business units and then create teams reaponsible for the services we provide to customers."
       },
+      "feedback": {
+        "en-US": "This is a sensible starting point that minimizes disruptions. However, the approach risks missing much of the potential for customer-centric innovation and synergies in technology. Over time, the constellation of teams ought to evolve."
+      },
       "scenario": "6",
       "effects": {
         "p2": 1
@@ -493,6 +485,9 @@
       },
       "description": {
         "en-US": "Structure follows strategy? Rather, organization follows technology! Try to create squads corresponding to an ideal software architecture for our banking operations and customer-facing services."
+      },
+      "feedback": {
+        "en-US": "This approach is generally adopted by native technology companies. Complete reorganization can be very disruptive, and the organization may struggle at first to establish coordination across teams."
       },
       "scenario": "6",
       "effects": {
@@ -510,6 +505,9 @@
       "description": {
         "en-US": "We can take the existing structure as a starting point, but first figure out what activities could be outsourced. We will go for a minimalist organization."
       },
+      "feedback": {
+        "en-US": "Digitalization certainly facilitates outsourcing, and by aggressively reducing routine work, the company can create a smaller, more agile, and better aligned organization."
+      },
       "scenario": "6",
       "effects": {
         "p2": 1
@@ -525,6 +523,9 @@
       "description": {
         "en-US": "We don't need to employ all these former middle managers. If they cannot fit into an expert role in squads or adopt a less hierarchical leadership approach, we should let them go."
       },
+      "feedback": {
+        "en-US": "To become truly agile, middle management has to be cut in size and the approach can help cut costs too. This can be a very distruptive move, and the lack of hierarchy is not compatible with all organizational and country cultures. Be ready for hiccups!"
+      },
       "scenario": "7",
       "effects": {
         "p2": 1
@@ -538,6 +539,9 @@
       },
       "description": {
         "en-US": "We need to push through the cultural change towards a more collaborative and less authoritarian leadership culture. The best way to do this is to promote good team players to tribe and squad leadership."
+      },
+      "feedback": {
+        "en-US": "Cultural change is a sensible approach, but it takes time. Promoting the more collaborative people to key roles sends an important message."
       },
       "scenario": "7",
       "effects": {
@@ -555,6 +559,9 @@
       "description": {
         "en-US": "This requires cultural change, and it is best achieved through top management intervention. By modeling behaviors and solving problems on the ground, our top leaders can help spread new norms and values."
       },
+      "feedback": {
+        "en-US": "Top management should play a big role in any large-scale change. It is important to get involved without appearing to micro-manage the actual decisions. If the top management can let go their hierarchical instincts, they should get involved in helping institute new management practices."
+      },
       "scenario": "7",
       "effects": {
         "p2": 1
@@ -568,6 +575,9 @@
       },
       "description": {
         "en-US": "We can reduce the leverage of middle managers by pushing more of the management tasks into cloud services. Open access to KPIs, tasks, and outcomes can induce radical transparency that limits middle manager ability to play politics."
+      },
+      "feedback": {
+        "en-US": "This is an excellent approach to changing culture; openness and lateral communications reduce the organization's reliance on hierarchy. Yet, for this approach to work, employees and managers must be willing to adapt."
       },
       "scenario": "7",
       "effects": {
@@ -949,7 +959,7 @@
     {
       "id": "2",
       "title": {
-        "en-US": "Automated processes"
+        "en-US": "Process automation"
       },
       "description": {
         "en-US": "Smart software is now taking care of many routine tasks, freeing employees to focus on creative work."
