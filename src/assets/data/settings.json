@@ -594,6 +594,9 @@
       "description": {
         "en-US": "We could hire agile coaches to help our employees adapt to the new team-centric ways of working."
       },
+      "feedback": {
+        "en-US": "Agile coaches are a common tool for helping employees adapt to new ways of working. Cultural change will necessarily take time, and not everyone wants to take on more responsibilities."
+      },
       "scenario": "8",
       "effects": {
         "p2": 1
@@ -607,6 +610,9 @@
       },
       "description": {
         "en-US": "We could help employees find teams that work on projects that interest them. This way our employees might become more engaged."
+      },
+      "feedback": {
+        "en-US": "This approach can be helpful, but it doesn't address the core issue of employees' role assumptions."
       },
       "scenario": "8",
       "effects": {
@@ -622,6 +628,9 @@
       "description": {
         "en-US": "We might offer stronger incentives, including stock options, for our employees to make them think and act more like owners."
       },
+      "feedback": {
+        "en-US": "Incentives can help, especially when combined with clear communications on expected behaviors. Yet, incentives alone will not change deep-seated assumptions and behaviors."
+      },
       "scenario": "8",
       "effects": {
         "p2": 1
@@ -636,6 +645,9 @@
       },
       "description": {
         "en-US": "The top management team should sit down and create an overarching strategic plan regarding how we will operate. A top-down design of an operating model can help align activities and reduce conflict."
+      },
+      "feedback": {
+        "en-US": "Rethinking the operating model can be very helpful. Often the move to a team-based structure needs to be combined with process redesign that eliminates interdependencies between teams."
       },
       "scenario": "9",
       "effects": {
@@ -686,7 +698,10 @@
         "en-US": "Establish functional chapters"
       },
       "description": {
-        "en-US": "Many agile organizations have chapters, formal structures organized around expertise areas. The heads of each chapter, such as databases or javascript establish common ways of working."
+        "en-US": "Chapters are formal structures organized around expertise areas. The heads of each chapter, such as 'databases' or 'UI design' establish common ways of working and take charge of skills development."
+      },
+      "feedback": {
+        "en-US": "Chapter heads can certainly reduce duplicate work, especially in smaller organiations. In larger organiations, interactions become less requent and this becomes a less practical solution."
       },
       "scenario": "10",
       "effects": {
@@ -700,7 +715,10 @@
         "en-US": "Share best practices on a wiki"
       },
       "description": {
-        "en-US": "Set up a company Wiki to share best practices and team choices on voluntary basis."
+        "en-US": "Set up a company wiki site to share best practices and team choices on voluntary basis."
+      },
+      "feedback": {
+        "en-US": "Digital tools are an effective and scalable way to align work. They are not without risks, however, as it takes a strong culture to motivate employees to contribute and follow wikis."
       },
       "scenario": "10",
       "effects": {
@@ -716,6 +734,9 @@
       "description": {
         "en-US": "We could ask our technical leaders to develop guidelines and standards for the most common technology areas. This would help cut down overlapping work."
       },
+      "feedback": {
+        "en-US": "Standards are great, but they also go against the cultural goals of empowerment, initiative, and agility. Some standards are obviously needed, but be careful of their effects on the culture!"
+      },
       "scenario": "10",
       "effects": {
         "p2": 1
@@ -727,10 +748,13 @@
     {
       "id": "94",
       "title": {
-        "en-US": "Tweak the organizational design to modularize shared tasks."
+        "en-US": "Tweak organizational design by modularizing tasks."
       },
       "description": {
         "en-US": "We can try to identify common tasks across different teams, such as software testing or sending email to customers. This way teams do not need to address these same tasks."
+      },
+      "feedback": {
+        "en-US": "This is an ideal approach for addressing duplicate work, but it requires foresight and has its limits. Clearly there are many nearly duplicate tasks that cannot be 'externalized' to a separate team."
       },
       "scenario": "10",
       "effects": {
@@ -747,6 +771,9 @@
       "description": {
         "en-US": "Without opportunities for promotion, we could try to motivate employees by increasing the pay for our best talents. Simple!?"
       },
+      "feedback": {
+        "en-US": "Many organizations have ended up doing exactly this. It is not ideal, but there is a war of talent going on, and in digitalized firms employee productivity can vary greatly."
+      },
       "scenario": "11",
       "effects": {
         "p2": 1
@@ -761,6 +788,9 @@
       "description": {
         "en-US": "We could provide employees an opportunity to lead new venture teams outside the regular organizaitonal strutures, providing them opportunities to acquire new skills and performance-related bonuses."
       },
+      "feedback": {
+        "en-US": "This is a risky approach, even though venturing units can be help retain talent with an entrepreneurial mindset. Do we really want to send a message that the best people move out from our core business?"
+      },
       "scenario": "11",
       "effects": {
         "p2": 1
@@ -772,10 +802,13 @@
     {
       "id": "103",
       "title": {
-        "en-US": "Let them eat cake"
+        "en-US": "Let them go"
       },
       "description": {
         "en-US": "Running a non-hierarchical organization means giving up on people who want a leadership position in a hierarchy. Some may leave, others will adapt and stay."
+      },
+      "feedback": {
+        "en-US": "This is a fact of life, some people are happier and more productive in more hierarchical organizations. Yet, this is a very risky approach. Losing some of the best people is a bad look."
       },
       "scenario": "11",
       "effects": {
