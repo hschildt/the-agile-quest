@@ -332,7 +332,7 @@
       },
       "scenario": "3",
       "effects": {
-        "p2": 1,
+        "p2": 1
       },
       "ribbons": [ ]
     },
@@ -498,7 +498,7 @@
       "scenario": "6",
       "effects": {
         "p3": 1,
-        "p4": 1,
+        "p4": 1
       },
       "ribbons": []
     },
