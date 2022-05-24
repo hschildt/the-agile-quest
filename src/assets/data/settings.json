@@ -8,7 +8,7 @@
         "en-US": "Profitability issues"
       },
       "description": {
-        "en-US": "Our operating profit at the bank has decreased steadily over time and we are now a whole 5 percentage points below our main competitors. This is clearly a concern for our board, who have asked us to come up with a plan to address this situation. We need to either our customer representatives to sell more and our back office staff to process work faster, or we need to find places to cut costs.</br>Here are some alternatives that our board would approve. What should we do?"
+        "en-US": "Our operating profit at the bank has decreased steadily over time and we are now a whole 5 percentage points below our main competitors. This is clearly a concern for our board, who have asked us to come up with a plan to address this situation. We need to either push our customer representatives to sell more and our back office staff to process work faster, or we need to find places to cut costs.</br>Here are some alternatives that our board would approve. What should we do?"
       },
       "strategies": [
         11,
@@ -17,6 +17,7 @@
         14
       ],
       "effects": {
+        "p4": -1,
         "p6": -1
       }
     },
@@ -105,7 +106,7 @@
         64
       ],
       "effects": {
-        "p4": -1
+        "p4": -2
       }
     },
     {
@@ -140,7 +141,7 @@
       ],
       "effects": {
 
-        "p3": -1
+        "p3": -2
       }
     },
     {
@@ -169,7 +170,7 @@
         "en-US": "Limited opportunities for career progression"
       },
       "description": {
-        "en-US": "The flat organizational structure means that there are far fewer opportunities for clear career advancement. Some of our most ambitious talent are dismayed by the poor prospects of getting on a managerial career ladder.<p>Already, some of our employees have quit their jobs and taken up offers to run departments at competing banks."
+        "en-US": "The flat organizational structure means that there are far fewer opportunities for clear career advancement. Some of our most ambitious employees are dismayed by the poor prospects of getting on a managerial career ladder.<p>Already, some of our employees have quit their jobs and taken up offers to run departments at competing banks."
       },
       "strategies": [
         101,
@@ -214,7 +215,7 @@
         "p5": 1,
         "p3": 1
       },
-      "ribbons": [ "2" ]
+      "ribbons": [ ]
     },
     {
       "id": "12",
@@ -291,8 +292,7 @@
         "p2": 1,
         "p4": 1,
         "o1": 1,
-        "o2": 1,
-        "o3": -1
+        "o2": 1 
       },
       "ribbons": [
       ]
@@ -300,13 +300,13 @@
     {
       "id": "22",
       "title": {
-        "en-US": "Cross functional teams"
+        "en-US": "Cross-functional task forces"
       },
       "description": {
-        "en-US": "We can set up task-forces involving experts from various functions and departments to develop and launch customer-oriented new services. This puts an extra burden on the units, but with the right choice of task force members, we could inprove coordination and implement services that are actually attuned to customers."
+        "en-US": "We can set up task forces involving experts from various functions and departments to develop and launch customer-oriented new services. This puts an extra burden on the units, but with the right choice of task force members, we could inprove coordination and implement services that are actually attuned to customers."
       },
       "feedback": {
-        "en-US": "Task forces are great at developing social ties across existing silos. Yet, task forces are fairly slow approach to innovate and they can easily get bogged down in political conflictsé. Besides fighting with each other, well-meaning task force members commonly face resistance from their own home units."
+        "en-US": "Task forces are great at developing social ties across existing silos. Yet, they represents a limited remedy to innovativeness. These teams can easily get bogged down in political conflicts; besides fighting with each other, well-meaning task force members commonly face resistance from their own home units."
       },
       "scenario": "3",
       "effects": {
@@ -314,8 +314,7 @@
         "p2": 1,
         "p3": 2,
         "p4": 1,
-        "o1": 1,
-        "o3": 1
+        "o1": 1
       },
       "ribbons": []
     },
@@ -449,7 +448,7 @@
         "en-US": "Start with just R&D"
       },
       "description": {
-        "en-US": "We can combine our old technology development and marketing units into an agile research and development organization with cross-disciplinary teams. The customer-facing business units with profit and loss responsibilities can operate as before."
+        "en-US": "We can combine our information technology development and marketing units into an agile research and development organization with cross-disciplinary teams. The customer-facing business units with profit and loss responsibilities can operate as before."
       },
       "feedback": {
         "en-US": "Many large companies have run their R&D units in agile way for ages, and it provides clear but limited benefits. We won't be breaking down organizatinal barriers or reinventing our core processes. But we will be able to launch new services more quickly."
@@ -490,7 +489,7 @@
         "en-US": "Build on the existing structures and services"
       },
       "description": {
-        "en-US": "We should organize the tribes around our existing business units and then create teams reaponsible for the services we provide to customers."
+        "en-US": "We should organize the tribes around our existing business units and then form teams responsible for the services we are providing to our customers."
       },
       "feedback": {
         "en-US": "This is a sensible starting point that minimizes disruptions. However, the approach risks missing much of the potential for customer-centric innovation and synergies in technology. Over time, the constellation of teams ought to evolve."
@@ -604,7 +603,6 @@
         "p3": 1,
         "p4": 1,
         "o1": 1,
-        "o3": -1,
         "o4": -1
       },
       "ribbons": []
@@ -648,8 +646,7 @@
         "p1": 1,
         "p3": 1,
         "p4": 1,
-        "o1": 1,
-        "o3": -1
+        "o1": 1 
       },
       "ribbons": []
     },
@@ -765,7 +762,7 @@
         "en-US": "Chapters are formal structures organized around expertise areas. The heads of each chapter, such as 'databases' or 'UI design' establish common ways of working and take charge of skills development."
       },
       "feedback": {
-        "en-US": "Chapter heads can certainly reduce duplicate work, especially in smaller organiations. In larger organiations, interactions become less requent and this becomes a less practical solution."
+        "en-US": "Chapter heads can certainly reduce duplicate work, especially in smaller organizations. In larger organizations, interactions become less frequent and this becomes a less practical solution."
       },
       "scenario": "10",
       "effects": {
@@ -866,7 +863,7 @@
         "en-US": "Venturing unit"
       },
       "description": {
-        "en-US": "We could provide employees an opportunity to lead new venture teams outside the regular organizaitonal strutures, providing them opportunities to acquire new skills and performance-related bonuses."
+        "en-US": "We could provide employees an opportunity to lead new venture teams outside the regular organizational structures, providing them opportunities to acquire new skills and performance-related bonuses."
       },
       "feedback": {
         "en-US": "This is a risky approach, even though venturing units can be help retain talent with an entrepreneurial mindset. Do we really want to send a message that the best people move out from our core business?"
@@ -1039,13 +1036,13 @@
       "minValue": -5,
       "maxValue": 5,
       "titleTop": {
-        "en-US": "Interaction Style"
+        "en-US": "Data-driven"
       },
       "titleBottom": {
-        "en-US": "(Conflict)"
+        "en-US": "culture"
       },
       "toolTip": {
-        "en-US": "The degree of conflict in the organiation."
+        "en-US": "The readiness and tendency to use data analytics in decision-making."
       }
     },
     {
@@ -1069,10 +1066,10 @@
     {
       "id": "1",
       "title": {
-        "en-US": "Cross-functional teams"
+        "en-US": "Cross-functional task forces"
       },
       "description": {
-        "en-US": "The organization has established multi-functional teams responsible for developing new digital solutions."
+        "en-US": "The organization has established multi-functional teams that are responsible for developing new digital solutions outside their normal roles."
       }
     },
     {
