@@ -1070,7 +1070,7 @@
       "description": {
         "en-US": "Iterative protyping helps improve innovativeness particularly in decentralized organizations."
       },
-      "criteria": [{"metric": "o2", "treshold": 6, "comparison":">"],
+      "criteria": [{"metric": "o2", "treshold": 6, "comparison":">"}],
       "benefits": [{"metric": "p2", "outcome": 1}] 
     },
     {
@@ -1081,9 +1081,8 @@
       "description": {
         "en-US": "Cross-functional task forces enable motivated employees to identify and address issues that fall outside their normal mandate.",
       },
-      "criteria": [{"metric": "o1", "treshold": 6, "comparison":">"],
+      "criteria": [{"metric": "o1", "treshold": 6, "comparison":">"}],
       "benefits": [{"metric": "p6", "outcome": 1}] 
-      }
     }
   ]
 }
