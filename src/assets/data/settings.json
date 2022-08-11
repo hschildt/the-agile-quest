@@ -106,7 +106,7 @@
         64
       ],
       "effects": {
-        "p4": -2
+        "p4": -1
       }
     },
     {
@@ -141,7 +141,7 @@
       ],
       "effects": {
 
-        "p3": -2
+        "p3": -1
       }
     },
     {
@@ -294,8 +294,7 @@
         "o1": 1,
         "o2": 1 
       },
-      "ribbons": [
-      ]
+      "ribbons": [ 1 ]
     },
     {
       "id": "22",
@@ -316,7 +315,7 @@
         "p4": 1,
         "o1": 1
       },
-      "ribbons": []
+      "ribbons": [ 2 ]
     },
     {
       "id": "23",
@@ -1066,46 +1065,24 @@
     {
       "id": "1",
       "title": {
-        "en-US": "Cross-functional task forces"
+        "en-US": "Iterative prototyping"
       },
       "description": {
-        "en-US": "The organization has established multi-functional teams that are responsible for developing new digital solutions outside their normal roles."
-      }
+        "en-US": "Iterative protyping helps improve innovativeness particularly in decentralized organizations."
+      },
+      "criteria": [{"metric": "o2", "treshold": 6, "comparison":">"],
+      "benefits": [{"metric": "p2", "outcome": 1}] 
     },
     {
       "id": "2",
       "title": {
-        "en-US": "Process automation"
+        "en-US": "Cross-functional task forces"
       },
       "description": {
-        "en-US": "Smart software is now taking care of many routine tasks, freeing employees to focus on creative work."
-      }
-    },
-    {
-      "id": "3",
-      "title": {
-        "en-US": "Agile structures"
+        "en-US": "Cross-functional task forces enable motivated employees to identify and address issues that fall outside their normal mandate.",
       },
-      "description": {
-        "en-US": "The bank is organized as a ’team of teams.’ In practice, the bank's activities are divided into six ’tribes’ that each consist of 6-12 multifunctional squads."
-      }
-    },
-    {
-      "id": "4",
-      "title": {
-        "en-US": "Digital collaboration tools"
-      },
-      "description": {
-        "en-US": "The company has adopted contemporary collaboration tools, such as chat rooms, internal social media, and advanced search engines that help employees share knowledge across teams and find answers to their solutions."
-      }
-    },
-    {
-      "id": "5",
-      "title": {
-        "en-US": "Radical transparency"
-      },
-      "description": {
-        "en-US": "To facilitate collaboration, the company now shares details of all major projects as well as personal goals of all managers on its intranet. Most employees have access to information about cost, revenues, and profit margins of various services and employee groups to facilitate intelligent business development efforts and corporate entrepreneurship."
+      "criteria": [{"metric": "o1", "treshold": 6, "comparison":">"],
+      "benefits": [{"metric": "p6", "outcome": 1}] 
       }
     }
   ]
