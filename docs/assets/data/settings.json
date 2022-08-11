@@ -1079,7 +1079,7 @@
         "en-US": "Cross-functional task forces"
       },
       "description": {
-        "en-US": "Cross-functional task forces enable motivated employees to identify and address issues that fall outside their normal mandate.",
+        "en-US": "Cross-functional task forces enable motivated employees to identify and address issues that fall outside their normal mandate."
       },
       "criteria": [{"metric": "o1", "treshold": 6, "comparison":">"}],
       "benefits": [{"metric": "p6", "outcome": 1}] 
