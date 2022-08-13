@@ -449,22 +449,26 @@ export class GameComponent implements OnDestroy, OnInit {
 
       let value = indicator.initialValue ?? 0,
           previousValue = indicator.initialValue ?? 0;
-      
+      if(indicator.id=="p2")
+        console.log("indicator before init: "+JSON.stringify(indicator) + " after played scenarios: "+this.playedScenarios.length);
       this.playedScenarios.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
         if (i < this.playedScenarios.length - 1)
           previousValue += effect;
       });
+      if(indicator.id=="p2")
+        console.log("new value: "+value);
       this.playedStrategies.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
         if (i < this.playedStrategies.length - 1)
           previousValue += effect;
       });
-
       indicator.value = value;
       indicator.previousValue = previousValue;
+      if(indicator.id=="p2")
+        console.log("indicator after initIndicators(): "+JSON.stringify(indicator)+ after played strategies: " after played strategies: "+this.playedStrategies.length);
     }
   }
 
