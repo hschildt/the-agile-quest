@@ -449,16 +449,14 @@ export class GameComponent implements OnDestroy, OnInit {
 
       let value = indicator.initialValue ?? 0,
           previousValue = indicator.initialValue ?? 0;
-      if(indicator.id=="p2")
-        console.log("indicator before init: "+JSON.stringify(indicator) + " after played scenarios: "+this.playedScenarios.length);
+      // if(indicator.id=="p2") console.log("indicator before init: "+JSON.stringify(indicator) + " after played scenarios: "+this.playedScenarios.length);
       this.playedScenarios.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
         if (i < this.playedScenarios.length - 1)
           previousValue += effect;
       });
-      if(indicator.id=="p2")
-        console.log("new value: "+value);
+      // if(indicator.id=="p2") console.log("new value: "+value);
       this.playedStrategies.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
@@ -467,8 +465,7 @@ export class GameComponent implements OnDestroy, OnInit {
       });
       indicator.value = value;
       indicator.previousValue = previousValue;
-      if(indicator.id=="p2")
-        console.log("indicator after initIndicators(): "+JSON.stringify(indicator)+ after played strategies: " after played strategies: "+this.playedStrategies.length);
+      // if(indicator.id=="p2") console.log("indicator after initIndicators(): "+JSON.stringify(indicator)+ after played strategies: " after played strategies: "+this.playedStrategies.length);
     }
   }
 
@@ -639,29 +636,5 @@ export class GameComponent implements OnDestroy, OnInit {
   public t(text: string | LocalizedString): string {
     return this.shared.getText(text);
   }
-
-  // /*
-  //  * Get data for the resultChart component to use
-  //  */
-  // public get resultChartData(): ResultChartData {
-  //   throw new Error("Not implemented");
-  //   const data = new Array<any>();
-  //   const purchases = this.purchasesAndPassedRounds;
-
-  //   // NB. This code is partly copied from getAccumulatedReturns
-  //   let balance = this.shared.settings.balance;
-  //   for (let i = 0; i <= purchases.length; i++) {
-  //     const returns = this.getTotalReturns(purchases.slice(0, i));
-  //     balance += returns;
-  //     balance -= i === 0 ? 0 : purchases[i - 1].price;
-  //     data.push({
-  //       round:      i + ROUND_BASE,
-  //       balance:    balance,
-  //       returns:    returns,
-  //       investment: this.t(i === 0 ? 'Start' : (purchases[i - 1] instanceof NullInvestment ? 'Pass' : purchases[i - 1].title))
-  //     });
-  //   }
-  //   return data;
-  // }
 
 }
