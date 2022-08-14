@@ -272,7 +272,7 @@ export class GameComponent implements OnDestroy, OnInit {
    * Note that round is ROUND_BASE-based (= 1)
    */
   get round(): number {
-    return this.rawRound + ROUND_BASE;
+    return Math.min(this.rawRound + ROUND_BASE, this.lastRound);
   }
 
   get lastRound(): number {
@@ -449,14 +449,16 @@ export class GameComponent implements OnDestroy, OnInit {
 
     // Preload ribbon effects
     const ribbonEffects: {[id: string]: number} = {}
-    this.ribbons.forEach(r => {
-      for (const iid in r.effects) {
-        if (iid in ribbonEffects)
-          ribbonEffects[iid] += r.effects[iid];
-        else
-          ribbonEffects[iid] = r.effects[iid];
-      }
-    });
+    this.ribbons
+      .filter(r => "effects" in r)
+      .forEach(r => {
+        for (const iid in r.effects) {
+          if (iid in ribbonEffects)
+            ribbonEffects[iid] += r.effects[iid];
+          else
+            ribbonEffects[iid] = r.effects[iid];
+        }
+      });
 
     for (const iid in this.shared.indicators) {
 

@@ -517,9 +517,7 @@
         "p3": 1,
         "p5": 1
       },
-      "ribbons": [
-        4
-      ]
+      "ribbons": [ 4 ]
     },
     {
       "id": "53",
@@ -1095,6 +1093,15 @@
         }
       ],
       "effects": {"p6": 1}
-    }
+    },
+    {
+        "id": "4",
+        "title": {
+          "en-US": "MISSING RIBBON"
+        },
+        "description": {
+          "en-US": "MISSING RIBBONS enable motivated employees to identify and address issues that fall outside their normal mandate."
+        }
+      }
   ]
 }

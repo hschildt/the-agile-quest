@@ -61,8 +61,8 @@ export interface Ribbon {
   id: string,
   title: LocalizedString,
   description?: LocalizedString,
-  criteria: Criterion[],
-  effects: Effects
+  criteria?: Criterion[],
+  effects?: Effects
 }
 
 export interface Indicator {

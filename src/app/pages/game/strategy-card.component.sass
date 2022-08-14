@@ -4,7 +4,7 @@ $border: $border-M
 
 :host
   display: inline-block
-  height: 24rem
+  height: min(100%, 24rem)
   margin: 0 $margin-S
   position: relative
   width: min(16rem, 30vw)
@@ -34,15 +34,14 @@ $border: $border-M
   position: relative
   text-align: center
 
-.locked .content
-  opacity: 0
-
 .back
   color: $color-primaryBg
 
   .content
     background-color: $color-primary
     font-style: italic
+    padding-bottom: $margin-M
+    padding-top: $margin-S
 
 label
   margin: 0

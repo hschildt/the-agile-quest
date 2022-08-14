@@ -21,15 +21,14 @@ button:focus
 
 #grid
   display: grid
-  padding: $margin-XL
+  padding: $margin-L
   position: relative
   min-height: 100vh
   max-height: 100vh
   width: 100%
   grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [right-edge]
-  grid-template-rows:    [top] 3.5rem [mid] $minHeight-mid [main] 1fr [bottom] 3.5rem [bottom-edge]
+  grid-template-rows:    [top] 4rem [mid] auto [main] 1fr [bottom] 4rem [bottom-edge]
   gap: $gridGap $gridGap
-
 
 #performanceIndicators
   grid-area: top / col-1 / mid / right-edge
@@ -40,10 +39,10 @@ button:focus
   position: relative
   z-index: $zIndex-4
 
-
 #scenario
   grid-area: mid / col-1 / main / right-edge
   padding: 0 calc(75px + #{$margin-S})
+  padding-bottom: $margin-L
   position: relative
   display: flex
   flex-flow: column nowrap
@@ -63,6 +62,7 @@ button:focus
   .description
     font-size: $fontSize-L
     max-width: $maxWidth-XL
+    min-height: 8rem
     text-align: center
 
   #roundIndicator
@@ -83,15 +83,15 @@ button:focus
       transform-origin: top left
 
     .roundText
-      font-size: 22px
-      letter-spacing: 4px
+      font-size: 1.2rem
+      letter-spacing: 0.1rem
       text-align: center
 
       .roundText-current
-        vertical-align: 6px
+        vertical-align: 0.5rem
 
       .roundText-last
-        vertical-align: -6px
+        vertical-align: -0.5rem
 
 #topDialog
   grid-area: mid / col-2 / main / col-6

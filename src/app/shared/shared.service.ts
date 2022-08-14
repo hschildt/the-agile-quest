@@ -135,6 +135,8 @@ export class SharedService implements OnDestroy{
    * Test if the given ribbon's criteria are met.
    */
   public checkRibbon(ribbon: Ribbon): boolean {
+    if (!("criteria" in ribbon) || ribbon.criteria == null)
+      return false;
     for (const c of ribbon.criteria) {
       const cv = this.indicators[c.indicatorId].value ?? 0,
             op = c.operator,
