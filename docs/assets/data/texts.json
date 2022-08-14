@@ -1,0 +1,27 @@
+{
+  "TITLE_SCREEN_INTRO": {
+    "en-US": "Congratulations, you have been appointed the CEO of River Bank Inc., an old regional retail bank. The company has a workforce of 10 000 employees and a rapidly dwindling chain of a few hundred physical branches. The board members supported your appointment, but they expect you to address the changing industry conditions and revitalize the slow, hierarchical, and largely ineffective organization. <p>The banking industry is facing significant changes due to digitalization, new competitors and complementors in the financial ecosystem, and shifting consumer expectations. Both consumer and business side are facing new competition from specialized players and technology giants, such as Apple, Facebook, and Google. Finally, consumers have shifted their banking to mobile apps and expect their banks to provide them with user experience that is on par with other apps such as Uber. <p>To address the changing industry context, the board is expecting you to renew the company’s organization and operating model. The previous leadership has allowed the company to become ineffective and static. The marketing department has not been able to develop new services demanded by customers, and both consumer and business customers feel that the bank is unable to offer attractive customized solutions to their needs. Creating effective structures and processes for collaboration seem vital for the survival in the digital era. <p>In this simulation, you will face eight consequent scenarios related to the new strategic direction set by the board. In each scenario, you will have 3-5 different strategic options with distinct impact on the company’s culture, structures, and performance. Your task is to renew River Bank’s organization to compete in the digital era. Choose wisely."
+  },
+  "AUTHORS": {
+    "en-US": "Concept: Henri Schildt + Farah Kodeih • Design: <a href='http://kipsonite.com' target='_blank'>Kiira Keski-Hakuni</a> • Engineering: <a href='http://kaljarv.com/' target='_blank'>Kalle Järvenpää</a>"
+  },
+  "Start game": {
+    "en-US": "Start game"
+  },
+  "The Agile Quest Game": {
+    "en-US": "The Agile Quest Game"
+  },
+  "Start next round": {
+    "en-US": "Start next round"
+  },
+  "Execute selected strategy": {
+    "en-US": "Execute selected strategy",
+    "fi-FI": "Käytä valittua strategiaa"
+  }, 
+  "Show Available Strategies": {
+    "en-US": "Show Available Strategies"
+  },  
+  "Start a New Game": {
+    "en-US": "Start a New Game"
+  }
+}

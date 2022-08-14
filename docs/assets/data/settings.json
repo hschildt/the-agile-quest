@@ -1,0 +1,1107 @@
+{
+  "version": 1,
+  "rounds": 10,
+  "scenarios": [
+    {
+      "id": "1",
+      "title": {
+        "en-US": "Profitability issues"
+      },
+      "description": {
+        "en-US": "Our operating profit at the bank has decreased steadily over time and we are now a whole 5 percentage points below our main competitors. This is clearly a concern for our board, who have asked us to come up with a plan to address this situation. We need to either push our customer representatives to sell more and our back office staff to process work faster, or we need to find places to cut costs.</br>Here are some alternatives that our board would approve. What should we do?"
+      },
+      "strategies": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "effects": {
+        "p4": -1,
+        "p6": -1
+      }
+    },
+    {
+      "id": "2",
+      "title": {
+        "en-US": "We don't seem to understand our customers"
+      },
+      "description": {
+        "en-US": "Our competitors are getting a lot of traction for their new apps, while our customers seem to ignore our new services. One board member noted that our technology development unit seems too disconnected from our customers and the everyday issues our customer representatives deal with. Another board member suggested that our new services may be focusing on the customers’ current problems rather than their fundamental needs. Whatever the reasons are, it appears we are not as customer centric as we should be. </br>Maybe we should try one of these approaches?"
+      },
+      "strategies": [
+        21,
+        22,
+        23
+      ],
+      "effects": {
+        "p4": -1,
+        "p6": -1
+      }
+    },
+    {
+      "id": "3",
+      "title": {
+        "en-US": "The board is asking for an agile transformation"
+      },
+      "description": {
+        "en-US": "Our research and development efforts have led to a number of promising new services, but the current organization doesn’t seem to facilitate innovation. In fact, there seems to be a complete lack of alignment in realizing the new services and getting our customers to use them. Part of the problem is ignorance—our organization is not aware of the new services and the customer needs they address. Finally, our customer-facing employees are more interested in maintaining old relationships than pushing out our new services. "
+      },
+      "strategies": [
+        31,
+        32,
+        33
+      ],
+      "effects": {
+        "p2": -1,
+        "p3": -1,
+        "p6": -1
+      }
+    },
+    {
+      "id": "4",
+      "title": {
+        "en-US": "The scope of the change"
+      },
+      "description": {
+        "en-US": "The board of the company is pushing us to carry out a bigger structural change, adopting a team-based structure. It is up to you to decide on the scope of the change."
+      },
+      "strategies": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "effects": {
+      }
+    },
+    {
+      "id": "5",
+      "title": {
+        "en-US": "Rethinking organizational architecture?"
+      },
+      "description": {
+        "en-US": "Moving from a hierarchical to teams-based organization involves deciding how to group all of our employees into these new squads and how to group squads into tribes. The board wants to hear what our approach to this is?"
+      },
+      "strategies": [
+        51,
+        52,
+        53
+      ],
+      "effects": {
+      }
+    },
+    {
+      "id": "6",
+      "title": {
+        "en-US": "Middle-management resistance"
+      },
+      "description": {
+        "en-US": "The changes have cut down the number of middle managers. While some were promoted to tribe leaders, others are squad leaders or members. This shift towards a non-hierarchical structure did not go down so well with everyone. Many are trying to hold onto their prior power and playing political games."
+      },
+      "strategies": [
+        61,
+        62,
+        63,
+        64
+      ],
+      "effects": {
+        "p4": -1
+      }
+    },
+    {
+      "id": "7",
+      "title": {
+        "en-US": "Lack of initiative"
+      },
+      "description": {
+        "en-US": "The transformation process is well on the way, but there seem to be a few hiccups. First, employees in some teams do not seem to know what to do exactly and they are waiting for instructions.<p>After talking with some employees, they seem to lack initiative and wait to be instructed by their former managers or fellow team members."
+      },
+      "strategies": [
+        71,
+        72,
+        73
+      ],
+      "effects": {
+        "p4": -1
+      }
+    },
+    {
+      "id": "8",
+      "title": {
+        "en-US": "Lack of alignment across teams"
+      },
+      "description": {
+        "en-US": "The autonomous teams seem to be a bit too innovative for some of our customers. In effect, there is a broader lack of alignment across teams.<p>Concretely, our new services seem to lack consistency. For example, the usability experience and pricing strategies are quite different across services."
+      },
+      "strategies": [
+        81,
+        82,
+        83
+      ],
+      "effects": {
+
+        "p3": -1
+      }
+    },
+    {
+      "id": "9",
+      "title": {
+        "en-US": "Inefficiencies and duplicate work"
+      },
+      "description": {
+        "en-US": "Our team-based structure seems to lead to a lot of duplicate work. Teams waste a lot of time developing and testing software functionality that has already been created by one or more other teams. This seems to be a problem of inadequate information sharing."
+      },
+      "strategies": [
+        91,
+        92,
+        93,
+        94
+      ],
+      "effects": {
+        "p1": -1,
+        "p6": -1,
+        "p3": -1
+      }
+    },
+    {
+      "id": "10",
+      "title": {
+        "en-US": "Limited opportunities for career progression"
+      },
+      "description": {
+        "en-US": "The flat organizational structure means that there are far fewer opportunities for clear career advancement. Some of our most ambitious employees are dismayed by the poor prospects of getting on a managerial career ladder.<p>Already, some of our employees have quit their jobs and taken up offers to run departments at competing banks."
+      },
+      "strategies": [
+        101,
+        102,
+        103
+      ],
+      "effects": {
+        "p4": -1
+      }
+    },
+    {
+      "id": "11",
+      "title": {
+        "en-US": "Good job!"
+      },
+      "description": {
+        "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
+      },
+      "strategies": [
+      ],
+      "effects": {
+        "p6": 1
+      }
+    }
+  ],
+
+  "strategies": [
+    {
+      "id": "11",
+      "title": {
+        "en-US": "Automate the back office"
+      },
+      "description": {
+        "en-US": "Some of our back office employees are close to retirement age and we could invest in new software systems to automate some of the more routine human work taking place there. "
+      },
+      "feedback": {
+        "en-US": "Automation helps cut costs and free managers' time to engage with new customer needs."
+      },
+      "scenario": "2",
+      "effects": {
+        "p6": 1,
+        "p5": 1,
+        "p3": 1
+      },
+      "ribbons": [ ]
+    },
+    {
+      "id": "12",
+      "title": {
+        "en-US": "Emphasize self-service channels"
+      },
+      "description": {
+        "en-US": "We could reduce the number of customer representatives by expanding the functionality of our website and mobile applications, encouraging customers to carry out some of the tasks themselves that are now conducted by our employees. "
+      },
+      "feedback": {
+        "en-US": "Increasing shift towards self-service channels creates cost savings and allow us to automate some customer processes. This also facilitates centralized control of customer-facing services."
+      },
+      "scenario": "2",
+      "effects": {
+        "p6": 1,
+        "p5": 1,
+        "o2": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "13",
+      "title": {
+        "en-US": "Strengthen incentives"
+      },
+      "description": {
+        "en-US": "Our current pay has a very limited performance-based component. By shifting towards more performance-oriented pay scheme, especially for customer representatives, we can motivate our employees to sell more and thereby increase our income. This should also boost our operating profit. "
+      },
+      "feedback": {
+        "en-US": "Strong incentives improve the efficiency of customer service operations and adds to our profits. Strong extrinsic rewards drive out some of the instrinsic motivation, but overall we get more out of the workers."
+      },
+      "scenario": "2",
+      "effects": {
+        "p1": 2,
+        "p6": 1,
+        "o1": -2,
+        "o2": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "14",
+      "title": {
+        "en-US": "Train to cross-sell"
+      },
+      "description": {
+        "en-US": "One alternative would be to provide additional training to our customer representatives to cross-sell more services to customers. Although this would not cut down our costs, it would add to our revenues and profits."
+      },
+      "feedback": {
+        "en-US": "Investing into our workforce improves their productivity and engagement."
+      },
+      "scenario": "2",
+      "effects": {
+        "p2": 1,
+        "p4": 1,
+        "p6": 1
+      },
+      "ribbons": []
+    },
+
+    {
+      "id": "21",
+      "title": {
+        "en-US": "Prototyping and iterative service design"
+      },
+      "description": {
+        "en-US": "We could train our marketing and technology teams in contemporary service design methods. By developing and testing prototypes of new services, we could better identify and meet customer needs."
+      },
+      "feedback": {
+        "en-US": "Service design methods are great at identifying customer needs and formulating new services. Unfortunately, they often lead to prototypes that are difficult to implement within the existing organizational structures.<p>From strategic perspective, the flip side of customer-centric service design methods is that they often ignore the organization's core strengths."
+      },
+      "scenario": "3",
+      "effects": {
+        "p2": 1,
+        "p4": 1,
+        "o1": 1,
+        "o2": 1 
+      },
+      "ribbons": [ 1 ]
+    },
+    {
+      "id": "22",
+      "title": {
+        "en-US": "Cross-functional task forces"
+      },
+      "description": {
+        "en-US": "We can set up task forces involving experts from various functions and departments to develop and launch customer-oriented new services. This puts an extra burden on the units, but with the right choice of task force members, we could inprove coordination and implement services that are actually attuned to customers."
+      },
+      "feedback": {
+        "en-US": "Task forces are great at developing social ties across existing silos. Yet, they represents a limited remedy to innovativeness. These teams can easily get bogged down in political conflicts; besides fighting with each other, well-meaning task force members commonly face resistance from their own home units."
+      },
+      "scenario": "3",
+      "effects": {
+        "p1": -1,
+        "p2": 1,
+        "p3": 2,
+        "p4": 1,
+        "o1": 1
+      },
+      "ribbons": [ 2 ]
+    },
+    {
+      "id": "23",
+      "title": {
+        "en-US": "Market research"
+      },
+      "description": {
+        "en-US": "Market research conducted through online surveys and focus group interviews would give us a better understanding of our customer needs."
+      },      
+      "feedback": {
+        "en-US": "Market research has become a somewhat outdated basis for product innovation. It is easy and seldom disruptive way to probe the needs and opinions of different customer groups, but it does little to facilitate the collaboration required for the development and implementation of innovative services."
+      },
+      "scenario": "3",
+      "effects": {
+        "p2": 1
+      },
+      "ribbons": [ ]
+    },
+
+    {
+      "id": "31",
+      "title": {
+        "en-US": "Agile practices and culture"
+      },
+      "description": {
+        "en-US": "We could start by training our employees into agile methods, where they use short sprints to take the new innovations to customers. The new iterative processes might shake people out of their old habits."
+      },
+      "feedback": {
+        "en-US": "Agile methods are a great starting point for bottom-up change. Their impact is limited by the established structures that prevent engineers from taking control of the projects. On their own, the practices mainly improve new development projects but provide less impact on process innovation."
+      },
+      "scenario": "4",
+      "effects": {
+        "p2": 1,
+        "p4": 1,
+        "o1": 1,
+        "o2": 1,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "32",
+      "title": {
+        "en-US": "We need a strategic vision"
+      },
+      "description": {
+        "en-US": "The top management should articulate a clear vision of digital transformation and start a process to transition into a more agile and team-based processes."
+      },
+      "feedback": {
+        "en-US": "The biggest barrier to any large-scale change is organizational inertia and the first step in every radical change project is to articulate why the changes are needed and how they will be carried out. A vision doesn't do much by itself, but this is a good start."
+      },
+      "scenario": "4",
+      "effects": {
+        "p3": 1,
+        "p4": 4,
+        "o1": 1 
+      },
+      "ribbons": []
+    },
+    {
+      "id": "33",
+      "title": {
+        "en-US": "Big bang transformation into agile"
+      },
+      "description": {
+        "en-US": "This option involves doing away with our established hierarchical structures and reassigning employees into multifunctional teams. This certainly looks scary!"
+      },
+      "feedback": {
+        "en-US": "A big-bang transformation can be disruptive and even a traumatizing experience for an organization. However, some organizations have pulled this off and clearly it will send a signal that you are serious about this."
+      },
+      "scenario": "4",
+      "effects": {
+        "p1": -1,
+        "p2": 1,
+        "p3": 1,
+        "p4": 1,
+        "p6": -1,
+        "o2": 1,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+
+    {
+      "id": "41",
+      "title": {
+        "en-US": "Enterprise-wide transformation"
+      },
+      "description": {
+        "en-US": "This is the big bang approach to a big bang transformation! We shall implement the change through all our business units at once."
+      },
+      "feedback": {
+        "en-US": "A study by McKinsey suggests that an enterprise-wide transition is likely to be more successful than a timid one. Agile enterprise is all about instilling a new culture and breaking down barriers, and the corporation is a natural scope for these changes."
+      },
+      "scenario": "5",
+      "effects": {
+        "p1": -1,
+        "p3": 1,
+        "p6": 1,
+        "o2": 2,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "42",
+      "title": {
+        "en-US": "All but the most critical functions"
+      },
+      "description": {
+        "en-US": "Let's go for a corporate-wide transformation, but protect our most crucial functions from disruptions. Risk management, financial market operations, and legal teams should work the old way."
+      },
+      "feedback": {
+        "en-US": "We are a bank after all, it makes a lot of sense to retain caution when it comes to legal obligations. Creating a core process organization that runs in a hierarchical fashion will surely not hold us back."
+      },
+      "scenario": "5",
+      "effects": {
+        "p1": -1,
+        "p3": 1,
+        "p6": 1,
+        "o2": 1
+      },
+      "ribbons": [
+      ]
+    },
+    {
+      "id": "43",
+      "title": {
+        "en-US": "Start with just R&D"
+      },
+      "description": {
+        "en-US": "We can combine our information technology development and marketing units into an agile research and development organization with cross-disciplinary teams. The customer-facing business units with profit and loss responsibilities can operate as before."
+      },
+      "feedback": {
+        "en-US": "Many large companies have run their R&D units in agile way for ages, and it provides clear but limited benefits. We won't be breaking down organizatinal barriers or reinventing our core processes. But we will be able to launch new services more quickly."
+      },
+      "scenario": "5",
+      "effects": {
+        "p2": 1,
+        "p4": 1,
+        "o2": 1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "44",
+      "title": {
+        "en-US": "Agile at consumer banking"
+      },
+      "description": {
+        "en-US": "We can implement the change at first in the consumer banking unit and then follow up with the rest later. This is where we are likely to get the biggest gains anyhow."
+      },
+      "feedback": {
+        "en-US": "This is a sensible way to learn more about running agile, but according to McKinsey this type of limited transformation provides the lowest benefits."
+      },
+      "scenario": "5",
+      "effects": {
+        "p2": 1,
+        "p3": -1,
+        "p4": 1,
+        "p6": 1,
+        "o2": 1
+      },
+      "ribbons": []
+    },
+
+    {
+      "id": "51",
+      "title": {
+        "en-US": "Build on the existing structures and services"
+      },
+      "description": {
+        "en-US": "We should organize the tribes around our existing business units and then form teams responsible for the services we are providing to our customers."
+      },
+      "feedback": {
+        "en-US": "This is a sensible starting point that minimizes disruptions. However, the approach risks missing much of the potential for customer-centric innovation and synergies in technology. Over time, the constellation of teams ought to evolve."
+      },
+      "scenario": "6",
+      "effects": {
+        "p3": 1,
+        "p4": 1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "52",
+      "title": {
+        "en-US": "Match team structure to information systems"
+      },
+      "description": {
+        "en-US": "Structure follows strategy? Rather, organization follows technology! Try to create squads corresponding to an ideal software architecture for our banking operations and customer-facing services."
+      },
+      "feedback": {
+        "en-US": "This approach is generally adopted by native technology companies. Complete reorganization can be very disruptive, and the organization may struggle at first to establish coordination across teams."
+      },
+      "scenario": "6",
+      "effects": {
+        "p2": 1,
+        "p3": 1,
+        "p5": 1
+      },
+      "ribbons": [ 4 ]
+    },
+    {
+      "id": "53",
+      "title": {
+        "en-US": "Focus on aggressive outsourching"
+      },
+      "description": {
+        "en-US": "We can take the existing structure as a starting point, but first figure out what activities could be outsourced. We will go for a minimalist organization."
+      },
+      "feedback": {
+        "en-US": "Digitalization certainly facilitates outsourcing, and by aggressively reducing routine work, the company can create a smaller, more agile, and better aligned organization."
+      },
+      "scenario": "6",
+      "effects": {
+        "p2": 1,
+        "p3": 1,
+        "p5": 1,
+        "o1": 1
+      },
+      "ribbons": []
+    },
+
+    {
+      "id": "61",
+      "title": {
+        "en-US": "Cut down the middle management"
+      },
+      "description": {
+        "en-US": "We don't need to employ all these former middle managers. If they cannot fit into an expert role in squads or adopt a less hierarchical leadership approach, we should let them go."
+      },
+      "feedback": {
+        "en-US": "To become truly agile, middle management has to be cut in size and the approach can help cut costs too. This can be a very distruptive move, and the lack of hierarchy is not compatible with all organizational and country cultures. Be ready for hiccups!"
+      },
+      "scenario": "7",
+      "effects": {
+        "p2": 1,
+        "p3": -1,
+        "p4": 1,
+        "p6": 1,
+        "o2": 1,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "62",
+      "title": {
+        "en-US": "Selective promotions"
+      },
+      "description": {
+        "en-US": "We need to push through the cultural change towards a more collaborative and less authoritarian leadership culture. The best way to do this is to promote good team players to tribe and squad leadership."
+      },
+      "feedback": {
+        "en-US": "Cultural change is a sensible approach, but it takes time. Promoting the more collaborative people to key roles sends an important message."
+      },
+      "scenario": "7",
+      "effects": {
+        "p2": 1,
+        "p3": 1,
+        "p4": 1,
+        "p6": 1,
+        "o1": 1
+      },
+      "ribbons": [
+      ]
+    },
+    {
+      "id": "63",
+      "title": {
+        "en-US": "Leverage the top management team"
+      },
+      "description": {
+        "en-US": "This requires cultural change, and it is best achieved through top management intervention. By modeling behaviors and solving problems on the ground, our top leaders can help spread new norms and values."
+      },
+      "feedback": {
+        "en-US": "Top management should play a big role in any large-scale change. It is important to get involved without appearing to micro-manage the actual decisions. If the top management can let go their hierarchical instincts, they should get involved in helping institute new management practices."
+      },
+      "scenario": "7",
+      "effects": {
+        "p3": 1,
+        "p4": 1,
+        "o1": 1,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "64",
+      "title": {
+        "en-US": "Leverage digital tools"
+      },
+      "description": {
+        "en-US": "We can reduce the leverage of middle managers by pushing more of the management tasks into cloud services. Open access to KPIs, tasks, and outcomes can induce radical transparency that limits middle manager ability to play politics."
+      },
+      "feedback": {
+        "en-US": "This is an excellent approach to changing culture; openness and lateral communications reduce the organization's reliance on hierarchy. Yet, for this approach to work, employees and managers must be willing to adapt."
+      },
+      "scenario": "7",
+      "effects": {
+        "p3": 1,
+        "p4": 1,
+        "p5": 1,
+        "p6": 1,
+        "o2": 1,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+
+    {
+      "id": "71",
+      "title": {
+        "en-US": "Agile coaches"
+      },
+      "description": {
+        "en-US": "We could hire agile coaches to help our employees adapt to the new team-centric ways of working."
+      },
+      "feedback": {
+        "en-US": "Agile coaches are a common tool for helping employees adapt to new ways of working. Cultural change will necessarily take time, and not everyone wants to take on more responsibilities."
+      },
+      "scenario": "8",
+      "effects": {
+        "p1": 1,
+        "p3": 1,
+        "p4": 1,
+        "o1": 1 
+      },
+      "ribbons": []
+    },
+    {
+      "id": "72",
+      "title": {
+        "en-US": "Job rotation"
+      },
+      "description": {
+        "en-US": "We could help employees find teams that work on projects that interest them. This way our employees might become more engaged."
+      },
+      "feedback": {
+        "en-US": "This approach can be helpful, but it doesn't address the core issue of employees' role assumptions."
+      },
+      "scenario": "8",
+      "effects": {
+        "p3": 1,
+        "p4": 1,
+        "o1": 1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "73",
+      "title": {
+        "en-US": "Incentive structures"
+      },
+      "description": {
+        "en-US": "We might offer stronger incentives, including stock options, for our employees to make them think and act more like owners."
+      },
+      "feedback": {
+        "en-US": "Incentives can help, especially when combined with clear communications on expected behaviors. Yet, incentives alone will not change deep-seated assumptions and behaviors."
+      },
+      "scenario": "8",
+      "effects": {
+        "p1": 1,
+        "p4": 1,
+        "o1": -2,
+        "o2": 1
+      },
+      "ribbons": [   ]
+    },
+
+    {
+      "id": "81",
+      "title": {
+        "en-US": "A clear enterprise architecture"
+      },
+      "description": {
+        "en-US": "The top management team should sit down and create an overarching strategic plan regarding how we will operate. A top-down design of an operating model can help align activities and reduce conflict."
+      },
+      "feedback": {
+        "en-US": "Rethinking the operating model can be very helpful. Often the move to a team-based structure needs to be combined with process redesign that eliminates interdependencies between teams."
+      },
+      "scenario": "9",
+      "effects": {
+        "p3": 1,
+        "p5": 1,
+        "p6": 1,
+        "o2": 1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "82",
+      "title": {
+        "en-US": "Monthly staff review meetings"
+      },
+      "description": {
+        "en-US": "Regular staff meetings and demo days are a good practice for drawing attention to interdependencies and resolving conflicts. These meetings involve all squads presenting their plans and demonstrating their accomplishments."
+      },
+      "feedback": {
+        "en-US": "This is a very common approach in agile entreprises. These meetings do take quite a bit of time, but they can create alignment and sense of common purpose without introducing back a lot of hierarchy or politics."
+      },
+      "scenario": "9",
+      "effects": {
+        "p3": 1,
+        "p4": 1,
+        "p6": 1,
+        "o4": 1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "83",
+      "title": {
+        "en-US": "Eliminate interdependencies through automation"
+      },
+      "description": {
+        "en-US": "Overall modularization of business processes with software interfaces means that distinct teams can pursue their projects without the need to align activities. Only some of the interdependencies can be addressed in this way, however."
+      },
+      "feedback": {
+        "en-US": "This is a common approach in all agile entreprises. If different parts of the organization are allowed to evolve in their distinct directions, the customer experience can feel fragmented. By reducing need for teams to interact, knowledge sharing might suffer and it might harm our ability to develop innovations that span different teams."
+      },
+      "scenario": "9",
+      "effects": {
+        "p2": -1,
+        "p3": 1,
+        "p5": 1,
+        "p6": 1,
+        "o2": 1
+      },
+      "ribbons": [
+      ]
+    },
+
+    {
+      "id": "91",
+      "title": {
+        "en-US": "Establish functional chapters"
+      },
+      "description": {
+        "en-US": "Chapters are formal structures organized around expertise areas. The heads of each chapter, such as 'databases' or 'UI design' establish common ways of working and take charge of skills development."
+      },
+      "feedback": {
+        "en-US": "Chapter heads can certainly reduce duplicate work, especially in smaller organizations. In larger organizations, interactions become less frequent and this becomes a less practical solution."
+      },
+      "scenario": "10",
+      "effects": {
+        "p3": 1,
+        "p4": 1,
+        "p6": 1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "92",
+      "title": {
+        "en-US": "Share best practices on a wiki"
+      },
+      "description": {
+        "en-US": "Set up a company wiki site to share best practices and team choices on voluntary basis."
+      },
+      "feedback": {
+        "en-US": "Digital tools are an effective and scalable way to align work. They are not without risks, however, as it takes a strong culture to motivate employees to contribute and follow wikis."
+      },
+      "scenario": "10",
+      "effects": {
+        "p3": 1,
+        "p6": 1,
+        "o4": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "93",
+      "title": {
+        "en-US": "Establish standards"
+      },
+      "description": {
+        "en-US": "We could ask our technical leaders to develop guidelines and standards for the most common technology areas. This would help cut down overlapping work."
+      },
+      "feedback": {
+        "en-US": "Standards are great, but they also go against the cultural goals of empowerment, initiative, and agility. Some standards are obviously needed, but be careful of their effects on the culture!"
+      },
+      "scenario": "10",
+      "effects": {
+        "p1": 1,
+        "p2": -1,
+        "p3": 1,
+        "p4": -1,
+        "p6": 1,
+        "o1": -1,
+        "o2": -1,
+        "o4": 1
+      },
+      "ribbons": [
+      ]
+    },
+    {
+      "id": "94",
+      "title": {
+        "en-US": "Tweak organizational design by modularizing tasks."
+      },
+      "description": {
+        "en-US": "We can try to identify common tasks across different teams, such as software testing or sending email to customers. This way teams do not need to address these same tasks."
+      },
+      "feedback": {
+        "en-US": "This is an ideal approach for addressing duplicate work, but it requires foresight and has its limits. Clearly there are many nearly duplicate tasks that cannot be 'externalized' to a separate team."
+      },
+      "scenario": "10",
+      "effects": {
+        "p2": 1,
+        "p5": 1,
+        "p6": 1,
+        "o2": 1
+      },
+      "ribbons": []
+    },
+
+    {
+      "id": "101",
+      "title": {
+        "en-US": "Pay them more"
+      },
+      "description": {
+        "en-US": "Without opportunities for promotion, we could try to motivate employees by increasing the pay for our best talents. Simple!?"
+      },
+      "feedback": {
+        "en-US": "Many organizations have ended up doing exactly this. It is not ideal, but there is a war of talent going on, and in digitalized firms employee productivity can vary greatly."
+      },
+      "scenario": "11",
+      "effects": {
+        "p2": 1,
+        "p4": 1,
+        "p6": -1,
+        "o1": -1
+      },
+      "ribbons": []
+    },
+    {
+      "id": "102",
+      "title": {
+        "en-US": "Venturing unit"
+      },
+      "description": {
+        "en-US": "We could provide employees an opportunity to lead new venture teams outside the regular organizational structures, providing them opportunities to acquire new skills and performance-related bonuses."
+      },
+      "feedback": {
+        "en-US": "This is a risky approach, even though venturing units can be help retain talent with an entrepreneurial mindset. Do we really want to send a message that the best people move out from our core business?"
+      },
+      "scenario": "11",
+      "effects": {
+        "p2": 1,
+        "p3": -1,
+        "p4": 1,
+        "p6": -1
+      },
+      "ribbons": [
+      ]
+    },
+    {
+      "id": "103",
+      "title": {
+        "en-US": "Let them go"
+      },
+      "description": {
+        "en-US": "Running a non-hierarchical organization means giving up on people who want a leadership position in a hierarchy. Some may leave, others will adapt and stay."
+      },
+      "feedback": {
+        "en-US": "This is a fact of life, some people are happier and more productive in more hierarchical organizations. Yet, this is a very risky approach. Losing some of the best people is a bad look."
+      },
+      "scenario": "11",
+      "effects": {
+        "p2": -1,
+        "p3": -1,
+        "p6": 1,
+        "o1": 1,
+        "o2": 1
+      },
+      "ribbons": []
+    }
+
+
+  ],
+  "indicators": [
+    {
+      "id": "p1",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Efficiency of"
+      },
+      "titleBottom": {
+        "en-US": "Routine Work"
+      },
+      "toolTip": {
+        "en-US": "Employee ability to perform routine work in minimal time and maximum effect."
+      }
+    },
+    {
+      "id": "p2",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Adaptability"
+      },
+      "titleBottom": "and innovation",
+      "toolTip": {
+        "en-US": "The ability of the organization to identify and react to new opportunities and changing customer needs."
+      }
+    },
+    {
+      "id": "p3",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Coordination"
+      },
+      "titleBottom": {
+        "en-US": "and Alignment"
+      },
+      "toolTip": {
+        "en-US": "The organization is able to coordinate activities and innovation across unit boundaries."
+      }
+    },
+    {
+      "id": "p4",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Employee"
+      },
+      "titleBottom": {
+        "en-US": "Engagement"
+      },
+      "toolTip": {
+        "en-US": "Employee initiative and involvement in the business."
+      }
+    },
+    {
+      "id": "p5",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Automation"
+      },
+      "titleBottom": {
+        "en-US": "of processes"
+      },
+      "toolTip": {
+        "en-US": "The replacement of routine human work with automated processes."
+      }
+    },
+    {
+      "id": "p6",
+      "type": "performance",
+      "initialValue": 5,
+      "minValue": 0,
+      "maxValue": 10,
+      "titleTop": {
+        "en-US": "Financial"
+      },
+      "titleBottom": {
+        "en-US": "Performance"
+      },
+      "toolTip": {
+        "en-US": "The profitability of the company."
+      }
+    },
+    {
+      "id": "o1",
+      "type": "organisation",
+      "initialValue": -2,
+      "minValue": -5,
+      "maxValue": 5,
+      "titleTop": {
+        "en-US": "Intrinsic"
+      },
+      "titleBottom": {
+        "en-US": "Motivation"
+      },
+      "toolTip": {
+        "en-US": "Employee motivation in absence of explicit rewards and bonuses."
+      }
+    },
+    {
+      "id": "o2",
+      "type": "organisation",
+      "initialValue": -2,
+      "minValue": -5,
+      "maxValue": 5,
+      "titleTop": {
+        "en-US": "Decentralized"
+      },
+      "titleBottom": {
+        "en-US": "Decision-making"
+      },
+      "toolTip": {
+        "en-US": "The extent to which employees can make decisions without permission from higher-level managers."
+      }
+    },
+    {
+      "id": "o3",
+      "type": "organisation",
+      "initialValue": -1,
+      "minValue": -5,
+      "maxValue": 5,
+      "titleTop": {
+        "en-US": "Data-driven"
+      },
+      "titleBottom": {
+        "en-US": "culture"
+      },
+      "toolTip": {
+        "en-US": "The readiness and tendency to use data analytics in decision-making."
+      }
+    },
+    {
+      "id": "o4",
+      "type": "organisation",
+      "initialValue": 2,
+      "minValue": -5,
+      "maxValue": 5,
+      "titleTop": {
+        "en-US": "Formal"
+      },
+      "titleBottom": {
+        "en-US": "Authority"
+      },
+      "toolTip": {
+        "en-US": "The extent to which authority is based on formal position (rather than expertise, networks, or situated negoations)."
+      }
+    }
+  ],
+  "ribbons": [
+    {
+      "id": "1",
+      "title": {
+        "en-US": "Iterative prototyping"
+      },
+      "description": {
+        "en-US": "Iterative protyping helps improve innovativeness particularly in decentralized organizations."
+      },
+      "criteria": [
+        {
+          "indicatorId": "o2", 
+          "operator": "gt", 
+          "value": 6
+        }
+      ],
+      "effects": {"p2": 1}
+    },
+    {
+      "id": "2",
+      "title": {
+        "en-US": "Cross-functional task forces"
+      },
+      "description": {
+        "en-US": "Cross-functional task forces enable motivated employees to identify and address issues that fall outside their normal mandate."
+      },
+      "criteria": [
+        {
+          "indicatorId": "o1", 
+          "operator": "gt", 
+          "value": 6
+        }
+      ],
+      "effects": {"p6": 1}
+    },
+    {
+        "id": "4",
+        "title": {
+          "en-US": "MISSING RIBBON"
+        },
+        "description": {
+          "en-US": "MISSING RIBBONS enable motivated employees to identify and address issues that fall outside their normal mandate."
+        }
+      }
+  ]
+}
