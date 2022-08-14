@@ -2,7 +2,10 @@ import {
   Component,
   OnInit 
 } from '@angular/core';
-import { SharedService } from '../../shared';
+import { 
+  LocalizedString,
+  SharedService 
+} from '../../shared';
 
 @Component({
   selector: 'app-title-screen',
@@ -18,7 +21,7 @@ export class TitleScreenComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public t(text: string): string {
+  t(text: string | LocalizedString | undefined = '') {
     return this.shared.getText(text);
   }
 }

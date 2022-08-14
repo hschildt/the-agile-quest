@@ -48,18 +48,18 @@ const TEXTS_URL = 'assets/data/texts.json';
 export class SharedService implements OnDestroy{
 
   error = new EventEmitter<string>();
-  firstScenario: Scenario;
+  firstScenario!: Scenario;
   indicators: {[id: string]: Indicator} = {};
   locale: string = '';
   ready = new BehaviorSubject<boolean>(false);
   ribbons: {[id: string]: Ribbon} = {};
   scenarios: {[id: string]: Scenario} = {};
-  settings: {
-    version: number,
-    rounds: number,
-  };
+  settings!: {
+        version: number;
+        rounds: number;
+    };
   strategies: {[id: string]: Strategy} = {};
-  texts: Texts;
+  texts!: Texts;
 
   private _subscriptions = new Array<Subscription>();
 
@@ -75,7 +75,7 @@ export class SharedService implements OnDestroy{
     this._subscriptions.push(
       this.router.events.pipe(
         filter(evt => evt instanceof NavigationEnd)
-      ).subscribe((evt) => this.readLocale(evt))
+      ).subscribe(() => this.readLocale())
     );
   }
 
@@ -83,7 +83,7 @@ export class SharedService implements OnDestroy{
     this._subscriptions.forEach(s => s.unsubscribe());
   }
 
-  public readLocale(evt?): void {
+  public readLocale(): void {
     if (this.route.snapshot.queryParams?.[DATA_KEY_LOCALE])
       this.locale = this.route.snapshot.queryParams[DATA_KEY_LOCALE];
   }
@@ -113,10 +113,10 @@ export class SharedService implements OnDestroy{
       version: settings.version,
       rounds:  settings.rounds
     };
-
-    for (const list of ['indicators', 'ribbons', 'scenarios', 'strategies'])
-      this[list] = this.processJsonList(settings[list]);
-
+    this.indicators = this.processJsonList(settings.indicators);
+    this.ribbons = this.processJsonList(settings.ribbons);
+    this.scenarios = this.processJsonList(settings.scenarios);
+    this.strategies = this.processJsonList(settings.strategies);
     this.firstScenario = settings.scenarios[0];
   }
 
@@ -136,7 +136,7 @@ export class SharedService implements OnDestroy{
    */
   public checkRibbon(ribbon: Ribbon): boolean {
     for (const c of ribbon.criteria) {
-      const cv = this.indicators[c.indicatorId].value,
+      const cv = this.indicators[c.indicatorId].value ?? 0,
             op = c.operator,
             tv = c.value;
       if ((op === "eq" && cv != tv) ||
@@ -154,7 +154,7 @@ export class SharedService implements OnDestroy{
    * property, i.e., <span [innerHTML]="shared.getText('Text')"></span>. It will be 
    * sanitized by Angular but basic formatting and links are allowed, at least.
    */
-  public getText(text: string | LocalizedString): string {
+  public getText(text: string | LocalizedString | undefined = ""): string {
     let localized: LocalizedString;
     if (text == null) {
       return "";

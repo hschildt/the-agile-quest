@@ -52,18 +52,18 @@ const ANIMATION_DURATION_WITH_DELAY = `${ANIMATION_DURATION_MS}ms ${ANIMATION_DU
   ]
 })
 export class StrategyCardComponent {
-
-  @Input() id: string = null;
-  @Input() title: string = '';
-  @Input() description: string = '';
-  @Input() buttonLabel: string = 'Lock This Strategy';
-  @Input() buttonLabelLocked: string = 'Strategy Locked';
-  @Input() titleBack: string = 'Feedback';
-  @Input() descriptionBack: string = '';
+  @Input() title: string | LocalizedString = '';
+  @Input() description: string | LocalizedString = '';
+  @Input() buttonLabel: string | LocalizedString = 'Lock This Strategy';
+  @Input() buttonLabelLocked: string | LocalizedString = 'Strategy Locked';
+  @Input() titleBack: string | LocalizedString = 'Feedback';
+  @Input() descriptionBack: string | LocalizedString = '';
   @Input() disabled: boolean = false;
   @Input()
-  set flipped(value: boolean) {
+  set flipped(value: boolean | undefined) {
 
+    value ??= false;
+    
     if (this._flipped == value)
       return;
 
@@ -82,7 +82,7 @@ export class StrategyCardComponent {
   get flipped(): boolean {
     return this._flipped;
   }
-  @Input() locked: boolean = false;
+  @Input() locked?: boolean = false;
 
   @Output() cardLocked = new EventEmitter<boolean>();
 
@@ -103,7 +103,7 @@ export class StrategyCardComponent {
    * Localize a string or LocalizedString object
    * See SharedService
    */
-  t(text: string | LocalizedString): string {
+  t(text: string | LocalizedString | undefined = '') {
     return this.shared.getText(text);
   }
 }

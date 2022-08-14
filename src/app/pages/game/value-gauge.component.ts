@@ -7,9 +7,7 @@ import {
   SharedService
 } from '../../shared';
 
-
 export type ValueGaugeType = 'bar' | 'dot';
-
 
 /*
  * Show indicator values as either bars or dots on an axis.
@@ -22,17 +20,41 @@ export type ValueGaugeType = 'bar' | 'dot';
 })
 export class ValueGaugeComponent {
 
-  @Input() max: number = 10;
-  @Input() min: number = 0;
-  @Input() previousValue: number = undefined;
+  private _max: number = 10;
+  @Input('max')
+  set max(value: number | undefined) {
+    this._max = value ?? 10;
+  }
+  private _min: number = 0;
+  @Input('min')
+  set min(value: number | undefined) {
+    this._min = value ?? 0;
+  }
+  private _value: number = 0;
+  @Input('value')
+  set value(value: number | undefined) {
+    this._value = value ?? 0;
+  }
+  @Input() previousValue?: number;
+  @Input() titleBottom?: string | LocalizedString;
+  @Input() titleTop?: string | LocalizedString;
   @Input() type: ValueGaugeType = 'bar';
-  @Input() titleBottom: string;
-  @Input() titleTop: string;
-  @Input() value: number = 0;
 
   constructor(
     private shared: SharedService
   ) {
+  }
+
+  get value(): number {
+    return this._value;
+  }
+
+  get min(): number {
+    return this._min;
+  }
+
+  get max(): number {
+    return this._max;
   }
 
   get isDot(): boolean {
@@ -50,7 +72,7 @@ export class ValueGaugeComponent {
   }
 
   get previousValueFraction(): number {
-    if (this.range === 0)
+    if (this.range === 0 || this.previousValue == null)
       return 0;
     return (this.previousValue - this.min) / this.range;
   }
@@ -95,7 +117,7 @@ export class ValueGaugeComponent {
    * Localize a string or LocalizedString object
    * See SharedService
    */
-  t(text: string | LocalizedString): string {
+  t(text: string | LocalizedString | undefined = '') {
     return this.shared.getText(text);
   }
 }

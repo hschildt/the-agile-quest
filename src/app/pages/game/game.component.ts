@@ -42,7 +42,6 @@ const DATA_KEY_VERSION = 'v';
 const DATA_SEPARATOR = ',';
 const DATA_KEY_STRATEGIES = 's';
 const ROUND_BASE = 1;
-
 const ANIMATION_DURATION_PREVIOUS_CARDS_MS = 450;
 const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_MS}ms ${ANIMATION_EASING}`;
 
@@ -57,7 +56,7 @@ const debug = function debug(...args: any[]): void {
 const sum = function sum(arr: Array<number>): number {
   return arr.reduce((a, b) => a + b, 0);
 }
-const clamp = function clamp(num: number, min: number = null, max: number = null): number {
+const clamp = function clamp(num: number, min = 0, max = 1): number {
   return num <= min ? min : num >= max ? max : num;
 }
 const processQueue = function processQueue(queue: Queue) {
@@ -68,9 +67,11 @@ const processQueue = function processQueue(queue: Queue) {
 
   if (typeof step === 'number') {
     setTimeout(() => processQueue(queue), step);
-  } else {
+  } else if (typeof step === 'function') {
     step();
     processQueue(queue);
+  } else {
+    throw new Error('Invalid step');
   }
 }
 
@@ -210,7 +211,7 @@ const processQueue = function processQueue(queue: Queue) {
 export class GameComponent implements OnDestroy, OnInit {
 
   animationDirection: AnimationDirection = 'forward';
-  bottomDialog: {
+  bottomDialog?: {
     text: string,
     confirm: () => void
   };
@@ -230,7 +231,7 @@ export class GameComponent implements OnDestroy, OnInit {
   showReport: boolean = false;
   showScenario: boolean = false;
   strategyCards: Strategy[] = [];
-  topDialog: {
+  topDialog?: {
     text: string,
     confirm: () => void
   };
@@ -298,25 +299,26 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   get gameOver(): boolean {
-    return (this.roundsLeft <= 0 || !this.scenario.strategies || this.scenario.strategies.length === 0)
+    return (this.roundsLeft <= 0 || this.scenario != null && (!this.scenario.strategies || this.scenario.strategies.length === 0))
            && !this.showReport;
   }
 
-  get latestStrategy(): Strategy {
+  get latestStrategy(): Strategy | null {
     if (this.playedStrategies.length === 0)
       return null;
     return this.playedStrategies[this.playedStrategies.length - 1];
   }
 
-  get previousScenario(): Scenario {
+  get previousScenario(): Scenario | null {
     return this.playedScenarios.length > 1 ? 
            this.playedScenarios[this.playedScenarios.length - 2] :
            null;
   }
 
-
-  get scenario(): Scenario {
-    return this.playedScenarios[this.playedScenarios.length - 1];
+  get scenario(): Scenario | null {
+    return this.playedScenarios.length > 0 ? 
+           this.playedScenarios[this.playedScenarios.length - 1] :
+           null;
   }
 
   /*
@@ -446,10 +448,14 @@ export class GameComponent implements OnDestroy, OnInit {
   initIndicators(): void {
 
     // Preload ribbon effects
-    const ribbonEffects = {}
+    const ribbonEffects: {[id: string]: number} = {}
     this.ribbons.forEach(r => {
-      for (const iid in r.effects)
-        ribbonEffects[iid] = r.effects[iid] + (iid in ribbonEffects ? ribbonEffects[iid] : 0);
+      for (const iid in r.effects) {
+        if (iid in ribbonEffects)
+          ribbonEffects[iid] += r.effects[iid];
+        else
+          ribbonEffects[iid] = r.effects[iid];
+      }
     });
 
     for (const iid in this.shared.indicators) {
@@ -490,8 +496,8 @@ export class GameComponent implements OnDestroy, OnInit {
   initRibbons(): void {
     const ribbons = new Set<Ribbon>();
     this.playedStrategies
-      .filter(s => s.ribbons?.length > 0)
-      .forEach(s => s.ribbons.forEach(r => ribbons.add(this.shared.ribbons[r])));
+      .filter(s => s.ribbons && s.ribbons.length > 0)
+      .forEach(s => s.ribbons!.forEach(r => ribbons.add(this.shared.ribbons[r])));
     Object.values(this.shared.ribbons)
       .filter(r => this.shared.checkRibbon(r))
       .forEach(r => ribbons.add(r));
@@ -503,7 +509,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   initStrategyCards(): void {
-    this.strategyCards = (this.scenario.strategies ?? []).map(s => this.shared.strategies[s]);
+    this.strategyCards = (this.scenario?.strategies ?? []).map(s => this.shared.strategies[s]);
     this.enableGoToPrevious = true;
   }
 
@@ -651,7 +657,7 @@ export class GameComponent implements OnDestroy, OnInit {
    * Localize a string or LocalizedString object
    * See SharedService
    */
-  public t(text: string | LocalizedString): string {
+  public t(text: string | LocalizedString | undefined = ''): string {
     return this.shared.getText(text);
   }
 

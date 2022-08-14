@@ -47,6 +47,7 @@ export interface Strategy {
   id: string,
   title: LocalizedString,
   description: LocalizedString,
+  feedback: LocalizedString,
   effects?: Effects,
   // Ribbon ids
   ribbons?: string[],
