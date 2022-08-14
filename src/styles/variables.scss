@@ -1,7 +1,9 @@
 @use 'sass:color';
 @use '~@angular/material' as mat;
 
-$fontIncrement-M:   120%;
+$fontIncrement-M:            120%;
+$fontSize-screenHeightRatio: 50;   // Root font size is 100vh / this var
+$fontSize-min:               10px; // down to this minimum
 
 $fontFamily-primary: 'Yantramanav', sans-serif;
 

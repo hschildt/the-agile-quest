@@ -7,8 +7,8 @@
 // Common grid gap
 $gridGap: $margin-L
 
-// Strategy card row min height
-$minHeight-main: max(28rem, 42vh)
+// Scenario info min height
+$minHeight-mid: max(22rem, 42vh)
   
 // The outline messes up the border changes
 button:focus
@@ -27,7 +27,7 @@ button:focus
   max-height: 100vh
   width: 100%
   grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [right-edge]
-  grid-template-rows:    [top] 4.5rem [mid] 1fr [main] $minHeight-main [bottom] 4.5rem [bottom-edge]
+  grid-template-rows:    [top] 3.5rem [mid] $minHeight-mid [main] 1fr [bottom] 3.5rem [bottom-edge]
   gap: $gridGap $gridGap
 
 
@@ -49,7 +49,12 @@ button:focus
   flex-flow: column nowrap
   align-items: center
   justify-content: center
-  overflow: scroll
+  overflow-x: hidden
+  overflow-y: scroll
+  -ms-overflow-style: none
+  scrollbar-width: none
+  &::-webkit-scrollbar
+    display: none
   z-index: $zIndex-3
 
   h1

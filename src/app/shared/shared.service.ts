@@ -132,6 +132,22 @@ export class SharedService implements OnDestroy{
   }
 
   /*
+   * Test if the given ribbon's criteria are met.
+   */
+  public checkRibbon(ribbon: Ribbon): boolean {
+    for (const c of ribbon.criteria) {
+      const cv = this.indicators[c.indicatorId].value,
+            op = c.operator,
+            tv = c.value;
+      if ((op === "eq" && cv != tv) ||
+          (op === "lt" && cv >= tv) ||
+          (op === "gt" && cv <= tv))
+        return false;
+    }
+    return true;
+  }
+
+  /*
    * Return the prompt text in current locale or the text itself if that's not available.
    * If text is a localized string, select the correct localized version or use the default.
    * Note that if the text is to contain any HTML markup, it should be used as a bound

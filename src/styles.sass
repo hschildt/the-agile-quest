@@ -20,7 +20,7 @@
   box-sizing: border-box
 
 :root
-  font-size: 13px
+  font-size: max($fontSize-min, calc(100vh / $fontSize-screenHeightRatio))
 
 body
   background-color: $color-primaryBg

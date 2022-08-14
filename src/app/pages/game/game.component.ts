@@ -30,8 +30,6 @@ import {
   SharedService,
   Strategy,
 } from '../../shared';
-import { ResultChartData } from './result-chart.component';
-
 
 // See startRound()
 type AnimationDirection = 'backward' | 'forward';
@@ -40,13 +38,18 @@ type QueueStep = number | (() => void);
 type Queue = QueueStep[];
 
 const DATA_KEY_VERSION = 'v';
-const DATA_KEY_SHOWREPORT = 'r';
+// const DATA_KEY_SHOWREPORT = 'r';
 const DATA_SEPARATOR = ',';
 const DATA_KEY_STRATEGIES = 's';
 const ROUND_BASE = 1;
 
 const ANIMATION_DURATION_PREVIOUS_CARDS_MS = 450;
 const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_MS}ms ${ANIMATION_EASING}`;
+
+const DEBUG = true;
+const debug = function debug(...args: any[]): void {
+  if (DEBUG) console.log(...args);
+}
 
 /*
  * For convenience
@@ -442,6 +445,13 @@ export class GameComponent implements OnDestroy, OnInit {
 
   initIndicators(): void {
 
+    // Preload ribbon effects
+    const ribbonEffects = {}
+    this.ribbons.forEach(r => {
+      for (const iid in r.effects)
+        ribbonEffects[iid] = r.effects[iid] + (iid in ribbonEffects ? ribbonEffects[iid] : 0);
+    });
+
     for (const iid in this.shared.indicators) {
 
       // Calc values based on the effects of all played scenarios and strategies
@@ -449,34 +459,43 @@ export class GameComponent implements OnDestroy, OnInit {
 
       let value = indicator.initialValue ?? 0,
           previousValue = indicator.initialValue ?? 0;
-      // if(indicator.id=="p2") console.log("indicator before init: "+JSON.stringify(indicator) + " after played scenarios: "+this.playedScenarios.length);
+
       this.playedScenarios.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
         if (i < this.playedScenarios.length - 1)
           previousValue += effect;
       });
-      // if(indicator.id=="p2") console.log("new value: "+value);
+
       this.playedStrategies.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
         if (i < this.playedStrategies.length - 1)
           previousValue += effect;
       });
+
+      if (iid in ribbonEffects)
+        value += ribbonEffects[iid];
+
+      // XXXX RIBBons dont' comply with prev values!!!!
+      // Lose url encoding
+      // Convert to internal state
+
+      debug(iid, "From", previousValue, "to", value);
       indicator.value = value;
       indicator.previousValue = previousValue;
-      // if(indicator.id=="p2") console.log("indicator after initIndicators(): "+JSON.stringify(indicator)+ after played strategies: " after played strategies: "+this.playedStrategies.length);
     }
   }
 
   initRibbons(): void {
-    const ribbons = [];
+    const ribbons = new Set<Ribbon>();
     this.playedStrategies
       .filter(s => s.ribbons?.length > 0)
-      .forEach(s => s.ribbons.forEach(r => 
-        ribbons.push(this.shared.ribbons[r])  
-      ));
-    this.ribbons = ribbons;
+      .forEach(s => s.ribbons.forEach(r => ribbons.add(this.shared.ribbons[r])));
+    Object.values(this.shared.ribbons)
+      .filter(r => this.shared.checkRibbon(r))
+      .forEach(r => ribbons.add(r));
+    this.ribbons = Array.from(ribbons);
   }
 
   initPreviousStrategyCards(): void {
@@ -500,7 +519,6 @@ export class GameComponent implements OnDestroy, OnInit {
     // True here means we go back
     this.updateUrl(true);
   }
-
 
   loadStrategyCards(): void {
     setTimeout(() => this.initStrategyCards(), ANIMATION_DURATION_MS);
@@ -586,7 +604,7 @@ export class GameComponent implements OnDestroy, OnInit {
       [DATA_KEY_STRATEGIES]: this._encodeIds(goBack && this.playedStrategies.length > 0 ? 
                                              this.playedStrategies.slice(0, -1) : 
                                              this.playedStrategies),
-      [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0
+      //[DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0
     }]);
   }
 
@@ -608,11 +626,11 @@ export class GameComponent implements OnDestroy, OnInit {
       // manually, we would get an inconsistent transition
       this.animationDirection = this.round < currentRound ? 'backward' : 'forward';
       
-      if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
-          this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1)
-        this.showReport = true;
-      else
-        this.showReport = false;
+      //   if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
+      //       this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1)
+      //     this.showReport = true;
+      //   else
+      //     this.showReport = false;
     }
     // This resets the screen
     this.startRound();
