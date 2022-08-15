@@ -21,21 +21,23 @@ export type ValueGaugeType = 'bar' | 'dot';
 export class ValueGaugeComponent {
 
   private _max: number = 10;
+  private _min: number = 0;
+  private _value: number = 0;
+  private _previousValue: number = 0;
+
   @Input('max')
   set max(value: number | undefined) {
     this._max = value ?? 10;
   }
-  private _min: number = 0;
   @Input('min')
   set min(value: number | undefined) {
     this._min = value ?? 0;
   }
-  private _value: number = 0;
   @Input('value')
   set value(value: number | undefined) {
+    this._previousValue = this._value ?? 0;
     this._value = value ?? 0;
   }
-  @Input() previousValue?: number;
   @Input() titleBottom?: string | LocalizedString;
   @Input() titleTop?: string | LocalizedString;
   @Input() type: ValueGaugeType = 'bar';
@@ -43,6 +45,12 @@ export class ValueGaugeComponent {
   constructor(
     private shared: SharedService
   ) {
+  }
+
+  /* Call this to save the current value as previous value
+     and clear any delta effects. */
+  updatePreviousValue(): void {
+    this._previousValue = this._value ?? 0;
   }
 
   get value(): number {
@@ -55,6 +63,10 @@ export class ValueGaugeComponent {
 
   get max(): number {
     return this._max;
+  }
+
+  get previousValue(): number {
+    return this._previousValue;
   }
 
   get isDot(): boolean {

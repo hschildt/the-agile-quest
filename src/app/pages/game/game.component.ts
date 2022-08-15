@@ -1,7 +1,9 @@
 import { 
   Component, 
   OnDestroy,
-  OnInit 
+  OnInit,
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import { 
   ActivatedRoute,
@@ -30,6 +32,7 @@ import {
   SharedService,
   Strategy,
 } from '../../shared';
+import { ValueGaugeComponent } from './value-gauge.component';
 
 // See startRound()
 type AnimationDirection = 'backward' | 'forward';
@@ -210,6 +213,9 @@ const processQueue = function processQueue(queue: Queue) {
 })
 export class GameComponent implements OnDestroy, OnInit {
 
+  @ViewChildren(ValueGaugeComponent)
+  private indicatorComponents: ValueGaugeComponent[] = [];
+
   animationDirection: AnimationDirection = 'forward';
   bottomDialog?: {
     text: string,
@@ -235,6 +241,7 @@ export class GameComponent implements OnDestroy, OnInit {
     text: string,
     confirm: () => void
   };
+
 
   private _subscriptions = new Array<Subscription>();
 
@@ -447,6 +454,9 @@ export class GameComponent implements OnDestroy, OnInit {
 
   initIndicators(): void {
 
+    // Freeze previous changes
+    this.indicatorComponents.forEach(c => c.updatePreviousValue());
+
     // Preload ribbon effects
     const ribbonEffects: {[id: string]: number} = {}
     this.ribbons
@@ -461,37 +471,20 @@ export class GameComponent implements OnDestroy, OnInit {
       });
 
     for (const iid in this.shared.indicators) {
-
       // Calc values based on the effects of all played scenarios and strategies
       const indicator = this.shared.indicators[iid];
-
-      let value = indicator.initialValue ?? 0,
-          previousValue = indicator.initialValue ?? 0;
-
+      let value = indicator.initialValue ?? 0;
       this.playedScenarios.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
-        if (i < this.playedScenarios.length - 1)
-          previousValue += effect;
       });
-
       this.playedStrategies.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
-        if (i < this.playedStrategies.length - 1)
-          previousValue += effect;
       });
-
       if (iid in ribbonEffects)
         value += ribbonEffects[iid];
-
-      // XXXX RIBBons dont' comply with prev values!!!!
-      // Lose url encoding
-      // Convert to internal state
-
-      debug(iid, "From", previousValue, "to", value);
       indicator.value = value;
-      indicator.previousValue = previousValue;
     }
   }
 

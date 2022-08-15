@@ -74,6 +74,5 @@ export interface Indicator {
   initialValue?: number,
   minValue?: number,
   maxValue?: number,
-  previousValue?: number,
   value?: number
 }
