@@ -19,13 +19,38 @@ button:focus
   height: 100vh
   width: 100vw
 
+#userDataScreen,
 #grid
-  display: grid
   padding: $margin-L
   position: relative
+  height: 100vh
   min-height: 100vh
   max-height: 100vh
   width: 100%
+
+#userDataScreen
+  display: flex
+  justify-content: center
+  align-items: center
+
+  form
+    display: grid
+    grid-template-columns: 1fr 1fr
+    align-items: center
+    min-width: min(100vw, 30rem)
+
+    input
+      padding: $margin-XS
+      margin-bottom: $margin-S
+      margin-top: $margin-S
+      min-height: 2.5rem
+
+    #formIntro,
+    #userDataSubmit
+      grid-column: 1 / span 2
+
+#grid
+  display: grid
   grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [right-edge]
   grid-template-rows:    [top] 4rem [mid] auto [main] 1fr [bottom] 4rem [bottom-edge]
   gap: $gridGap $gridGap

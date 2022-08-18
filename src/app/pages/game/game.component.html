@@ -1,5 +1,39 @@
-<div id="grid"
-     [class.showIndicators]="roundStarting || inFeedbackPhase"
+<div *ngIf="showUserDataForm"
+     id="userDataScreen"
+     @fadeInOut>
+  <form (ngSubmit)="onUserDataSubmit()" 
+        #userDataForm="ngForm">
+    <p id="formIntro"
+       [innerHTML]="t('Enter your name and study group to begin.')"></p>
+    <label for="userName"
+          [innerHTML]="t('Your name')"></label>
+    <input type="text" 
+          class="form-control" 
+          id="userName"
+          required
+          [(ngModel)]="userData.name" 
+          name="userName"
+          #name="ngModel">
+    <label for="userGroup"
+          [innerHTML]="t('Your study group')"></label>
+    <input type="text" 
+          class="form-control" 
+          id="userGroup"
+          required
+          [(ngModel)]="userData.group" 
+          name="userGroup"
+          #name="ngModel">
+    <button id="userDataSubmit"
+            type="submit" 
+            class="btn btn-success" 
+            [disabled]="!userDataForm.form.valid"
+            [innerHTML]="t('Begin game')"></button>
+  </form>
+</div>
+
+<div *ngIf="!showUserDataForm"
+     id="grid"
+     [class.showIndicators]="roundStarting || inFeedbackPhase"
      @fadeInOut>
 
   <section id="performanceIndicators">

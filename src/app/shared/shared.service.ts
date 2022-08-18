@@ -13,7 +13,7 @@ import {
 } from '@angular/router';
 import { 
   BehaviorSubject,
-  forkJoin ,
+  forkJoin,
   Subscription
 } from 'rxjs';
 import { 
@@ -23,6 +23,7 @@ import {
 import { 
   Indicator,
   LocalizedString,
+  LogDatum,
   Ribbon,
   Scenario,
   Settings,
@@ -55,8 +56,9 @@ export class SharedService implements OnDestroy{
   ribbons: {[id: string]: Ribbon} = {};
   scenarios: {[id: string]: Scenario} = {};
   settings!: {
-        version: number;
-        rounds: number;
+        version: number,
+        rounds: number,
+        loggerUrl: string
     };
   strategies: {[id: string]: Strategy} = {};
   texts!: Texts;
@@ -66,8 +68,8 @@ export class SharedService implements OnDestroy{
   constructor(
     private http: HttpClient,
     @Inject(LOCALE_ID) systemLocale: string,
-    private route:     ActivatedRoute,
-    private router:    Router
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.locale = systemLocale;
     this.readLocale();
@@ -111,7 +113,8 @@ export class SharedService implements OnDestroy{
   public processSettings(settings: Settings): void {
     this.settings = {
       version: settings.version,
-      rounds:  settings.rounds
+      rounds:  settings.rounds,
+      loggerUrl: settings.loggerUrl
     };
     this.indicators = this.processJsonList(settings.indicators);
     this.ribbons = this.processJsonList(settings.ribbons);
@@ -171,4 +174,17 @@ export class SharedService implements OnDestroy{
     return localized[this.locale] ?? localized[DEFAULT_LOCALE];
   }
 
+  /*
+   * Save the gameplay data in a remote csv file. See /data-logging for more information.
+   */
+  public async logGameplayData(data: LogDatum[][]): Promise<{success: boolean, message?: string}> {
+    return new Promise<{success: boolean, message?: string}>(resolve => {
+        this.http.post<{success: boolean, message?: string}>(
+          this.settings.loggerUrl, {data: data}, {headers: {"Access-Control-Allow-Origin": "*"}})
+          .subscribe({
+            next(r)  { resolve({success: true,  message: r.message ?? ""}) },
+            error(r) { resolve({success: false, message: r.message ?? ""}) }
+          });
+    });
+  }
 }

@@ -11,6 +11,7 @@ export interface LocalizedString {
 export interface Settings {
   version: number,
   rounds: number,
+  loggerUrl: string,
   scenarios: Scenario[],
   strategies: Strategy[],
   ribbons: Ribbon[],
@@ -76,3 +77,5 @@ export interface Indicator {
   maxValue?: number,
   value?: number
 }
+
+export type LogDatum = number | string;

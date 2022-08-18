@@ -1,6 +1,7 @@
 {
   "version": 1,
   "rounds": 10,
+  "loggerUrl": "https://kaljarv.com/asiakkaat/agile-quest/",
   "scenarios": [
     {
       "id": "1",

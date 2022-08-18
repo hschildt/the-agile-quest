@@ -2,7 +2,6 @@ import {
   Component, 
   OnDestroy,
   OnInit,
-  ViewChild,
   ViewChildren
 } from '@angular/core';
 import { 
@@ -17,7 +16,7 @@ import {
   animate,
   transition 
 } from '@angular/animations';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { 
   ANIMATION_DURATION_MS,
@@ -27,6 +26,7 @@ import {
   PERSPECTIVE,
   Indicator,
   LocalizedString,
+  LogDatum,
   Ribbon,
   Scenario,
   SharedService,
@@ -213,6 +213,15 @@ const processQueue = function processQueue(queue: Queue) {
 })
 export class GameComponent implements OnDestroy, OnInit {
 
+  // @HostListener('window:beforeunload')
+  // onBeforeUnload(): void {
+  //   this.saveGameplayData();
+  // }
+  // @HostListener('window:unload')
+  // onUnload(): void {
+  //   this.saveGameplayData();
+  // }
+
   @ViewChildren(ValueGaugeComponent)
   private indicatorComponents: ValueGaugeComponent[] = [];
 
@@ -236,13 +245,19 @@ export class GameComponent implements OnDestroy, OnInit {
   showGameOverDialog: boolean = false;
   showReport: boolean = false;
   showScenario: boolean = false;
+  showUserDataForm: boolean = false;
   strategyCards: Strategy[] = [];
   topDialog?: {
     text: string,
     confirm: () => void
   };
+  userData: {name: string, group: string} = {
+    name: '',
+    group: ''
+  };
 
-
+  private _logData = new Array<LogDatum[]>();
+  private _sessionId: string = '';
   private _subscriptions = new Array<Subscription>();
 
   constructor(
@@ -250,7 +265,7 @@ export class GameComponent implements OnDestroy, OnInit {
     private router:    Router,
     private shared:    SharedService
   ) {
-    this.resetState();
+    // this.resetState();
     this.performanceIndicators = Object.values(this.shared.indicators).filter(i => i.type === 'performance');
     this.organisationalAttributes = Object.values(this.shared.indicators).filter(i => i.type === 'organisation');
   }
@@ -262,14 +277,28 @@ export class GameComponent implements OnDestroy, OnInit {
     this._subscriptions.push(
       this.router.events.pipe(
         filter(evt => evt instanceof NavigationEnd)
-      ).subscribe(() => this.readParams())
+      ).subscribe(() => {
+        this.readParams();
+        this.startRound();
+      })
     );
+    if (this._sessionId == '')
+      this._sessionId = `s${Math.random()}`;
+    if (this.haveUserData)
+      this.startRound();
+    else
+      this.getUserData();
   }
 
   ngOnDestroy(): void {
+    this.saveGameplayData();
     this._subscriptions.forEach(s => s.unsubscribe());
   }
 
+  onGameOver(): void {
+    this.showGameOverDialog = true;
+    this.saveGameplayData();
+  }
 
   /**************************************
    * GETTERS                            *
@@ -328,6 +357,15 @@ export class GameComponent implements OnDestroy, OnInit {
            null;
   }
 
+  get haveUserData(): boolean {
+    let k: keyof typeof this.userData;
+    for (k in this.userData) {
+      if (this.userData[k] == null || this.userData[k] == '' )
+        return false;
+    }
+    return true;
+  }
+
   /*
    * Get the top position of the ribbon at the given index
    */
@@ -348,11 +386,7 @@ export class GameComponent implements OnDestroy, OnInit {
    * delays in between them.
    */
   startRound(): void {
-
-    let queue: Queue;
-
-    // console.log(this.animationDirection);
-    
+    let queue: Queue;    
     if (this.animationDirection === 'backward')
       queue = [
         () => this.resetState(),
@@ -374,6 +408,7 @@ export class GameComponent implements OnDestroy, OnInit {
           this.initStrategyCards();
           this.previousCardsTrigger = 'previous-leave';
           this.currentCardsTrigger = 'current-noTransition';
+          this.logAction(true);
         },
         225,
         () => this.previousCardsTrigger = 'previous',
@@ -402,12 +437,13 @@ export class GameComponent implements OnDestroy, OnInit {
         1500,
         () => {
           if (this.gameOver)
-            this.showGameOverDialog = true;
+            this.onGameOver();
           else {
             this.initPreviousStrategyCards();
             this.initStrategyCards();
             this.previousCardsTrigger = 'previous-noTransition';
             this.currentCardsTrigger = 'current-enter';
+            this.logAction();
           }
         },
         225,
@@ -431,6 +467,7 @@ export class GameComponent implements OnDestroy, OnInit {
     this.showGameOverDialog = false;
     this.showScenario = false;
     this.showReport = false;
+    this.showUserDataForm = false;
     this.topDialog = undefined;
 
     // Set the correct flipped/locked states for strategies
@@ -453,10 +490,8 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   initIndicators(): void {
-
     // Freeze previous changes
     this.indicatorComponents.forEach(c => c.updatePreviousValue());
-
     // Preload ribbon effects
     const ribbonEffects: {[id: string]: number} = {}
     this.ribbons
@@ -469,9 +504,8 @@ export class GameComponent implements OnDestroy, OnInit {
             ribbonEffects[iid] = r.effects[iid];
         }
       });
-
+    // Calc values based on the effects of all played scenarios and strategies
     for (const iid in this.shared.indicators) {
-      // Calc values based on the effects of all played scenarios and strategies
       const indicator = this.shared.indicators[iid];
       let value = indicator.initialValue ?? 0;
       this.playedScenarios.forEach((s, i) => {
@@ -511,6 +545,16 @@ export class GameComponent implements OnDestroy, OnInit {
   /**************************************
    * USER ACTIONS                       *
    **************************************/
+
+
+  getUserData(): void {
+    this.showUserDataForm = true;
+  }
+
+  onUserDataSubmit(): void {
+    this.showUserDataForm = false;
+    this.startRound();
+  }
 
   goToPreviousRound(event?: Event): void {
     // Prevent clicks when we are still waiting for this round's strategies
@@ -598,7 +642,7 @@ export class GameComponent implements OnDestroy, OnInit {
    * URL PARAMS                         *
    **************************************/
 
-  public updateUrl(goBack: boolean = false): void {
+  updateUrl(goBack: boolean = false): void {
     // We use router to save the game data between sessions
     this.router.navigate([{
       [DATA_KEY_VERSION]:    this.shared.settings.version,
@@ -609,7 +653,7 @@ export class GameComponent implements OnDestroy, OnInit {
     }]);
   }
 
-  public readParams(): void {
+  readParams(): void {
     // Only load purchases from route data if the application versions match
     // Otherwise reset the state to handle the going back to an url without params
     if (this.route.snapshot.params?.[DATA_KEY_VERSION] && 
@@ -633,8 +677,6 @@ export class GameComponent implements OnDestroy, OnInit {
       //   else
       //     this.showReport = false;
     }
-    // This resets the screen
-    this.startRound();
   }
 
   private _encodeIds(list: Strategy[]): string {
@@ -642,6 +684,51 @@ export class GameComponent implements OnDestroy, OnInit {
   }
   private _decodeIds(text: string): Strategy[] {
     return text.split(DATA_SEPARATOR).map(s => this.shared.strategies[s]);
+  }
+
+  /**************************************
+   * DATA LOGGING
+   **************************************/
+
+  logAction(back = false): void {
+    const now = new Date(),
+          nowStr = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() + ' ' + 
+                   now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(),
+          strategy = this.latestStrategy,
+          scenario = this.scenario;
+    const datum: LogDatum[] = [
+      this._sessionId,
+      this.userData.name,
+      this.userData.group,
+      nowStr,
+      this.round,
+      back ? -1 : (strategy ? strategy.id : -2),
+      back ? 'BACK' : (strategy ? this.t(strategy.title) : 'NO STRATEGY'),
+      scenario ? scenario.id : -2,
+      scenario ? this.t(scenario.title) : 'NO SCENARIO',
+    ];
+    for (const k in this.shared.indicators) {
+      datum.push(this.shared.indicators[k].value ?? '');
+    }
+    this._logData.push(datum);
+    // We now do this after each event, bc window.unload does not seem to always work.
+    // It would be better, however, to log everything only at the end of the game.
+    this.saveGameplayData();
+  }
+
+  clearLog(): void {
+    this._logData = [];
+  }
+
+  get hasLog(): boolean {
+    return this._logData.length > 0;
+  }
+
+  saveGameplayData(): void {
+    if (!this.hasLog) 
+      return;
+    this.shared.logGameplayData(this._logData); // .then(r => console.log(r));
+    this.clearLog();
   }
 
   /**************************************
