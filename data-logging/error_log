@@ -1,1 +1,0 @@
-[18-Aug-2022 10:46:35 Europe/Helsinki] PHP Warning:  fwrite() expects parameter 1 to be resource, null given in /home/kohti/public_html/asiakkaat/agile-quest/index.php on line 50
