@@ -24,6 +24,7 @@ import {
   ANIMATION_TIMING,
   ANIMATION_TIMING_DELAYED,
   PERSPECTIVE,
+  CookieService,
   Indicator,
   LocalizedString,
   LogDatum,
@@ -40,6 +41,7 @@ type AnimationState = 'current-enter' | 'current' | 'current-noTransition' | 'pr
 type QueueStep = number | (() => void);
 type Queue = QueueStep[];
 
+const COOKIE_PREFIX = 'userData_';
 const DATA_KEY_VERSION = 'v';
 // const DATA_KEY_SHOWREPORT = 'r';
 const DATA_SEPARATOR = ',';
@@ -261,9 +263,10 @@ export class GameComponent implements OnDestroy, OnInit {
   private _subscriptions = new Array<Subscription>();
 
   constructor(
-    private route:     ActivatedRoute,
-    private router:    Router,
-    private shared:    SharedService
+    private cookie: CookieService,
+    private route:  ActivatedRoute,
+    private router: Router,
+    private shared: SharedService
   ) {
     // this.resetState();
     this.performanceIndicators = Object.values(this.shared.indicators).filter(i => i.type === 'performance');
@@ -271,6 +274,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this.readCookie();
     this.readParams();
     // We need to explicitly read the params whenever navigating
     // as onInit won't be called while we stay on the same page
@@ -284,10 +288,10 @@ export class GameComponent implements OnDestroy, OnInit {
     );
     if (this._sessionId == '')
       this._sessionId = `s${Math.random()}`;
-    if (this.haveUserData)
+    if (this.haveUserData && this.round > 1)
       this.startRound();
     else
-      this.getUserData();
+      this.askForUserData();
   }
 
   ngOnDestroy(): void {
@@ -298,6 +302,22 @@ export class GameComponent implements OnDestroy, OnInit {
   onGameOver(): void {
     this.showGameOverDialog = true;
     this.saveGameplayData();
+  }
+
+  readCookie(): void {
+    let k: keyof typeof this.userData;
+    for (k in this.userData) {
+      if (this.userData[k] == null || this.userData[k] == '' )
+        this.userData[k] = this.cookie.read(COOKIE_PREFIX + k) ?? '';
+    }
+  }
+
+  writeCookie(): void {
+    let k: keyof typeof this.userData;
+    for (k in this.userData) {
+      if (!(this.userData[k] == null || this.userData[k] == '' ))
+        this.cookie.write(COOKIE_PREFIX + k, this.userData[k]);
+    }
   }
 
   /**************************************
@@ -547,11 +567,12 @@ export class GameComponent implements OnDestroy, OnInit {
    **************************************/
 
 
-  getUserData(): void {
+  askForUserData(): void {
     this.showUserDataForm = true;
   }
 
   onUserDataSubmit(): void {
+    this.writeCookie();
     this.showUserDataForm = false;
     this.startRound();
   }
@@ -562,7 +583,7 @@ export class GameComponent implements OnDestroy, OnInit {
       return;
 
     // True here means we go back
-    this.updateUrl(true);
+    this.updateParams(true);
   }
 
   loadStrategyCards(): void {
@@ -624,7 +645,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   executeStrategy(strategy: Strategy): void {
-    this.updateUrl();
+    this.updateParams();
   }
 
   modalClick(event?: Event): void {
@@ -639,10 +660,10 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /**************************************
-   * URL PARAMS                         *
+   * URL AND COOKIE PARAMS              *
    **************************************/
 
-  updateUrl(goBack: boolean = false): void {
+  updateParams(goBack: boolean = false): void {
     // We use router to save the game data between sessions
     this.router.navigate([{
       [DATA_KEY_VERSION]:    this.shared.settings.version,
