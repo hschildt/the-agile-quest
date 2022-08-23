@@ -1,10 +1,11 @@
 @import 'variables.scss'
 
-
 $border: $border-M
+$barHeight: 0.8rem
 
 :host
   display: block
+  font-size: $fontSize-S
 
 .container
   display: flex
@@ -50,31 +51,33 @@ $border: $border-M
 
 .valueBar
   background-color: $color-primary
-  height: 1rem
+  height: $barHeight
   position: absolute
-  top: calc(50% - 0.5rem)
+  top: calc(50% - $barHeight / 2)
   transition: all $animationTimingWithDelay-XL
 
-// .valueBar.valueChange
-//   background-color: $color-primary
-//   transition: all none
+.valueBar.valueChange
+  background-color: $color-accent
+  transition: all $animationTimingWithDelay-XL
+  transform-origin: right
 
-//   &.negative
-//     background-color: $color-secondary
+  &.negative
+    background-color: $color-secondary
+    transform-origin: left
 
 .valueDot
   background-color: $color-primary
-  height: 1.2rem
-  width: 1.2rem
-  border-radius: 0.6rem
+  height: 1.2 * $barHeight
+  width: 1.2 * $barHeight
+  border-radius: 0.6 * $barHeight
   position: absolute
-  top: calc(50% - 0.6rem)
+  top: calc(50% - 0.6 * $barHeight)
   transform: translateX(-50%)
   transition: all $animationTimingWithDelay-XL
 
-// .valueDot.previousValue
-//   background-color: $color-secondary
-//   transition: all none
+.valueDot.previousValue
+  background-color: $color-secondary
+  transition: all none
 
 .titleTop,
 .titleBottom

@@ -7,25 +7,26 @@ $fontSize-min:               10px; // down to this minimum
 
 $fontFamily-primary: 'Yantramanav', sans-serif;
 
-$color-primary:     white;
+$color-primary:     rgb(0, 0, 255);
 $color-onPrimary:   black;
-$color-primaryBg:   black;
+$color-primaryBg:   rgb(234, 220, 187);
 $color-primaryBgFaded:  color.change($color-primaryBg, $alpha: 0.5);
-$color-accent:      #dcca58;
+$color-accent:      rgb(222, 199, 148);
 $color-accentDarker: color.change($color-accent, $lightness: 40%);
-$color-secondary:   color.mix($color-onPrimary, $color-primary, 60%);
+$color-secondary:    color.mix($color-primaryBg, $color-primary, 75%);
+$color-secondaryBg: white;
 
 $alpha-overlay: 0.8;
 $alpha-buttonBg: 0.15;
 $alpha-faded: 0.3;
 $opacity-disabled: 0.5;
 
-$fontSize-XS: 0.72rem;
-$fontSize-S:  0.8rem;
-$fontSize-M:  1rem;
-$fontSize-L:  1.2rem;
-$fontSize-XL: 1.5rem;
-$fontSize-XXL: 3.5rem;
+$fontSize-XS:  0.72rem;
+$fontSize-S:   0.8rem;
+$fontSize-M:   1rem;
+$fontSize-L:   1.1rem;
+$fontSize-XL:  1.35rem;
+$fontSize-XXL: 3rem;
 
 $fontWeight-M: 500;
 $fontWeight-L: 900;

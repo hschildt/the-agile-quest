@@ -52,7 +52,7 @@ button:focus
 #grid
   display: grid
   grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [right-edge]
-  grid-template-rows:    [top] 3.4rem [mid] auto [main] 1fr [bottom] 3.4rem [bottom-edge]
+  grid-template-rows:    [top] 4rem [mid] auto [main] 1fr [bottom] 4rem [bottom-edge]
   gap: $gridGap $gridGap
 
 #performanceIndicators
@@ -129,6 +129,7 @@ button:focus
   z-index: $zIndex-9
 
 #strategyCards,
+#previousStrategyCards,
 #middleDialog
   grid-area: main / col-1 / bottom / right-edge
   display: flex
@@ -146,6 +147,15 @@ button:focus
   // To counter 'none' above
   *
     pointer-events: all
+
+#previousStrategyCards
+  cursor: pointer
+  // See animations in component
+  opacity: 0.3
+  z-index: $zIndex-1
+
+  *
+    pointer-events: none
 
 #middleDialog
   button
@@ -178,18 +188,18 @@ button:focus
     // &:nth-child(even)
     //   left: $margin-M
 
-// #performanceIndicators,
-// #organisationalAttributes
-//   opacity: $alpha-faded
-//   transition: opacity $animationTiming-M
+#performanceIndicators,
+#organisationalAttributes
+  opacity: $alpha-faded
+  transition: opacity $animationTiming-M
 
-//   &:hover
-//     opacity: 1.0
+  &:hover
+    opacity: 1.0
 
-// .showIndicators
-//   #performanceIndicators,
-//   #organisationalAttributes
-//     opacity: 1.0
+.showIndicators
+  #performanceIndicators,
+  #organisationalAttributes
+    opacity: 1.0
 
 #bottomDialog
   grid-area: bottom / col-2 / bottom-edge / col-6

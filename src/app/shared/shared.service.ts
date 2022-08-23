@@ -24,6 +24,8 @@ import { 
   Indicator,
   LocalizedString,
   LogDatum,
+  Queue,
+  QueueStep,
   Ribbon,
   Scenario,
   Settings,
@@ -187,4 +189,22 @@ export class SharedService implements OnDestroy{
           });
     });
   }
+
+  /*
+   * For queueing actions.
+   */
+  public processQueue(queue: Queue) {
+    if (queue.length < 1)
+      return;
+    const step = queue.shift();
+    if (typeof step === 'number') {
+      setTimeout(() => this.processQueue(queue), step);
+    } else if (typeof step === 'function') {
+      step();
+      this.processQueue(queue);
+    } else {
+      throw new Error('Invalid step');
+    }
+  }
+  
 }

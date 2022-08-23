@@ -33,6 +33,7 @@
 
 <div *ngIf="!showUserDataForm"
      id="grid"
+     [class.showIndicators]="roundStarting || inFeedbackPhase"
      @fadeInOut>
 
   <section id="performanceIndicators">
@@ -48,8 +49,25 @@
 
   </section>
 
+  <section id="previousStrategyCards"
+           (click)="goToPreviousRound($event)"
+           [@strategyCards]="previousCardsTrigger">
+
+    <!-- @previousCardsFade]="showLoadStrategyCardsDialog ? 'faded' : 'normal'" -->
+
+    <app-strategy-card *ngFor="let card of previousStrategyCards"
+                       [title]="card.title"
+                       [description]="card.description"
+                       [descriptionBack]="card.feedback"
+                       [flipped]="card.flipped"
+                       [locked]="card.locked"
+                       [disabled]="true"
+                       (cardLocked)="onCardLocked(card)"></app-strategy-card>
+
+  </section>
+
   <section id="strategyCards"
-           [@strategyCards]="strategyCardsTrigger">
+           [@strategyCards]="currentCardsTrigger">
 
     <app-strategy-card *ngFor="let card of strategyCards"
                        [title]="card.title"
@@ -99,7 +117,7 @@
                             [value]="roundsUsedPercentage">
       </mat-progress-spinner>
       <div class="roundText">
-        <span class="roundText-current">{{ displayedRound }}</span>
+        <span class="roundText-current">{{ round }}</span>
         <span class="roundText-slash">/</span>
         <span class="roundText-last">{{ lastRound }}</span>
       </div>

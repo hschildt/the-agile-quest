@@ -79,3 +79,6 @@ export interface Indicator {
 }
 
 export type LogDatum = number | string;
+
+export type QueueStep = number | (() => void);
+export type Queue = QueueStep[];

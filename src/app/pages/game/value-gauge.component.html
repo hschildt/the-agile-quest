@@ -3,23 +3,26 @@
      [class.dot]="isDot">
 
   <div class="content">
-    <div *ngIf="previousValue != null"
-         class="previousValue"
-         [style.left]="previousValueLeft"></div>
-    <div *ngIf="isBar"
-         class="valueBar"
-         [style.width]="valueBarWidth"></div>
-    <!-- <div *ngIf="isBar"
-         class="valueBar valueChange"
-         [class.negative]="valueChange &lt; 0"
-         [style.left]="previousValueBarLeft"
-         [style.width]="valueChangeWidth"></div>
-    <div *ngIf="isDot"
-         class="valueDot previousValue"
-         [style.left]="previousValueDotLeft"></div> -->
-    <div *ngIf="isDot"
-         class="valueDot"
-         [style.left]="valueDotLeft"></div>
+    <ng-container *ngIf="isBar">
+        <div class="valueBar"
+            [style.width]="valueBarWidth"
+            @growInOut></div>
+        <div *ngIf="showPreviousValue"
+            class="valueBar valueChange"
+            [class.negative]="valueChange &lt; 0"
+            [style.left]="previousValueLeft"
+            [style.width]="valueChangeWidth"
+            [@growInOut]="valueBarChangeTrigger"></div>
+    </ng-container>
+    <ng-container *ngIf="isDot">
+        <div *ngIf="showPreviousValue"
+            class="valueDot previousValue"
+            [style.left]="previousValueLeft"
+            @fadeInOut></div>
+        <div class="valueDot"
+             [style.left]="valueDotLeft"
+             @fadeInOut></div>
+    </ng-container>
   </div>
 
   <label *ngIf="titleTop"

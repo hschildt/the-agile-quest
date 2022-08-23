@@ -28,7 +28,6 @@ import {
   Indicator,
   LocalizedString,
   LogDatum,
-  Queue,
   Ribbon,
   Scenario,
   SharedService,
@@ -38,7 +37,9 @@ import { ValueGaugeComponent } from './value-gauge.component';
 
 // See startRound()
 type AnimationDirection = 'backward' | 'forward';
-type AnimationState = 'current-enter' | 'current' | 'current-leave' | 'current-noTransition' | 'previous' | 'previous-noTransition' | 'previous-leave';
+type AnimationState = 'current-enter' | 'current' | 'current-noTransition' | 'previous' | 'previous-noTransition' | 'previous-leave';
+type QueueStep = number | (() => void);
+type Queue = QueueStep[];
 
 const COOKIE_PREFIX = 'userData_';
 const DATA_KEY_VERSION = 'v';
@@ -62,6 +63,21 @@ const sum = function sum(arr: Array<number>): number {
 }
 const clamp = function clamp(num: number, min = 0, max = 1): number {
   return num <= min ? min : num >= max ? max : num;
+}
+const processQueue = function processQueue(queue: Queue) {
+  if (queue.length < 1)
+    return;
+
+  const step = queue.shift();
+
+  if (typeof step === 'number') {
+    setTimeout(() => processQueue(queue), step);
+  } else if (typeof step === 'function') {
+    step();
+    processQueue(queue);
+  } else {
+    throw new Error('Invalid step');
+  }
 }
 
 @Component({
@@ -93,22 +109,28 @@ const clamp = function clamp(num: number, min = 0, max = 1): number {
       state('current-enter',
         style({
           opacity: 0,
-          transform: 'translateY(2.5rem) scale(1.1)',
-        })
+          transform: 'translateY(60vh)'
+        }),
       ),
-      state('current',
+      state('current, current-noTransition',
         style({
           opacity: 1,
           transform: 'none'
-        })
+        }),
       ),
-      state('current-leave',
+      state('previous, previous-noTransition',
         style({
-          opacity: 0,
+          opacity: 0.3,
           transform: 'translateY(-2.5rem) scale(0.9)',
         })
       ),
-      transition('current <=> *', [
+      state('previous-leave',
+        style({
+          opacity: 0.0,
+          transform: 'translateY(-5rem) scale(0.8)',
+        })
+      ),
+      transition('current-enter <=> current, current <=> previous, previous <=> previous-leave', [
         animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
       ]),
     ]),
@@ -210,13 +232,15 @@ export class GameComponent implements OnDestroy, OnInit {
     text: string,
     confirm: () => void
   };
-  displayedRound = 1;
+  currentCardsTrigger: AnimationState = 'current-enter';
   enableGoToPrevious: boolean = false;
   inFeedbackPhase: boolean = false;
   performanceIndicators: Indicator[] = [];
   organisationalAttributes: Indicator[] = [];
   playedScenarios: Scenario[] = [];
   playedStrategies: Strategy[] = [];
+  previousCardsTrigger: AnimationState = 'current-enter';
+  previousStrategyCards: Strategy[] = [];
   ribbons: Ribbon[] = [];
   roundStarting: boolean = false;
   scenarioTrigger: AnimationState = 'current-enter';
@@ -225,7 +249,6 @@ export class GameComponent implements OnDestroy, OnInit {
   showScenario: boolean = false;
   showUserDataForm: boolean = false;
   strategyCards: Strategy[] = [];
-  strategyCardsTrigger: AnimationState = 'current-enter';
   topDialog?: {
     text: string,
     confirm: () => void
@@ -328,7 +351,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   get roundsUsedPercentage(): number {
-    return this.displayedRound / this.shared.settings.rounds * 100;
+    return (this.rawRound + 1) / this.shared.settings.rounds * 100;
   }
 
   get gameOver(): boolean {
@@ -390,27 +413,25 @@ export class GameComponent implements OnDestroy, OnInit {
         // This sets a class of the same name, which highlights indicators
         () => this.roundStarting = true,
         225,
-        () => this.strategyCardsTrigger = 'current-enter',
-        // () => this.previousCardsTrigger = 'current',
+        () => this.currentCardsTrigger = 'current-enter',
+        () => this.previousCardsTrigger = 'current',
         () => this.scenarioTrigger = 'current-enter',
         ANIMATION_DURATION_PREVIOUS_CARDS_MS,
         () => this.initScenarios(),
         () => this.scenarioTrigger = 'previous',
         100,
-        () => {
-          this.scenarioTrigger = 'current';
-          this.displayedRound = this.round;
-        },
+        () => this.scenarioTrigger = 'current',
         () => this.initIndicators(),
         () => this.initRibbons(),
         () => {
+          this.initPreviousStrategyCards();
           this.initStrategyCards();
-          // this.previousCardsTrigger = 'previous-leave';
-          this.strategyCardsTrigger = 'current-leave';
+          this.previousCardsTrigger = 'previous-leave';
+          this.currentCardsTrigger = 'current-noTransition';
           this.logAction(true);
         },
         225,
-        () => this.strategyCardsTrigger = 'current',
+        () => this.previousCardsTrigger = 'previous',
         1000,
         () => this.roundStarting = false
       ];
@@ -421,18 +442,15 @@ export class GameComponent implements OnDestroy, OnInit {
         3 * ANIMATION_DURATION_MS,
         // This sets a class of the same name, which highlights indicators
         () => this.roundStarting = true,
-        () => this.strategyCardsTrigger = 'current-leave',
-        // () => this.previousCardsTrigger = 'previous-leave',
+        () => this.currentCardsTrigger = 'previous',
+        () => this.previousCardsTrigger = 'previous-leave',
         () => this.scenarioTrigger = 'previous',
         ANIMATION_DURATION_PREVIOUS_CARDS_MS,
         () => {
           this.initScenarios();
           this.scenarioTrigger = 'current-enter';
         },
-        () => {
-          this.scenarioTrigger = 'current';
-          this.displayedRound = this.round;
-        },
+        () => this.scenarioTrigger = 'current',
         ANIMATION_DURATION_PREVIOUS_CARDS_MS,
         () => this.initIndicators(),
         () => this.initRibbons(),
@@ -441,22 +459,24 @@ export class GameComponent implements OnDestroy, OnInit {
           if (this.gameOver)
             this.onGameOver();
           else {
+            this.initPreviousStrategyCards();
             this.initStrategyCards();
-            // this.previousCardsTrigger = 'previous-noTransition';
-            this.strategyCardsTrigger = 'current-enter';
+            this.previousCardsTrigger = 'previous-noTransition';
+            this.currentCardsTrigger = 'current-enter';
             this.logAction();
           }
         },
         225,
         () => {
           if (!this.gameOver)
-            this.strategyCardsTrigger = 'current';
+            this.currentCardsTrigger = 'current';
         },
         1000,
         () => this.roundStarting = false
       ];
 
-    this.shared.processQueue(queue);
+    processQueue(queue);
+
   }
 
   resetState(): void {
@@ -533,6 +553,10 @@ export class GameComponent implements OnDestroy, OnInit {
     this.ribbons = Array.from(ribbons);
   }
 
+  initPreviousStrategyCards(): void {
+    this.previousStrategyCards = (this.previousScenario?.strategies ?? []).map(s => this.shared.strategies[s]);
+  }
+
   initStrategyCards(): void {
     this.strategyCards = (this.scenario?.strategies ?? []).map(s => this.shared.strategies[s]);
     this.enableGoToPrevious = true;
@@ -595,6 +619,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   showStrategyFeedback(strategy: Strategy): void {
+
     const queue: Queue = [
       () => {
         strategy.flipped = true;
@@ -614,7 +639,9 @@ export class GameComponent implements OnDestroy, OnInit {
         confirm: () => this.executeStrategy(strategy)
       }
     ];
-    this.shared.processQueue(queue);
+
+    processQueue(queue);
+
   }
 
   executeStrategy(strategy: Strategy): void {
@@ -648,18 +675,29 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   readParams(): void {
-    // Save current round here, so we can check which direction to animate to
-    const currentRound = this.round,
-          params = this.route.snapshot.params;
-    if (params?.[DATA_KEY_VERSION] && 
-        params[DATA_KEY_VERSION] == this.shared.settings.version &&
-        params[DATA_KEY_STRATEGIES])
-      this.playedStrategies = this._decodeIds(params[DATA_KEY_STRATEGIES]);
-    else
-      this.playedStrategies = [];
-    // NB. This only counts the round number, so if we were to edit the url
-    // manually, we would get an inconsistent transition
-    this.animationDirection = this.round < currentRound ? 'backward' : 'forward';
+    // Only load purchases from route data if the application versions match
+    // Otherwise reset the state to handle the going back to an url without params
+    if (this.route.snapshot.params?.[DATA_KEY_VERSION] && 
+        this.route.snapshot.params[DATA_KEY_VERSION] == this.shared.settings.version) {
+
+      // Save current round here, so we can check which direction to animate to
+      const currentRound = this.round;
+
+      if (this.route.snapshot.params[DATA_KEY_STRATEGIES])
+        this.playedStrategies = this._decodeIds(this.route.snapshot.params[DATA_KEY_STRATEGIES]);
+      else
+        this.playedStrategies = [];
+
+      // NB. This only counts the round number, so if we were to edit the url
+      // manually, we would get an inconsistent transition
+      this.animationDirection = this.round < currentRound ? 'backward' : 'forward';
+      
+      //   if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
+      //       this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1)
+      //     this.showReport = true;
+      //   else
+      //     this.showReport = false;
+    }
   }
 
   private _encodeIds(list: Strategy[]): string {
