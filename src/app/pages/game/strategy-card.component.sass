@@ -66,8 +66,6 @@ label
   white-space: normal
   text-shadow: -1px -1px 0 $color-primaryBg,  1px -1px 0 $color-primaryBg, -1px 1px 0 $color-primaryBg, 1px 1px 0 $color-primaryBg, -2px -2px 0 $color-primaryBg, 2px -2px 0 $color-primaryBg, -2px 2px 0 $color-primaryBg, 2px 2px 0 $color-primaryBg, -3px -3px 0 $color-primaryBg, 3px -3px 0 $color-primaryBg, -3px 3px 0 $color-primaryBg, 3px 3px 0 $color-primaryBg, 4px -4px 0 $color-primaryBg, -4px 4px 0 $color-primaryBg, 4px 4px 0 $color-primaryBg
 
-
-
 h3
   @include allCaps
   border-bottom: $border-S
@@ -92,7 +90,7 @@ $buttonHeight: 3rem
   white-space: nowrap
   width: 10rem
   position: absolute
-  bottom: $buttonHeight / -2 + $margin-S
+  bottom: calc($buttonHeight / -2 + $margin-S)
   left: calc(50% - 5rem)
 
 .locked
