@@ -1094,7 +1094,7 @@
       }
     },
     {
-      "id": "99",
+      "id": "990",
       "title": {
         "en-US": "TR"
       },
@@ -1108,6 +1108,70 @@
           "value": -10
         }
       ]
-    }  
+    },
+    {
+      "id": "991",
+      "title": {
+        "en-US": "TRWLN"
+      },
+      "description": {
+        "en-US": "The Test Ribbon With Long Name is here for debugging purposes."
+      },
+      "criteria": [
+        {
+          "indicatorId": "o1",
+          "operator": "gt",
+          "value": -10
+        }
+      ]
+    },
+    {
+      "id": "992",
+      "title": {
+        "en-US": "TRWLN"
+      },
+      "description": {
+        "en-US": "The Test Ribbon With Long Name is here for debugging purposes."
+      },
+      "criteria": [
+        {
+          "indicatorId": "o1",
+          "operator": "gt",
+          "value": -10
+        }
+      ]
+    },
+    {
+      "id": "993",
+      "title": {
+        "en-US": "TRWLN"
+      },
+      "description": {
+        "en-US": "The Test Ribbon With Long Name is here for debugging purposes."
+      },
+      "criteria": [
+        {
+          "indicatorId": "o1",
+          "operator": "gt",
+          "value": -10
+        }
+      ]
+    },
+    {
+      "id": "994",
+      "title": {
+        "en-US": "TRWLN"
+      },
+      "description": {
+        "en-US": "The Test Ribbon With Long Name is here for debugging purposes."
+      },
+      "criteria": [
+        {
+          "indicatorId": "o1",
+          "operator": "gt",
+          "value": -10
+        }
+      ]
+    }
   ]
 }

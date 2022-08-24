@@ -33,6 +33,7 @@ import {
   Scenario,
   SharedService,
   Strategy,
+  ANIMATION_DURATION,
 } from '../../shared';
 import { ValueGaugeComponent } from './value-gauge.component';
 
@@ -46,8 +47,8 @@ const DATA_KEY_VERSION = 'v';
 const DATA_SEPARATOR = ',';
 const DATA_KEY_STRATEGIES = 's';
 const ROUND_BASE = 1;
-const ANIMATION_DURATION_PREVIOUS_CARDS_MS = 450;
-const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_MS}ms ${ANIMATION_EASING}`;
+const ANIMATION_DURATION_LONGER_MS = 450;
+const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_LONGER_MS}ms ${ANIMATION_EASING}`;
 
 const DEBUG = true;
 const debug = function debug(...args: any[]): void {
@@ -93,7 +94,7 @@ const clamp = function clamp(num: number, min = 0, max = 1): number {
       state('current-enter',
         style({
           opacity: 0,
-          transform: 'translateY(2.5rem) scale(1.1)',
+          transform: 'translateY(50vh) scale(1.05)',
         })
       ),
       state('current',
@@ -105,46 +106,15 @@ const clamp = function clamp(num: number, min = 0, max = 1): number {
       state('current-leave',
         style({
           opacity: 0,
-          transform: 'translateY(-2.5rem) scale(0.9)',
+          transform: 'translateX(100vw) scale(1.0)',
         })
       ),
-      transition('current <=> *', [
+      transition('current-enter <=> current', [
         animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
       ]),
-    ]),
-    trigger('previousCards', [
-      state('current',
-        style({
-          opacity: 0.3,
-          transform: 'translateY(-2.5rem) scale(0.9)',
-        })
-      ),
-      state('previous',
-        style({
-          opacity: 0.0,
-          transform: 'translateY(-5rem) scale(0.8)',
-        })
-      ),
-      state('next',
-        style({
-          opacity: 0.0,
-          transform: 'translateY(-2.5rem) scale(0.9)',
-        })
-      ),
-      transition('current <=> previous', [
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
+      transition('current <=> current-leave', [
+        animate(ANIMATION_TIMING)
       ]),
-    ]),
-    trigger('previousCardsFade', [
-      state('faded', style({
-        opacity: 0.15
-      })),
-      state('normal', style({
-        opacity: 0.3
-      })),
-      transition('normal <=> faded', [
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
-      ])
     ]),
     trigger('ribbon', [
       transition(':enter', [
@@ -206,6 +176,7 @@ export class GameComponent implements OnDestroy, OnInit {
   private indicatorComponents: ValueGaugeComponent[] = [];
 
   animationDirection: AnimationDirection = 'forward';
+  animationDuration = ANIMATION_DURATION_MS;
   bottomDialog?: {
     text: string,
     confirm: () => void
@@ -366,11 +337,11 @@ export class GameComponent implements OnDestroy, OnInit {
   /*
    * Get the top position of the ribbon at the given index
    */
-  getRibbonTop(index: number): string {
-    if (this.ribbons.length === 0)
+  getRibbonLeft(index: number): string {
+    if (this.ribbons.length < 2)
       return '0%';
-    // NB. Match last measurement to ribbon height
-    return `calc(${index} / ${this.ribbons.length} * (100% - 11.6979592rem))`;
+    // NB. Match the last measurement to ribbon width
+    return `calc(${index} / ${this.ribbons.length - 1} * (100% - 3.5rem))`;
   }
 
 
@@ -393,7 +364,7 @@ export class GameComponent implements OnDestroy, OnInit {
         () => this.strategyCardsTrigger = 'current-enter',
         // () => this.previousCardsTrigger = 'current',
         () => this.scenarioTrigger = 'current-enter',
-        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        ANIMATION_DURATION_LONGER_MS,
         () => this.initScenarios(),
         () => this.scenarioTrigger = 'previous',
         100,
@@ -424,7 +395,7 @@ export class GameComponent implements OnDestroy, OnInit {
         () => this.strategyCardsTrigger = 'current-leave',
         // () => this.previousCardsTrigger = 'previous-leave',
         () => this.scenarioTrigger = 'previous',
-        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        ANIMATION_DURATION_LONGER_MS,
         () => {
           this.initScenarios();
           this.scenarioTrigger = 'current-enter';
@@ -433,7 +404,7 @@ export class GameComponent implements OnDestroy, OnInit {
           this.scenarioTrigger = 'current';
           this.displayedRound = this.round;
         },
-        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        ANIMATION_DURATION_LONGER_MS,
         () => this.initIndicators(),
         () => this.initRibbons(),
         1500,
@@ -462,7 +433,6 @@ export class GameComponent implements OnDestroy, OnInit {
   resetState(): void {
     this.bottomDialog = undefined;
     this.enableGoToPrevious = false;
-    this.inFeedbackPhase = false;
     this.roundStarting = false;
     this.showGameOverDialog = false;
     this.showScenario = false;
@@ -471,14 +441,14 @@ export class GameComponent implements OnDestroy, OnInit {
     this.topDialog = undefined;
 
     // Set the correct flipped/locked states for strategies
-    for (const sid in this.shared.strategies) {
-      const s = this.shared.strategies[sid];
-      s.locked = s.flipped = false;
-      // if (!this.playedStrategies.includes(s))
-      //   s.locked = s.flipped = false;
-      // else
-      //   s.locked = s.flipped = true;
-    }
+    // We delay this a bit to let the cards fly out of view first
+    setTimeout(() => {
+      this.inFeedbackPhase = false;
+      for (const sid in this.shared.strategies) {
+        const s = this.shared.strategies[sid];
+        s.locked = s.flipped = false;
+      }
+    }, ANIMATION_DURATION_MS * 4);
   }
 
   initScenarios(): void {

@@ -1,6 +1,10 @@
 @import 'variables.scss'
 
 $border: $border-M
+$patternWidth: 2rem
+
+$color-primaryBg:   $color-primaryBgLight
+// $color-secondaryBg: $color-primaryBgLight
 
 :host
   display: inline-block
@@ -10,7 +14,9 @@ $border: $border-M
   width: min(16rem, 30vw)
 
 .card
-  background-color: $color-primaryBg
+  background: url(assets/images/pattern-wave.svg) repeat, $color-primaryBg
+  background-size: $patternWidth
+  border: $border
   border-radius: $margin-M
   display: flex
   flex-flow: column nowrap
@@ -18,11 +24,12 @@ $border: $border-M
   height: 100%
   width: 100%
   // Check bottom padding to fit button
-  padding: $margin-M $margin-S 1.65rem $margin-S
+  padding: $margin-M // $margin-M $margin-S 1.65rem $margin-S
   position: absolute
   transform-style: preserve-3d
 
 .content
+  background: $color-secondaryBg
   border: $border
   border-radius: $margin-S
   height: 100%
@@ -30,9 +37,16 @@ $border: $border-M
   flex-flow: column nowrap
   align-items: center
   overflow: scroll
-  padding: $margin-XL $margin-S $margin-XL $margin-S
+  padding: $margin-S
+  padding-bottom: $margin-L
   position: relative
   text-align: center
+
+.pattern
+  background: $color-secondaryBg
+  .content
+    background: url(assets/images/pattern-strategy-card-icon.svg) center no-repeat, url(assets/images/pattern-wave.svg) repeat, $color-primaryBg, 
+    background-size: 10 * $patternWidth, $patternWidth
 
 .back
   color: $color-primaryBg
@@ -44,17 +58,15 @@ $border: $border-M
     padding-top: $margin-S
 
 label
-  margin: 0
-  position: absolute
-  top: $margin-S
-  left: 0
-  right: 0
+  font-weight: $fontWeight-L
+  line-height: 1.0
+  margin-top: -$margin-S
+  padding-bottom: $margin-S
   text-align: center
   white-space: normal
+  text-shadow: -1px -1px 0 $color-primaryBg,  1px -1px 0 $color-primaryBg, -1px 1px 0 $color-primaryBg, 1px 1px 0 $color-primaryBg, -2px -2px 0 $color-primaryBg, 2px -2px 0 $color-primaryBg, -2px 2px 0 $color-primaryBg, 2px 2px 0 $color-primaryBg, -3px -3px 0 $color-primaryBg, 3px -3px 0 $color-primaryBg, -3px 3px 0 $color-primaryBg, 3px 3px 0 $color-primaryBg, 4px -4px 0 $color-primaryBg, -4px 4px 0 $color-primaryBg, 4px 4px 0 $color-primaryBg
 
-  .titleText
-    background-color: $color-primaryBg
-    padding: 0px $margin-S
+
 
 h3
   @include allCaps
@@ -65,20 +77,22 @@ h3
   font-weight: $fontWeight-M
   text-align: center
 
+$buttonHeight: 3rem
+
 .bottomButton
   @include allCaps
   background-color: $color-primaryBg
   border-radius: 50%
   font-size: $fontSize-XS
-  max-height: 3.5rem
-  min-height: 3.5rem
+  max-height: $buttonHeight
+  min-height: $buttonHeight
   overflow: hidden
   padding: $margin-M
   text-overflow: ellipsis
   white-space: nowrap
   width: 10rem
   position: absolute
-  bottom: 0px
+  bottom: $buttonHeight / -2 + $margin-S
   left: calc(50% - 5rem)
 
 .locked
