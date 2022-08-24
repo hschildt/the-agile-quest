@@ -1,7 +1,7 @@
 # The Agile Quest Game
 
-
 Play the game at https://kaljarv.github.io/the-agile-quest/.
+
 
 ## Editing settings and texts
 
@@ -15,6 +15,11 @@ Once changed, override these files in the `docs/assets/data` folder.
 
 For the structure of `settings.json`, see `src/app/shared/shared.types.ts` and the json file itself.
  
+
+## Localization
+
+Make sure that all items in `texts.json` and `settings.json` have texts for the target locale. Then just add the locale as a query param to the url in the form `?lang=fi-FI`.
+
 
 ## Deploying on Github pages
 
@@ -38,6 +43,9 @@ See: https://angular.io/guide/deployment#deploy-to-github-pages
 
 4. Make sure Github is configured to [publish from the docs folder](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch).
 
+For convenience, all of the above combined are:
+
+`ng build --configuration production --output-path docs --base-href /the-agile-quest/ && cp docs/index.html docs/404.html && git add . && git commit -a -m "Deploy on Github pages" && git push`
 
 ## Authors
 
@@ -52,7 +60,7 @@ Engineering: Kalle Järvenpää / @kaljarv [Kalle Järvenpää Design](http://ka
 
 The software exluding the files listed below is distributed under the MIT license.
 
-Software copyright 2021 Henri Schildt Kalle Järvenpää and Kiira Keski-Hakuni.
+Software copyright 2021–2022 Henri Schildt Kalle Järvenpää and Kiira Keski-Hakuni.
 
 Permission is hereby granted free of charge to any person obtaining a copy of this software and associated documentation files (the Software) to deal in the Software without restriction including without limitation the rights to use copy modify merge publish distribute sublicense and/or sell copies of the Software and to permit persons to whom the Software is furnished to do so subject to the following conditions:
 

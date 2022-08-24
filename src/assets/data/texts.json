@@ -15,7 +15,8 @@
     "en-US": "Start next round"
   },
   "Execute selected strategy": {
-    "en-US": "Execute selected strategy"
+    "en-US": "Execute selected strategy",
+    "fi-FI": "Käytä valittua strategiaa"
   }, 
   "Show Available Strategies": {
     "en-US": "Show Available Strategies"

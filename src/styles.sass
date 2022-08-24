@@ -1,7 +1,7 @@
 @use 'sass:color'
-@use '~@angular/material' as mat
+@use '@angular/material' as mat
 
-@import '~normalize.css'
+// @import '~normalize.css'
 @import 'variables.scss'
 @import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@500;900&display=swap')
 
@@ -20,10 +20,9 @@
   box-sizing: border-box
 
 :root
-  font-size: 13px
+  font-size: max($fontSize-min, calc(100vh / $fontSize-screenHeightRatio))
 
 body
-  background-color: $color-primaryBg
   margin: 0
   padding: 0
   min-height: 100vh
@@ -35,10 +34,12 @@ body,
 input,
 button,
 textarea
+  background-color: $color-primaryBg
   color: $color-primary
   font-family: $fontFamily-primary
   font-weight: $fontWeight-M
   line-height: $lineHeight-M
+  font-size: $fontSize-M
 
 h1,
 h2,
@@ -91,7 +92,15 @@ button
     border-color: $color-accent
     color: $color-accent
     // background-color: color.change($color-primary, $alpha: $alpha-buttonBg)
-  
+
+input,
+textarea
+  display: block
+  color: inherit
+  border: $border-M
+  // border-color: $color-secondary
+  border-radius: $borderRadius-M
+
 /* MATERIAL COMPONENT OVERRIDES */
 
 // Setting the primary palette doesn't seem to work
@@ -100,3 +109,6 @@ button
   stroke-width: 5%
   // stroke: $color-primary !important
 
+// Bigger tooltips
+.mat-tooltip
+  font-size: $fontSize-S !important

@@ -1,0 +1,187 @@
+<div *ngIf="showUserDataForm"
+     id="userDataScreen"
+     @fadeInOut>
+  <form (ngSubmit)="onUserDataSubmit()" 
+        #userDataForm="ngForm">
+    <p id="formIntro"
+       [innerHTML]="t('Enter your name and study group to begin.')"></p>
+    <label for="userName"
+          [innerHTML]="t('Your name')"></label>
+    <input type="text" 
+          class="form-control" 
+          id="userName"
+          required
+          [(ngModel)]="userData.name" 
+          name="userName"
+          #name="ngModel">
+    <label for="userGroup"
+          [innerHTML]="t('Your study group')"></label>
+    <input type="text" 
+          class="form-control" 
+          id="userGroup"
+          required
+          [(ngModel)]="userData.group" 
+          name="userGroup"
+          #name="ngModel">
+    <button id="userDataSubmit"
+            type="submit" 
+            class="btn btn-success" 
+            [disabled]="!userDataForm.form.valid"
+            [innerHTML]="t('Begin game')"></button>
+  </form>
+</div>
+
+<div *ngIf="!showUserDataForm"
+     id="grid"
+     [class.showIndicators]="roundStarting || inFeedbackPhase"
+     @fadeInOut>
+
+  <section id="performanceIndicators">
+
+    <app-value-gauge *ngFor="let indicator of performanceIndicators"
+                     type="bar"
+                     [value]="indicator.value"
+                     [titleBottom]="indicator.titleBottom"
+                     [titleTop]="indicator.titleTop"
+                     [min]="indicator.minValue"
+                     [max]="indicator.maxValue"
+                     [matTooltip]="t(indicator.tooltip)"></app-value-gauge>
+
+  </section>
+
+  <section id="previousStrategyCards"
+           (click)="goToPreviousRound($event)"
+           [@strategyCards]="previousCardsTrigger">
+
+    <!-- @previousCardsFade]="showLoadStrategyCardsDialog ? 'faded' : 'normal'" -->
+
+    <app-strategy-card *ngFor="let card of previousStrategyCards"
+                       [title]="card.title"
+                       [description]="card.description"
+                       [descriptionBack]="card.feedback"
+                       [flipped]="card.flipped"
+                       [locked]="card.locked"
+                       [disabled]="true"
+                       (cardLocked)="onCardLocked(card)"></app-strategy-card>
+
+  </section>
+
+  <section id="strategyCards"
+           [@strategyCards]="currentCardsTrigger">
+
+    <app-strategy-card *ngFor="let card of strategyCards"
+                       [title]="card.title"
+                       [description]="card.description"
+                       [descriptionBack]="card.feedback"
+                       [flipped]="card.flipped"
+                       [locked]="card.locked"
+                       [disabled]="inFeedbackPhase"
+                       (cardLocked)="onCardLocked(card)"></app-strategy-card>
+
+  </section>
+
+  <section *ngIf="showGameOverDialog"
+           id="middleDialog"
+           @fadeInOut>
+
+    <button type="button"
+            (click)="startOver()"
+            [innerHTML]="t('Start a New Game')">
+    </button>
+
+  </section>
+
+  <!-- <section *ngIf="showLoadStrategyCardsDialog"
+           id="loadStrategyCardsDialog"
+           @fadeInOut>
+
+    <button *ngIf="!gameOver"
+            type="button"
+            (click)="loadStrategyCards()"
+            [innerHTML]="t('Show Available Strategies')">
+    </button>
+
+    <button *ngIf="gameOver"
+            type="button"
+            (click)="startOver()"
+            [innerHTML]="t('Start a New Game')">
+    </button>
+
+  </section> -->
+
+  <section id="scenario">
+
+    <div id="roundIndicator">
+      <mat-progress-spinner color="white"
+                            mode="determinate"
+                            [value]="roundsUsedPercentage">
+      </mat-progress-spinner>
+      <div class="roundText">
+        <span class="roundText-current">{{ round }}</span>
+        <span class="roundText-slash">/</span>
+        <span class="roundText-last">{{ lastRound }}</span>
+      </div>
+    </div>
+
+    <div id="scenarioContent"
+         [@scenario]="scenarioTrigger">
+
+      <h1 [innerHTML]="t(scenario?.title)"></h1>
+      
+      <div class="description"
+          [innerHTML]="t(scenario?.description)"></div>
+
+    </div>
+
+  </section>
+
+  <section *ngIf="topDialog"
+           id="topDialog"
+           @fadeInOut>
+
+    <button type="button"
+            (click)="topDialog.confirm()"
+            [innerHTML]="t(topDialog.text)">
+    </button>
+
+  </section>
+
+  <section id="organisationalAttributes">
+
+    <app-value-gauge *ngFor="let indicator of organisationalAttributes"
+                     type="dot"
+                     [value]="indicator.value"
+                     [titleBottom]="indicator.titleBottom"
+                     [titleTop]="indicator.titleTop"
+                     [min]="indicator.minValue"
+                     [max]="indicator.maxValue"
+                     [matTooltip]="t(indicator.tooltip)"></app-value-gauge>
+
+  </section>
+
+  <section id="ribbons">
+
+    <app-ribbon *ngFor="let ribbon of ribbons; index as i"
+                [title]="ribbon.title"
+                [matTooltip]="t(ribbon.description)"
+                [style.top]="getRibbonTop(i)"
+                @ribbon></app-ribbon>
+
+  </section>
+
+  <section *ngIf="bottomDialog"
+           id="bottomDialog"
+           @fadeInOut>
+
+    <button type="button"
+            (click)="bottomDialog.confirm()"
+            [innerHTML]="t(bottomDialog.text)">
+    </button>
+
+  </section>
+
+</div>
+
+<!-- <div *ngIf="gameOver"
+     (click)="modalClick($event)"
+     class="modal"></div> -->

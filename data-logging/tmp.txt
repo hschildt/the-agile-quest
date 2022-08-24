@@ -1,0 +1,45 @@
+array (
+  0 => 
+  array (
+    0 => 101,
+    1 => 'kjdksjdj',
+    2 => '121,1231',
+    3 => 'daad"dasda',
+  ),
+)101kjdksjdj121,1231daad"dasda
+
+1
+101kjdksjdj121,1231daad"dasda
+
+1
+101kjdksjdj121,1231daad"dasda
+
+1
+101kjdksjdj121,1231daad"dasda
+1
+Array
+101
+101kjdksjdj121,1231daad"dasda
+1
+Array
+101
+"101""kjdksjdj""121,1231""daad""dasda"
+1
+Array
+101
+"101""kjdksjdj""121,1231""daad""dasda"
+1
+Array
+101
+"101""kjdksjdj""121,1231""daad""dasda"
+1
+Array
+101
+101kjdksjdj121,1231daad"dasda
+1
+Array
+101
+101kjdksjdj121,1231daad"dasda
+1
+Array
+101

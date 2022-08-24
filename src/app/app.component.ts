@@ -3,7 +3,6 @@ import { trigger,
          style,
          animate,
          transition } from '@angular/animations';
-
 import { ANIMATION_TIMING,
          SharedService} from './shared/shared.service';
 

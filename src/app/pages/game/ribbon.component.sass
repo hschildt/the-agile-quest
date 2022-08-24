@@ -1,23 +1,25 @@
 @import 'variables.scss'
 
-$width: 10rem
+$width: 3.5rem
 $height: $width * 1.16979592
 
 :host
   background: url(assets/images/ribbon.svg) center/cover
-  display: flex
+  display: inline-flex
   flex-flow: column nowrap
   height: $height
   width: $width
   justify-content: center
-  align-items: flex-start
+  align-items: center
   padding-bottom: $height - $width
 
 label
   border-radius: 50%
-  font-size: $fontSize-XS
+  font-size: $fontSize-M
+  font-weight: $fontWeight-L
   max-width: 100%
   max-height: 100%
-  padding: $margin-M
+  padding: $margin-S
   text-align: center
-  white-space: normal
+  text-overflow: clip
+  white-space: nowrap

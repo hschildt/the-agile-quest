@@ -1,6 +1,7 @@
 {
   "version": 1,
   "rounds": 10,
+  "loggerUrl": "https://kaljarv.com/asiakkaat/agile-quest/",
   "scenarios": [
     {
       "id": "1",
@@ -72,8 +73,7 @@
         43,
         44
       ],
-      "effects": {
-      }
+      "effects": {}
     },
     {
       "id": "5",
@@ -88,8 +88,7 @@
         52,
         53
       ],
-      "effects": {
-      }
+      "effects": {}
     },
     {
       "id": "6",
@@ -140,7 +139,6 @@
         83
       ],
       "effects": {
-
         "p3": -1
       }
     },
@@ -189,14 +187,12 @@
       "description": {
         "en-US": "The bank is now in good shape and the board is happy with your job in handling this tough transition. They’d like to offer you a permanent position as a CEO.</br>Thank you for playing the game!"
       },
-      "strategies": [
-      ],
+      "strategies": [],
       "effects": {
         "p6": 1
       }
     }
   ],
-
   "strategies": [
     {
       "id": "11",
@@ -215,7 +211,7 @@
         "p5": 1,
         "p3": 1
       },
-      "ribbons": [ ]
+      "ribbons": []
     },
     {
       "id": "12",
@@ -275,7 +271,6 @@
       },
       "ribbons": []
     },
-
     {
       "id": "21",
       "title": {
@@ -292,9 +287,11 @@
         "p2": 1,
         "p4": 1,
         "o1": 1,
-        "o2": 1 
+        "o2": 1
       },
-      "ribbons": [ 1 ]
+      "ribbons": [
+        1
+      ]
     },
     {
       "id": "22",
@@ -315,7 +312,9 @@
         "p4": 1,
         "o1": 1
       },
-      "ribbons": [ 2 ]
+      "ribbons": [
+        2
+      ]
     },
     {
       "id": "23",
@@ -324,7 +323,7 @@
       },
       "description": {
         "en-US": "Market research conducted through online surveys and focus group interviews would give us a better understanding of our customer needs."
-      },      
+      },
       "feedback": {
         "en-US": "Market research has become a somewhat outdated basis for product innovation. It is easy and seldom disruptive way to probe the needs and opinions of different customer groups, but it does little to facilitate the collaboration required for the development and implementation of innovative services."
       },
@@ -332,9 +331,8 @@
       "effects": {
         "p2": 1
       },
-      "ribbons": [ ]
+      "ribbons": []
     },
-
     {
       "id": "31",
       "title": {
@@ -371,7 +369,7 @@
       "effects": {
         "p3": 1,
         "p4": 4,
-        "o1": 1 
+        "o1": 1
       },
       "ribbons": []
     },
@@ -398,7 +396,6 @@
       },
       "ribbons": []
     },
-
     {
       "id": "41",
       "title": {
@@ -438,8 +435,7 @@
         "p6": 1,
         "o2": 1
       },
-      "ribbons": [
-      ]
+      "ribbons": []
     },
     {
       "id": "43",
@@ -481,7 +477,6 @@
       },
       "ribbons": []
     },
-
     {
       "id": "51",
       "title": {
@@ -541,7 +536,6 @@
       },
       "ribbons": []
     },
-
     {
       "id": "61",
       "title": {
@@ -583,8 +577,7 @@
         "p6": 1,
         "o1": 1
       },
-      "ribbons": [
-      ]
+      "ribbons": []
     },
     {
       "id": "63",
@@ -628,7 +621,6 @@
       },
       "ribbons": []
     },
-
     {
       "id": "71",
       "title": {
@@ -645,7 +637,7 @@
         "p1": 1,
         "p3": 1,
         "p4": 1,
-        "o1": 1 
+        "o1": 1
       },
       "ribbons": []
     },
@@ -686,9 +678,8 @@
         "o1": -2,
         "o2": 1
       },
-      "ribbons": [   ]
+      "ribbons": []
     },
-
     {
       "id": "81",
       "title": {
@@ -748,10 +739,8 @@
         "p6": 1,
         "o2": 1
       },
-      "ribbons": [
-      ]
+      "ribbons": []
     },
-
     {
       "id": "91",
       "title": {
@@ -812,8 +801,7 @@
         "o2": -1,
         "o4": 1
       },
-      "ribbons": [
-      ]
+      "ribbons": []
     },
     {
       "id": "94",
@@ -835,7 +823,6 @@
       },
       "ribbons": []
     },
-
     {
       "id": "101",
       "title": {
@@ -874,8 +861,7 @@
         "p4": 1,
         "p6": -1
       },
-      "ribbons": [
-      ]
+      "ribbons": []
     },
     {
       "id": "103",
@@ -898,8 +884,6 @@
       },
       "ribbons": []
     }
-
-
   ],
   "indicators": [
     {
@@ -1065,24 +1049,49 @@
     {
       "id": "1",
       "title": {
-        "en-US": "Iterative prototyping"
+        "en-US": "IP"
       },
       "description": {
-        "en-US": "Iterative protyping helps improve innovativeness particularly in decentralized organizations."
+        "en-US": "Iterative Protyping helps improve innovativeness particularly in decentralized organizations."
       },
-      "criteria": [{"metric": "o2", "treshold": 6, "comparison":">"}],
-      "benefits": [{"metric": "p2", "outcome": 1}] 
+      "criteria": [
+        {
+          "indicatorId": "o2",
+          "operator": "gt",
+          "value": 6
+        }
+      ],
+      "effects": {
+        "p2": 1
+      }
     },
     {
       "id": "2",
       "title": {
-        "en-US": "Cross-functional task forces"
+        "en-US": "CFTF"
       },
       "description": {
-        "en-US": "Cross-functional task forces enable motivated employees to identify and address issues that fall outside their normal mandate."
+        "en-US": "Cross-Functional Task Forces enable motivated employees to identify and address issues that fall outside their normal mandate."
       },
-      "criteria": [{"metric": "o1", "treshold": 6, "comparison":">"}],
-      "benefits": [{"metric": "p6", "outcome": 1}] 
+      "criteria": [
+        {
+          "indicatorId": "o1",
+          "operator": "gt",
+          "value": 6
+        }
+      ],
+      "effects": {
+        "p6": 1
+      }
+    },
+    {
+      "id": "4",
+      "title": {
+        "en-US": "N/A"
+      },
+      "description": {
+        "en-US": "MISSING RIBBONS enable motivated employees to identify and address issues that fall outside their normal mandate."
+      }
     }
   ]
 }

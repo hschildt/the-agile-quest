@@ -2,17 +2,30 @@ import {
   EventEmitter,
   Inject,
   Injectable,
-  LOCALE_ID 
+  LOCALE_ID,
+  OnDestroy
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { 
+  ActivatedRoute,
+  NavigationEnd,
+  Router 
+} from '@angular/router';
+import { 
   BehaviorSubject,
-  forkJoin 
+  forkJoin,
+  Subscription
 } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { 
+  filter,
+  map 
+} from 'rxjs/operators';
 import { 
   Indicator,
   LocalizedString,
+  LogDatum,
+  Queue,
+  QueueStep,
   Ribbon,
   Scenario,
   Settings,
@@ -26,6 +39,7 @@ export const ANIMATION_DURATION: string = ANIMATION_DURATION_MS + 'ms';
 export const ANIMATION_EASING: string = 'cubic-bezier(0.4, 0, 0.2, 1)'
 export const ANIMATION_TIMING: string = `${ANIMATION_DURATION} ${ANIMATION_EASING}`;
 export const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} ${ANIMATION_EASING}`;
+export const DATA_KEY_LOCALE = 'lang';
 export const DEFAULT_LOCALE = 'en-US';
 export const PERSPECTIVE: string = 'perspective(1000px)';
 const SETTINGS_URL = 'assets/data/settings.json';
@@ -34,26 +48,48 @@ const TEXTS_URL = 'assets/data/texts.json';
 @Injectable({
   providedIn: 'root'
 })
-export class SharedService {
+export class SharedService implements OnDestroy{
 
   error = new EventEmitter<string>();
-  firstScenario: Scenario;
+  firstScenario!: Scenario;
   indicators: {[id: string]: Indicator} = {};
+  locale: string = '';
   ready = new BehaviorSubject<boolean>(false);
   ribbons: {[id: string]: Ribbon} = {};
   scenarios: {[id: string]: Scenario} = {};
-  settings: {
-    version: number,
-    rounds: number,
-  };
+  settings!: {
+        version: number,
+        rounds: number,
+        loggerUrl: string
+    };
   strategies: {[id: string]: Strategy} = {};
-  texts: Texts;
+  texts!: Texts;
+
+  private _subscriptions = new Array<Subscription>();
 
   constructor(
     private http: HttpClient,
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) systemLocale: string,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
+    this.locale = systemLocale;
+    this.readLocale();
     this.loadData();
+    this._subscriptions.push(
+      this.router.events.pipe(
+        filter(evt => evt instanceof NavigationEnd)
+      ).subscribe(() => this.readLocale())
+    );
+  }
+
+  public ngOnDestroy(): void {
+    this._subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  public readLocale(): void {
+    if (this.route.snapshot.queryParams?.[DATA_KEY_LOCALE])
+      this.locale = this.route.snapshot.queryParams[DATA_KEY_LOCALE];
   }
 
   public loadData(): void {
@@ -79,12 +115,13 @@ export class SharedService {
   public processSettings(settings: Settings): void {
     this.settings = {
       version: settings.version,
-      rounds:  settings.rounds
+      rounds:  settings.rounds,
+      loggerUrl: settings.loggerUrl
     };
-
-    for (const list of ['indicators', 'ribbons', 'scenarios', 'strategies'])
-      this[list] = this.processJsonList(settings[list]);
-
+    this.indicators = this.processJsonList(settings.indicators);
+    this.ribbons = this.processJsonList(settings.ribbons);
+    this.scenarios = this.processJsonList(settings.scenarios);
+    this.strategies = this.processJsonList(settings.strategies);
     this.firstScenario = settings.scenarios[0];
   }
 
@@ -100,19 +137,74 @@ export class SharedService {
   }
 
   /*
+   * Test if the given ribbon's criteria are met.
+   */
+  public checkRibbon(ribbon: Ribbon): boolean {
+    if (!("criteria" in ribbon) || ribbon.criteria == null)
+      return false;
+    for (const c of ribbon.criteria) {
+      const cv = this.indicators[c.indicatorId].value ?? 0,
+            op = c.operator,
+            tv = c.value;
+      if ((op === "eq" && cv != tv) ||
+          (op === "lt" && cv >= tv) ||
+          (op === "gt" && cv <= tv))
+        return false;
+    }
+    return true;
+  }
+
+  /*
    * Return the prompt text in current locale or the text itself if that's not available.
    * If text is a localized string, select the correct localized version or use the default.
    * Note that if the text is to contain any HTML markup, it should be used as a bound
    * property, i.e., <span [innerHTML]="shared.getText('Text')"></span>. It will be 
    * sanitized by Angular but basic formatting and links are allowed, at least.
    */
-  public getText(text: string | LocalizedString): string {
-    if (text == null)
+  public getText(text: string | LocalizedString | undefined = ""): string {
+    let localized: LocalizedString;
+    if (text == null) {
       return "";
-    else if (typeof text === "string")
-      return this.texts[text]?.[this.locale] ?? text;
-    else
-      return text[this.locale] ?? text[DEFAULT_LOCALE];
+    } else if (typeof text === "string") {
+      if (text in this.texts)
+        localized = this.texts[text];
+      else
+        return text;
+    } else {
+      localized = text;
+    }
+    return localized[this.locale] ?? localized[DEFAULT_LOCALE];
   }
 
+  /*
+   * Save the gameplay data in a remote csv file. See /data-logging for more information.
+   */
+  public async logGameplayData(data: LogDatum[][]): Promise<{success: boolean, message?: string}> {
+    return new Promise<{success: boolean, message?: string}>(resolve => {
+        this.http.post<{success: boolean, message?: string}>(
+          this.settings.loggerUrl, {data: data}, {headers: {"Access-Control-Allow-Origin": "*"}})
+          .subscribe({
+            next(r)  { resolve({success: true,  message: r.message ?? ""}) },
+            error(r) { resolve({success: false, message: r.message ?? ""}) }
+          });
+    });
+  }
+
+  /*
+   * For queueing actions.
+   */
+  public processQueue(queue: Queue) {
+    if (queue.length < 1)
+      return;
+    const step = queue.shift();
+    if (typeof step === 'number') {
+      setTimeout(() => this.processQueue(queue), step);
+    } else if (typeof step === 'function') {
+      step();
+      this.processQueue(queue);
+    } else {
+      throw new Error('Invalid step');
+    }
+  }
+  
 }
