@@ -4,7 +4,7 @@
 # ng build --configuration production --base-href https://kaljarv.github.io/the-agile-quest/
 
 # git checkout -b gh-pages
-git switch gh-pages
+# git switch gh-pages
 ng build --output-path docs --base-href /the-agile-quest/
 cp docs/index.html docs/404.html
 git add .

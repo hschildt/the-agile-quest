@@ -1,7 +1,8 @@
 import { 
   Component, 
   OnDestroy,
-  OnInit 
+  OnInit,
+  ViewChildren
 } from '@angular/core';
 import { 
   ActivatedRoute,
@@ -15,7 +16,7 @@ import {
   animate,
   transition 
 } from '@angular/animations';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { 
   ANIMATION_DURATION_MS,
@@ -23,30 +24,36 @@ import {
   ANIMATION_TIMING,
   ANIMATION_TIMING_DELAYED,
   PERSPECTIVE,
+  CookieService,
   Indicator,
   LocalizedString,
+  LogDatum,
+  Queue,
   Ribbon,
   Scenario,
   SharedService,
   Strategy,
+  ANIMATION_DURATION,
 } from '../../shared';
-import { ResultChartData } from './result-chart.component';
-
+import { ValueGaugeComponent } from './value-gauge.component';
 
 // See startRound()
 type AnimationDirection = 'backward' | 'forward';
-type AnimationState = 'current-enter' | 'current' | 'current-noTransition' | 'previous' | 'previous-noTransition' | 'previous-leave';
-type QueueStep = number | (() => void);
-type Queue = QueueStep[];
+type AnimationState = 'current-enter' | 'current' | 'current-leave' | 'current-noTransition' | 'previous' | 'previous-noTransition' | 'previous-leave';
 
+const COOKIE_PREFIX = 'userData_';
 const DATA_KEY_VERSION = 'v';
-const DATA_KEY_SHOWREPORT = 'r';
+// const DATA_KEY_SHOWREPORT = 'r';
 const DATA_SEPARATOR = ',';
 const DATA_KEY_STRATEGIES = 's';
 const ROUND_BASE = 1;
+const ANIMATION_DURATION_LONGER_MS = 450;
+const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_LONGER_MS}ms ${ANIMATION_EASING}`;
 
-const ANIMATION_DURATION_PREVIOUS_CARDS_MS = 450;
-const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_MS}ms ${ANIMATION_EASING}`;
+const DEBUG = true;
+const debug = function debug(...args: any[]): void {
+  if (DEBUG) console.log(...args);
+}
 
 /*
  * For convenience
@@ -54,21 +61,8 @@ const ANIMATION_TIMING_PREVIOUS_CARDS_MS = `${ANIMATION_DURATION_PREVIOUS_CARDS_
 const sum = function sum(arr: Array<number>): number {
   return arr.reduce((a, b) => a + b, 0);
 }
-const clamp = function clamp(num: number, min: number = null, max: number = null): number {
+const clamp = function clamp(num: number, min = 0, max = 1): number {
   return num <= min ? min : num >= max ? max : num;
-}
-const processQueue = function processQueue(queue: Queue) {
-  if (queue.length < 1)
-    return;
-
-  const step = queue.shift();
-
-  if (typeof step === 'number') {
-    setTimeout(() => processQueue(queue), step);
-  } else {
-    step();
-    processQueue(queue);
-  }
 }
 
 @Component({
@@ -100,64 +94,27 @@ const processQueue = function processQueue(queue: Queue) {
       state('current-enter',
         style({
           opacity: 0,
-          transform: 'translateY(60vh)'
-        }),
+          transform: 'translateY(50vh) scale(1.05)',
+        })
       ),
-      state('current, current-noTransition',
+      state('current',
         style({
           opacity: 1,
           transform: 'none'
-        }),
-      ),
-      state('previous, previous-noTransition',
-        style({
-          opacity: 0.3,
-          transform: 'translateY(-2.5rem) scale(0.9)',
         })
       ),
-      state('previous-leave',
+      state('current-leave',
         style({
-          opacity: 0.0,
-          transform: 'translateY(-5rem) scale(0.8)',
+          opacity: 0,
+          transform: 'translateX(100vw) scale(1.0)',
         })
       ),
-      transition('current-enter <=> current, current <=> previous, previous <=> previous-leave', [
+      transition('current-enter <=> current', [
         animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
       ]),
-    ]),
-    trigger('previousCards', [
-      state('current',
-        style({
-          opacity: 0.3,
-          transform: 'translateY(-2.5rem) scale(0.9)',
-        })
-      ),
-      state('previous',
-        style({
-          opacity: 0.0,
-          transform: 'translateY(-5rem) scale(0.8)',
-        })
-      ),
-      state('next',
-        style({
-          opacity: 0.0,
-          transform: 'translateY(-2.5rem) scale(0.9)',
-        })
-      ),
-      transition('current <=> previous', [
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
+      transition('current <=> current-leave', [
+        animate(ANIMATION_TIMING)
       ]),
-    ]),
-    trigger('previousCardsFade', [
-      state('faded', style({
-        opacity: 0.15
-      })),
-      state('normal', style({
-        opacity: 0.3
-      })),
-      transition('normal <=> faded', [
-        animate(ANIMATION_TIMING_PREVIOUS_CARDS_MS)
-      ])
     ]),
     trigger('ribbon', [
       transition(':enter', [
@@ -206,59 +163,110 @@ const processQueue = function processQueue(queue: Queue) {
 })
 export class GameComponent implements OnDestroy, OnInit {
 
+  // @HostListener('window:beforeunload')
+  // onBeforeUnload(): void {
+  //   this.saveGameplayData();
+  // }
+  // @HostListener('window:unload')
+  // onUnload(): void {
+  //   this.saveGameplayData();
+  // }
+
+  @ViewChildren(ValueGaugeComponent)
+  private indicatorComponents: ValueGaugeComponent[] = [];
+
   animationDirection: AnimationDirection = 'forward';
-  bottomDialog: {
+  animationDuration = ANIMATION_DURATION_MS;
+  bottomDialog?: {
     text: string,
     confirm: () => void
   };
-  currentCardsTrigger: AnimationState = 'current-enter';
+  displayedRound = 1;
   enableGoToPrevious: boolean = false;
   inFeedbackPhase: boolean = false;
   performanceIndicators: Indicator[] = [];
   organisationalAttributes: Indicator[] = [];
   playedScenarios: Scenario[] = [];
   playedStrategies: Strategy[] = [];
-  previousCardsTrigger: AnimationState = 'current-enter';
-  previousStrategyCards: Strategy[] = [];
   ribbons: Ribbon[] = [];
   roundStarting: boolean = false;
   scenarioTrigger: AnimationState = 'current-enter';
   showGameOverDialog: boolean = false;
   showReport: boolean = false;
   showScenario: boolean = false;
+  showUserDataForm: boolean = false;
   strategyCards: Strategy[] = [];
-  topDialog: {
+  strategyCardsTrigger: AnimationState = 'current-enter';
+  topDialog?: {
     text: string,
     confirm: () => void
   };
+  userData: {name: string, group: string} = {
+    name: '',
+    group: ''
+  };
 
+  private _logData = new Array<LogDatum[]>();
+  private _sessionId: string = '';
   private _subscriptions = new Array<Subscription>();
 
   constructor(
-    private route:     ActivatedRoute,
-    private router:    Router,
-    private shared:    SharedService
+    private cookie: CookieService,
+    private route:  ActivatedRoute,
+    private router: Router,
+    private shared: SharedService
   ) {
-    this.resetState();
+    // this.resetState();
     this.performanceIndicators = Object.values(this.shared.indicators).filter(i => i.type === 'performance');
     this.organisationalAttributes = Object.values(this.shared.indicators).filter(i => i.type === 'organisation');
   }
 
   ngOnInit(): void {
+    this.readCookie();
     this.readParams();
     // We need to explicitly read the params whenever navigating
     // as onInit won't be called while we stay on the same page
     this._subscriptions.push(
       this.router.events.pipe(
         filter(evt => evt instanceof NavigationEnd)
-      ).subscribe(() => this.readParams())
+      ).subscribe(() => {
+        this.readParams();
+        this.startRound();
+      })
     );
+    if (this._sessionId == '')
+      this._sessionId = `s${Math.random()}`;
+    if (this.haveUserData && this.round > 1)
+      this.startRound();
+    else
+      this.askForUserData();
   }
 
   ngOnDestroy(): void {
+    this.saveGameplayData();
     this._subscriptions.forEach(s => s.unsubscribe());
   }
 
+  onGameOver(): void {
+    this.showGameOverDialog = true;
+    this.saveGameplayData();
+  }
+
+  readCookie(): void {
+    let k: keyof typeof this.userData;
+    for (k in this.userData) {
+      if (this.userData[k] == null || this.userData[k] == '' )
+        this.userData[k] = this.cookie.read(COOKIE_PREFIX + k) ?? '';
+    }
+  }
+
+  writeCookie(): void {
+    let k: keyof typeof this.userData;
+    for (k in this.userData) {
+      if (!(this.userData[k] == null || this.userData[k] == '' ))
+        this.cookie.write(COOKIE_PREFIX + k, this.userData[k]);
+    }
+  }
 
   /**************************************
    * GETTERS                            *
@@ -268,7 +276,7 @@ export class GameComponent implements OnDestroy, OnInit {
    * Note that round is ROUND_BASE-based (= 1)
    */
   get round(): number {
-    return this.rawRound + ROUND_BASE;
+    return Math.min(this.rawRound + ROUND_BASE, this.lastRound);
   }
 
   get lastRound(): number {
@@ -291,39 +299,49 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   get roundsUsedPercentage(): number {
-    return (this.rawRound + 1) / this.shared.settings.rounds * 100;
+    return this.displayedRound / this.shared.settings.rounds * 100;
   }
 
   get gameOver(): boolean {
-    return (this.roundsLeft <= 0 || !this.scenario.strategies || this.scenario.strategies.length === 0)
+    return (this.roundsLeft <= 0 || this.scenario != null && (!this.scenario.strategies || this.scenario.strategies.length === 0))
            && !this.showReport;
   }
 
-  get latestStrategy(): Strategy {
+  get latestStrategy(): Strategy | null {
     if (this.playedStrategies.length === 0)
       return null;
     return this.playedStrategies[this.playedStrategies.length - 1];
   }
 
-  get previousScenario(): Scenario {
+  get previousScenario(): Scenario | null {
     return this.playedScenarios.length > 1 ? 
            this.playedScenarios[this.playedScenarios.length - 2] :
            null;
   }
 
+  get scenario(): Scenario | null {
+    return this.playedScenarios.length > 0 ? 
+           this.playedScenarios[this.playedScenarios.length - 1] :
+           null;
+  }
 
-  get scenario(): Scenario {
-    return this.playedScenarios[this.playedScenarios.length - 1];
+  get haveUserData(): boolean {
+    let k: keyof typeof this.userData;
+    for (k in this.userData) {
+      if (this.userData[k] == null || this.userData[k] == '' )
+        return false;
+    }
+    return true;
   }
 
   /*
    * Get the top position of the ribbon at the given index
    */
-  getRibbonTop(index: number): string {
-    if (this.ribbons.length === 0)
+  getRibbonLeft(index: number): string {
+    if (this.ribbons.length < 2)
       return '0%';
-    // NB. Match last measurement to ribbon height
-    return `calc(${index} / ${this.ribbons.length} * (100% - 11.6979592rem))`;
+    // NB. Match the last measurement to ribbon width
+    return `calc(${index} / ${this.ribbons.length - 1} * (100% - 3.5rem))`;
   }
 
 
@@ -336,35 +354,34 @@ export class GameComponent implements OnDestroy, OnInit {
    * delays in between them.
    */
   startRound(): void {
-
-    let queue: Queue;
-
-    console.log(this.animationDirection);
-    
+    let queue: Queue;    
     if (this.animationDirection === 'backward')
       queue = [
         () => this.resetState(),
         // This sets a class of the same name, which highlights indicators
         () => this.roundStarting = true,
         225,
-        () => this.currentCardsTrigger = 'current-enter',
-        () => this.previousCardsTrigger = 'current',
+        () => this.strategyCardsTrigger = 'current-enter',
+        // () => this.previousCardsTrigger = 'current',
         () => this.scenarioTrigger = 'current-enter',
-        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        ANIMATION_DURATION_LONGER_MS,
         () => this.initScenarios(),
         () => this.scenarioTrigger = 'previous',
         100,
-        () => this.scenarioTrigger = 'current',
+        () => {
+          this.scenarioTrigger = 'current';
+          this.displayedRound = this.round;
+        },
         () => this.initIndicators(),
         () => this.initRibbons(),
         () => {
-          this.initPreviousStrategyCards();
           this.initStrategyCards();
-          this.previousCardsTrigger = 'previous-leave';
-          this.currentCardsTrigger = 'current-noTransition';
+          // this.previousCardsTrigger = 'previous-leave';
+          this.strategyCardsTrigger = 'current-leave';
+          this.logAction(true);
         },
         225,
-        () => this.previousCardsTrigger = 'previous',
+        () => this.strategyCardsTrigger = 'current',
         1000,
         () => this.roundStarting = false
       ];
@@ -375,61 +392,63 @@ export class GameComponent implements OnDestroy, OnInit {
         3 * ANIMATION_DURATION_MS,
         // This sets a class of the same name, which highlights indicators
         () => this.roundStarting = true,
-        () => this.currentCardsTrigger = 'previous',
-        () => this.previousCardsTrigger = 'previous-leave',
+        () => this.strategyCardsTrigger = 'current-leave',
+        // () => this.previousCardsTrigger = 'previous-leave',
         () => this.scenarioTrigger = 'previous',
-        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        ANIMATION_DURATION_LONGER_MS,
         () => {
           this.initScenarios();
           this.scenarioTrigger = 'current-enter';
         },
-        () => this.scenarioTrigger = 'current',
-        ANIMATION_DURATION_PREVIOUS_CARDS_MS,
+        () => {
+          this.scenarioTrigger = 'current';
+          this.displayedRound = this.round;
+        },
+        ANIMATION_DURATION_LONGER_MS,
         () => this.initIndicators(),
         () => this.initRibbons(),
         1500,
         () => {
           if (this.gameOver)
-            this.showGameOverDialog = true;
+            this.onGameOver();
           else {
-            this.initPreviousStrategyCards();
             this.initStrategyCards();
-            this.previousCardsTrigger = 'previous-noTransition';
-            this.currentCardsTrigger = 'current-enter';
+            // this.previousCardsTrigger = 'previous-noTransition';
+            this.strategyCardsTrigger = 'current-enter';
+            this.logAction();
           }
         },
         225,
         () => {
           if (!this.gameOver)
-            this.currentCardsTrigger = 'current';
+            this.strategyCardsTrigger = 'current';
         },
         1000,
         () => this.roundStarting = false
       ];
 
-    processQueue(queue);
-
+    this.shared.processQueue(queue);
   }
 
   resetState(): void {
     this.bottomDialog = undefined;
     this.enableGoToPrevious = false;
-    this.inFeedbackPhase = false;
     this.roundStarting = false;
     this.showGameOverDialog = false;
     this.showScenario = false;
     this.showReport = false;
+    this.showUserDataForm = false;
     this.topDialog = undefined;
 
     // Set the correct flipped/locked states for strategies
-    for (const sid in this.shared.strategies) {
-      const s = this.shared.strategies[sid];
-      s.locked = s.flipped = false;
-      // if (!this.playedStrategies.includes(s))
-      //   s.locked = s.flipped = false;
-      // else
-      //   s.locked = s.flipped = true;
-    }
+    // We delay this a bit to let the cards fly out of view first
+    setTimeout(() => {
+      this.inFeedbackPhase = false;
+      for (const sid in this.shared.strategies) {
+        const s = this.shared.strategies[sid];
+        s.locked = s.flipped = false;
+      }
+    }, ANIMATION_DURATION_MS * 4);
   }
 
   initScenarios(): void {
@@ -441,53 +460,51 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   initIndicators(): void {
-
+    // Freeze previous changes
+    this.indicatorComponents.forEach(c => c.updatePreviousValue());
+    // Preload ribbon effects
+    const ribbonEffects: {[id: string]: number} = {}
+    this.ribbons
+      .filter(r => "effects" in r)
+      .forEach(r => {
+        for (const iid in r.effects) {
+          if (iid in ribbonEffects)
+            ribbonEffects[iid] += r.effects[iid];
+          else
+            ribbonEffects[iid] = r.effects[iid];
+        }
+      });
+    // Calc values based on the effects of all played scenarios and strategies
     for (const iid in this.shared.indicators) {
-
-      // Calc values based on the effects of all played scenarios and strategies
       const indicator = this.shared.indicators[iid];
-
-      let value = indicator.initialValue ?? 0,
-          previousValue = indicator.initialValue ?? 0;
-      if(indicator.id=="p2")
-        console.log("indicator before init: "+JSON.stringify(indicator) + " after played scenarios: "+this.playedScenarios.length);
+      let value = indicator.initialValue ?? 0;
       this.playedScenarios.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
-        if (i < this.playedScenarios.length - 1)
-          previousValue += effect;
       });
-      if(indicator.id=="p2")
-        console.log("new value: "+value);
       this.playedStrategies.forEach((s, i) => {
         const effect = s.effects?.[iid] ?? 0;
         value += effect;
-        if (i < this.playedStrategies.length - 1)
-          previousValue += effect;
       });
+      if (iid in ribbonEffects)
+        value += ribbonEffects[iid];
       indicator.value = value;
-      indicator.previousValue = previousValue;
-      if(indicator.id=="p2")
-        console.log("indicator after initIndicators(): "+JSON.stringify(indicator)+ after played strategies: " after played strategies: "+this.playedStrategies.length);
     }
   }
 
   initRibbons(): void {
-    const ribbons = [];
+    const ribbons = new Set<Ribbon>();
     this.playedStrategies
-      .filter(s => s.ribbons?.length > 0)
-      .forEach(s => s.ribbons.forEach(r => 
-        ribbons.push(this.shared.ribbons[r])  
-      ));
-    this.ribbons = ribbons;
-  }
-
-  initPreviousStrategyCards(): void {
-    this.previousStrategyCards = (this.previousScenario?.strategies ?? []).map(s => this.shared.strategies[s]);
+      .filter(s => s.ribbons && s.ribbons.length > 0)
+      .forEach(s => s.ribbons!.forEach(r => ribbons.add(this.shared.ribbons[r])));
+    Object.values(this.shared.ribbons)
+      .filter(r => this.shared.checkRibbon(r))
+      .forEach(r => ribbons.add(r));
+    this.ribbons = Array.from(ribbons);
   }
 
   initStrategyCards(): void {
-    this.strategyCards = (this.scenario.strategies ?? []).map(s => this.shared.strategies[s]);
+    this.strategyCards = (this.scenario?.strategies ?? []).map(s => this.shared.strategies[s]);
     this.enableGoToPrevious = true;
   }
 
@@ -495,15 +512,25 @@ export class GameComponent implements OnDestroy, OnInit {
    * USER ACTIONS                       *
    **************************************/
 
+
+  askForUserData(): void {
+    this.showUserDataForm = true;
+  }
+
+  onUserDataSubmit(): void {
+    this.writeCookie();
+    this.showUserDataForm = false;
+    this.startRound();
+  }
+
   goToPreviousRound(event?: Event): void {
     // Prevent clicks when we are still waiting for this round's strategies
     if (!this.enableGoToPrevious)
       return;
 
     // True here means we go back
-    this.updateUrl(true);
+    this.updateParams(true);
   }
-
 
   loadStrategyCards(): void {
     setTimeout(() => this.initStrategyCards(), ANIMATION_DURATION_MS);
@@ -538,7 +565,6 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   showStrategyFeedback(strategy: Strategy): void {
-
     const queue: Queue = [
       () => {
         strategy.flipped = true;
@@ -558,13 +584,11 @@ export class GameComponent implements OnDestroy, OnInit {
         confirm: () => this.executeStrategy(strategy)
       }
     ];
-
-    processQueue(queue);
-
+    this.shared.processQueue(queue);
   }
 
   executeStrategy(strategy: Strategy): void {
-    this.updateUrl();
+    this.updateParams();
   }
 
   modalClick(event?: Event): void {
@@ -579,46 +603,33 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /**************************************
-   * URL PARAMS                         *
+   * URL AND COOKIE PARAMS              *
    **************************************/
 
-  public updateUrl(goBack: boolean = false): void {
+  updateParams(goBack: boolean = false): void {
     // We use router to save the game data between sessions
     this.router.navigate([{
       [DATA_KEY_VERSION]:    this.shared.settings.version,
       [DATA_KEY_STRATEGIES]: this._encodeIds(goBack && this.playedStrategies.length > 0 ? 
                                              this.playedStrategies.slice(0, -1) : 
                                              this.playedStrategies),
-      [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0,
+      //[DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0
     }]);
   }
 
-  public readParams(): void {
-    // Only load purchases from route data if the application versions match
-    // Otherwise reset the state to handle the going back to an url without params
-    if (this.route.snapshot.params?.[DATA_KEY_VERSION] && 
-        this.route.snapshot.params[DATA_KEY_VERSION] == this.shared.settings.version) {
-
-      // Save current round here, so we can check which direction to animate to
-      const currentRound = this.round;
-
-      if (this.route.snapshot.params[DATA_KEY_STRATEGIES])
-        this.playedStrategies = this._decodeIds(this.route.snapshot.params[DATA_KEY_STRATEGIES]);
-      else
-        this.playedStrategies = [];
-
-      // NB. This only counts the round number, so if we were to edit the url
-      // manually, we would get an inconsistent transition
-      this.animationDirection = this.round < currentRound ? 'backward' : 'forward';
-      
-      if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
-          this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1)
-        this.showReport = true;
-      else
-        this.showReport = false;
-    }
-    // This resets the screen
-    this.startRound();
+  readParams(): void {
+    // Save current round here, so we can check which direction to animate to
+    const currentRound = this.round,
+          params = this.route.snapshot.params;
+    if (params?.[DATA_KEY_VERSION] && 
+        params[DATA_KEY_VERSION] == this.shared.settings.version &&
+        params[DATA_KEY_STRATEGIES])
+      this.playedStrategies = this._decodeIds(params[DATA_KEY_STRATEGIES]);
+    else
+      this.playedStrategies = [];
+    // NB. This only counts the round number, so if we were to edit the url
+    // manually, we would get an inconsistent transition
+    this.animationDirection = this.round < currentRound ? 'backward' : 'forward';
   }
 
   private _encodeIds(list: Strategy[]): string {
@@ -629,6 +640,51 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /**************************************
+   * DATA LOGGING
+   **************************************/
+
+  logAction(back = false): void {
+    const now = new Date(),
+          nowStr = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() + ' ' + 
+                   now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(),
+          strategy = this.latestStrategy,
+          scenario = this.scenario;
+    const datum: LogDatum[] = [
+      this._sessionId,
+      this.userData.name,
+      this.userData.group,
+      nowStr,
+      this.round,
+      back ? -1 : (strategy ? strategy.id : -2),
+      back ? 'BACK' : (strategy ? this.t(strategy.title) : 'NO STRATEGY'),
+      scenario ? scenario.id : -2,
+      scenario ? this.t(scenario.title) : 'NO SCENARIO',
+    ];
+    for (const k in this.shared.indicators) {
+      datum.push(this.shared.indicators[k].value ?? '');
+    }
+    this._logData.push(datum);
+    // We now do this after each event, bc window.unload does not seem to always work.
+    // It would be better, however, to log everything only at the end of the game.
+    this.saveGameplayData();
+  }
+
+  clearLog(): void {
+    this._logData = [];
+  }
+
+  get hasLog(): boolean {
+    return this._logData.length > 0;
+  }
+
+  saveGameplayData(): void {
+    if (!this.hasLog) 
+      return;
+    this.shared.logGameplayData(this._logData); // .then(r => console.log(r));
+    this.clearLog();
+  }
+
+  /**************************************
    * TEXT LOCALISATION                  *
    **************************************/
 
@@ -636,32 +692,8 @@ export class GameComponent implements OnDestroy, OnInit {
    * Localize a string or LocalizedString object
    * See SharedService
    */
-  public t(text: string | LocalizedString): string {
+  public t(text: string | LocalizedString | undefined = ''): string {
     return this.shared.getText(text);
   }
-
-  // /*
-  //  * Get data for the resultChart component to use
-  //  */
-  // public get resultChartData(): ResultChartData {
-  //   throw new Error("Not implemented");
-  //   const data = new Array<any>();
-  //   const purchases = this.purchasesAndPassedRounds;
-
-  //   // NB. This code is partly copied from getAccumulatedReturns
-  //   let balance = this.shared.settings.balance;
-  //   for (let i = 0; i <= purchases.length; i++) {
-  //     const returns = this.getTotalReturns(purchases.slice(0, i));
-  //     balance += returns;
-  //     balance -= i === 0 ? 0 : purchases[i - 1].price;
-  //     data.push({
-  //       round:      i + ROUND_BASE,
-  //       balance:    balance,
-  //       returns:    returns,
-  //       investment: this.t(i === 0 ? 'Start' : (purchases[i - 1] instanceof NullInvestment ? 'Pass' : purchases[i - 1].title))
-  //     });
-  //   }
-  //   return data;
-  // }
 
 }

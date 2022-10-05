@@ -21,7 +21,7 @@ import {
 })
 export class RibbonComponent {
 
-  @Input() title: string = '';
+  @Input() title: string | LocalizedString = '';
 
   constructor(
     private shared: SharedService
@@ -32,7 +32,7 @@ export class RibbonComponent {
    * Localize a string or LocalizedString object
    * See SharedService
    */
-  t(text: string | LocalizedString): string {
+  t(text: string | LocalizedString | undefined = '') {
     return this.shared.getText(text);
   }
 }

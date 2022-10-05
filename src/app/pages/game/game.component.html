@@ -1,5 +1,38 @@
-<div id="grid"
-     [class.showIndicators]="roundStarting || inFeedbackPhase"
+<div *ngIf="showUserDataForm"
+     id="userDataScreen"
+     @fadeInOut>
+  <form (ngSubmit)="onUserDataSubmit()" 
+        #userDataForm="ngForm">
+    <p id="formIntro"
+       [innerHTML]="t('Please enter your name and study group to begin.')"></p>
+    <label for="userName"
+          [innerHTML]="t('Name')"></label>
+    <input type="text" 
+          class="form-control" 
+          id="userName"
+          required
+          [(ngModel)]="userData.name" 
+          name="userName"
+          #name="ngModel">
+    <label for="userGroup"
+          [innerHTML]="t('Study group')"></label>
+    <input type="text" 
+          class="form-control" 
+          id="userGroup"
+          required
+          [(ngModel)]="userData.group" 
+          name="userGroup"
+          #name="ngModel">
+    <button id="userDataSubmit"
+            type="submit" 
+            class="btn btn-success" 
+            [disabled]="!userDataForm.form.valid"
+            [innerHTML]="t('Begin game')"></button>
+  </form>
+</div>
+
+<div *ngIf="!showUserDataForm"
+     id="grid"
      @fadeInOut>
 
   <section id="performanceIndicators">
@@ -7,42 +40,26 @@
     <app-value-gauge *ngFor="let indicator of performanceIndicators"
                      type="bar"
                      [value]="indicator.value"
-                     [previousValue]="indicator.previousValue"
                      [titleBottom]="indicator.titleBottom"
                      [titleTop]="indicator.titleTop"
                      [min]="indicator.minValue"
                      [max]="indicator.maxValue"
-                     [matTooltip]="t(indicator.toolTip)"></app-value-gauge>
-
-  </section>
-
-  <section id="previousStrategyCards"
-           (click)="goToPreviousRound($event)"
-           [@strategyCards]="previousCardsTrigger">
-
-    <!-- @previousCardsFade]="showLoadStrategyCardsDialog ? 'faded' : 'normal'" -->
-
-    <app-strategy-card *ngFor="let card of previousStrategyCards"
-                       [title]="card.title"
-                       [description]="card.description"
-                       [descriptionBack]="card.feedback"
-                       [flipped]="card.flipped"
-                       [locked]="card.locked"
-                       [disabled]="true"
-                       (cardLocked)="onCardLocked(card)"></app-strategy-card>
+                     [matTooltip]="t(indicator.tooltip)"></app-value-gauge>
 
   </section>
 
   <section id="strategyCards"
-           [@strategyCards]="currentCardsTrigger">
+           [@strategyCards]="strategyCardsTrigger">
 
-    <app-strategy-card *ngFor="let card of strategyCards"
+    <app-strategy-card *ngFor="let card of strategyCards; index as i"
                        [title]="card.title"
                        [description]="card.description"
                        [descriptionBack]="card.feedback"
                        [flipped]="card.flipped"
                        [locked]="card.locked"
+                       [hidden]="inFeedbackPhase && !card.flipped"
                        [disabled]="inFeedbackPhase"
+                       [animationDelay]="i * animationDuration"
                        (cardLocked)="onCardLocked(card)"></app-strategy-card>
 
   </section>
@@ -84,7 +101,7 @@
                             [value]="roundsUsedPercentage">
       </mat-progress-spinner>
       <div class="roundText">
-        <span class="roundText-current">{{ round }}</span>
+        <span class="roundText-current">{{ displayedRound }}</span>
         <span class="roundText-slash">/</span>
         <span class="roundText-last">{{ lastRound }}</span>
       </div>
@@ -118,12 +135,11 @@
     <app-value-gauge *ngFor="let indicator of organisationalAttributes"
                      type="dot"
                      [value]="indicator.value"
-                     [previousValue]="indicator.previousValue"
                      [titleBottom]="indicator.titleBottom"
                      [titleTop]="indicator.titleTop"
                      [min]="indicator.minValue"
                      [max]="indicator.maxValue"
-                     [matTooltip]="t(indicator.toolTip)"></app-value-gauge>
+                     [matTooltip]="t(indicator.tooltip)"></app-value-gauge>
 
   </section>
 
@@ -132,7 +148,7 @@
     <app-ribbon *ngFor="let ribbon of ribbons; index as i"
                 [title]="ribbon.title"
                 [matTooltip]="t(ribbon.description)"
-                [style.top]="getRibbonTop(i)"
+                [style.left]="getRibbonLeft(i)"
                 @ribbon></app-ribbon>
 
   </section>

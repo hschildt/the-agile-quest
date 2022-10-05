@@ -2,6 +2,7 @@ import {
   Component, 
   EventEmitter,
   Input,
+  OnInit,
   Output
 } from '@angular/core';
 import { 
@@ -19,6 +20,7 @@ import {
 } from '../../shared';
 
 const ANIMATION_DURATION_WITH_DELAY = `${ANIMATION_DURATION_MS}ms ${ANIMATION_DURATION_MS}ms`;
+export type CARD_SIDE = 'pattern' | 'front' | 'back';
 
 /*
  * Show a strategy card that can be flipped over to see the feedback.
@@ -34,6 +36,10 @@ const ANIMATION_DURATION_WITH_DELAY = `${ANIMATION_DURATION_MS}ms ${ANIMATION_DU
           transform: `${PERSPECTIVE} rotateY(0deg)`
         })
       ),
+      state('pattern-hidden', style({
+          transform: `${PERSPECTIVE} rotateY(90deg)`
+        })
+      ),
       state('front-hidden', style({
           transform: `${PERSPECTIVE} rotateY(-90deg)`
         })
@@ -42,57 +48,57 @@ const ANIMATION_DURATION_WITH_DELAY = `${ANIMATION_DURATION_MS}ms ${ANIMATION_DU
           transform: `${PERSPECTIVE} rotateY(90deg)`
         })
       ),
-      transition('visible => front-hidden, visible => back-hidden', [
+      transition('visible => pattern-hidden, visible => front-hidden, visible => back-hidden', [
         animate(ANIMATION_DURATION_MS),
       ]),
-      transition('front-hidden => visible, back-hidden => visible', [
+      transition('pattern-hidden => visible, front-hidden => visible, back-hidden => visible', [
         animate(ANIMATION_DURATION_WITH_DELAY),
       ]),
     ]),
   ]
 })
-export class StrategyCardComponent {
-
-  @Input() id: string = null;
-  @Input() title: string = '';
-  @Input() description: string = '';
-  @Input() buttonLabel: string = 'Lock This Strategy';
-  @Input() buttonLabelLocked: string = 'Strategy Locked';
-  @Input() titleBack: string = 'Feedback';
-  @Input() descriptionBack: string = '';
+export class StrategyCardComponent implements OnInit {
+  @Input() title: string | LocalizedString = '';
+  @Input() description: string | LocalizedString = '';
+  @Input() buttonLabel: string | LocalizedString = 'Lock This Strategy';
+  @Input() buttonLabelLocked: string | LocalizedString = 'Strategy Locked';
+  @Input() titleBack: string | LocalizedString = 'Feedback';
+  @Input() descriptionBack: string | LocalizedString = '';
   @Input() disabled: boolean = false;
-  @Input()
-  set flipped(value: boolean) {
-
-    if (this._flipped == value)
-      return;
-
-    this._flipped = value;
-
-    // Handle triggers for transitions here
-    if (this._flipped) {
-      this.backFlipTrigger = 'visible';
-      this.frontFlipTrigger = 'front-hidden';
-    } else {
-      this.backFlipTrigger = 'back-hidden';
-      this.frontFlipTrigger = 'visible';
-    }
-
-  };
-  get flipped(): boolean {
-    return this._flipped;
-  }
-  @Input() locked: boolean = false;
+  @Input() flipped?: boolean = false;
+  @Input() hidden?: boolean = false;
+  @Input() locked?: boolean = false;
+  @Input() animationDelay: number = 0;
 
   @Output() cardLocked = new EventEmitter<boolean>();
 
-  public backFlipTrigger: string = 'back-hidden';
-  public frontFlipTrigger: string = 'visible';
-  private _flipped: boolean = false;
+  private _entering: boolean = true;
 
   constructor(
     private shared: SharedService
   ) {
+  }
+
+  ngOnInit(): void {
+    setTimeout(() => this._entering = false, 4 * ANIMATION_DURATION_MS + this.animationDelay);
+  }
+
+  get side(): CARD_SIDE {
+    if (this._entering || (this.hidden && !this.flipped))
+      return 'pattern';
+    return this.flipped ? 'back' : 'front';
+  }
+
+  get backFlipTrigger(): string {
+    return this.side == 'back' ? 'visible' : 'back-hidden';
+  }
+
+  get frontFlipTrigger(): string {
+    return this.side == 'front' ? 'visible' : 'front-hidden';
+  }
+
+  get patternFlipTrigger(): string {
+    return this.side == 'pattern' ? 'visible' : 'pattern-hidden';
   }
 
   toggleLocked(): void {
@@ -103,7 +109,7 @@ export class StrategyCardComponent {
    * Localize a string or LocalizedString object
    * See SharedService
    */
-  t(text: string | LocalizedString): string {
+  t(text: string | LocalizedString | undefined = '') {
     return this.shared.getText(text);
   }
 }

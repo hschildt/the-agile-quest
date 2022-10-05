@@ -7,8 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TitleScreenComponent } from './pages/title-screen/title-screen.component';
 import { GameModule } from './pages/game';
-import { SharedService, 
-         D3Service } from './shared';
+import { SharedService } from './shared';
 
 @NgModule({
   declarations: [
@@ -23,8 +22,7 @@ import { SharedService,
     GameModule
   ],
   providers: [
-    SharedService, 
-    D3Service
+    SharedService
   ],
   bootstrap: [ AppComponent ]
 })

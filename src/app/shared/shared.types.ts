@@ -11,6 +11,7 @@ export interface LocalizedString {
 export interface Settings {
   version: number,
   rounds: number,
+  loggerUrl: string,
   scenarios: Scenario[],
   strategies: Strategy[],
   ribbons: Ribbon[],
@@ -22,24 +23,33 @@ export interface Texts {
   [text: string]: LocalizedString
 }
 
+export type ComparisonOp = "gt" | "lt" | "eq";
+
+export interface Criterion {
+  indicatorId: string,
+  operator: ComparisonOp,
+  value: number
+}
+
+export interface Effects {
+  [indicatorId: string]: number
+}
+
 export interface Scenario {
   id: string,
   title: LocalizedString,
   description: LocalizedString,
   // Strategy ids
   strategies?: string[],
-  effects?: {
-    [indicatorId: string]: number
-  }
+  effects?: Effects
 }
 
 export interface Strategy {
   id: string,
   title: LocalizedString,
   description: LocalizedString,
-  effects?: {
-    [indicatorId: string]: number
-  },
+  feedback: LocalizedString,
+  effects?: Effects,
   // Ribbon ids
   ribbons?: string[],
   // Next scenario id
@@ -51,7 +61,9 @@ export interface Strategy {
 export interface Ribbon {
   id: string,
   title: LocalizedString,
-  description?: LocalizedString
+  description?: LocalizedString,
+  criteria?: Criterion[],
+  effects?: Effects
 }
 
 export interface Indicator {
@@ -63,6 +75,10 @@ export interface Indicator {
   initialValue?: number,
   minValue?: number,
   maxValue?: number,
-  previousValue?: number,
   value?: number
 }
+
+export type LogDatum = number | string;
+
+export type QueueStep = number | (() => void);
+export type Queue = QueueStep[];

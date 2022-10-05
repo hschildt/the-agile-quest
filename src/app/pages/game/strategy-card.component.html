@@ -1,18 +1,23 @@
+
+<section class="card pattern"
+         [@flip]="patternFlipTrigger">
+
+  <div class="content"></div>
+  
+</section>
+
 <section class="card front"
          [class.disabled]="disabled"
          [class.locked]="locked"
          [@flip]="frontFlipTrigger">
+
+  <label [innerHTML]="t(title)"></label>
 
   <div class="content">
     <div class="description"
         [innerHTML]="t(description)"></div>
   </div>
   
-  <label>
-    <span class="titleText"
-          [innerHTML]="t(title)"></span>
-  </label>
-
   <button type="button"
           class="bottomButton"
           [disabled]="disabled"

@@ -1,0 +1,228 @@
+@use 'sass:color'
+@import 'variables.scss'
+
+
+// VARIABLES
+
+// Common grid gap
+$gridGap: $margin-L
+
+// Scenario info min height
+$minHeight-mid: max(22rem, 42vh)
+  
+// The outline messes up the border changes
+button:focus
+  outline: none
+
+:host
+  display: block
+  height: 100vh
+  width: 100vw
+
+#userDataScreen,
+#grid
+  padding: $margin-L
+  position: relative
+  height: 100vh
+  min-height: 100vh
+  max-height: 100vh
+  width: 100%
+
+#userDataScreen
+  display: flex
+  justify-content: center
+  align-items: center
+
+  form
+    display: grid
+    grid-template-columns: 1fr 1fr
+    align-items: center
+    min-width: min(100vw, 30rem)
+
+    input
+      padding: $margin-XS
+      margin-bottom: $margin-S
+      margin-top: $margin-S
+      min-height: 2.5rem
+
+    #formIntro,
+    #userDataSubmit
+      grid-column: 1 / span 2
+
+#grid
+  display: grid
+  grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr [col-4] 1fr [col-5] 1fr [col-6] 1fr [right-edge]
+  grid-template-rows:    [top] 4rem [mid] auto [main] 1fr [bottom] 4rem [bottom-edge]
+  gap: $gridGap $gridGap
+
+#performanceIndicators
+  grid-area: top / col-1 / mid / right-edge
+  display: grid
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr
+  column-gap: $gridGap
+  justify-items: stretch
+  position: relative
+  z-index: $zIndex-4
+
+#scenario
+  grid-area: mid / col-1 / main / right-edge
+  padding: 0 calc(75px + #{$margin-S})
+  padding-bottom: $margin-L
+  position: relative
+  display: flex
+  flex-flow: column nowrap
+  align-items: center
+  justify-content: center
+  overflow-x: hidden
+  overflow-y: scroll
+  -ms-overflow-style: none
+  scrollbar-width: none
+  &::-webkit-scrollbar
+    display: none
+  z-index: $zIndex-3
+
+  h1
+    text-align: center
+
+  .description
+    font-size: $fontSize-L
+    max-width: $maxWidth-XL
+    min-height: 8rem
+    text-align: center
+
+  #roundIndicator
+    display: flex
+    flex-flow: column nowrap
+    justify-content: center
+    position: absolute
+    left: 0
+    // We use absolute pxs as the spinner is 100x100px by design
+    height: 75px
+    width: 75px
+
+    mat-progress-spinner
+      position: absolute
+      top: 0
+      left: 0
+      transform: scale(0.75)
+      transform-origin: top left
+
+    .roundText
+      font-size: 1.2rem
+      letter-spacing: 0.1rem
+      text-align: center
+
+      .roundText-current
+        vertical-align: 0.5rem
+
+      .roundText-last
+        vertical-align: -0.5rem
+
+#topDialog
+  grid-area: mid / col-2 / main / col-6
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+  padding: $margin-S
+  position: relative
+  z-index: $zIndex-9
+
+#strategyCards,
+#previousStrategyCards,
+#middleDialog
+  grid-area: main / col-1 / bottom / right-edge
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+  justify-content: center
+  padding-bottom: $margin-M
+  transform-origin: top center
+  z-index: $zIndex-5
+
+#strategyCards
+  // To allow hover for #ribbons
+  pointer-events: none
+
+  // To counter 'none' above
+  *
+    pointer-events: all
+
+#previousStrategyCards
+  cursor: pointer
+  // See animations in component
+  opacity: 0.3
+  z-index: $zIndex-1
+
+  *
+    pointer-events: none
+
+#middleDialog
+  button
+    margin: 0
+    max-width: 20rem
+
+#organisationalAttributes
+  grid-area: bottom / col-2 / bottom-edge / col-6
+  display: grid
+  grid-template-columns: 1fr 1fr 1fr 1fr
+  column-gap: $gridGap
+  justify-items: stretch
+  position: relative
+  z-index: $zIndex-4
+
+#ribbons
+  grid-area: main / col-6 / bottom-edge / right-edge
+  position: relative
+  text-align: right
+  z-index: $zIndex-3
+
+  app-ribbon
+    // position: absolute
+    margin-left: $margin-S
+    transform-origin: center center
+    &:first-child
+      margin-left: 0
+    // &:nth-child(odd)
+    //   right: $margin-M
+    // &:nth-child(even)
+    //   left: $margin-M
+
+#performanceIndicators,
+#organisationalAttributes
+  opacity: $alpha-faded
+  transition: opacity $animationTiming-M
+
+  &:hover
+    opacity: 1.0
+
+.showIndicators
+  #performanceIndicators,
+  #organisationalAttributes
+    opacity: 1.0
+
+#bottomDialog
+  grid-area: bottom / col-2 / bottom-edge / col-6
+  background-color: $color-primaryBg
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+  padding: $margin-S
+  position: relative
+  z-index: $zIndex-9
+
+#bottomDialog,
+#topDialog
+  button
+    margin: 0
+    max-width: 20rem
+
+.modal
+  z-index: $zIndex-10
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+  cursor: pointer
